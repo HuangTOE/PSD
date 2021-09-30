@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+#for cmt
+amd64_linux26
+*.root
