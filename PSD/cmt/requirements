@@ -1,0 +1,16 @@
+package PSD
+
+use ROOT v* Externals
+use SniperKernel v*
+use RootWriter v* SniperSvc
+use EvtNavigator v* DataModel
+use CalibEvent v* DataModel
+use RecEvent v* DataModel
+use Identifier v* Detector
+
+macro_append PSD_shlibflags " -lTMVA"
+
+library PSD *.cc
+
+apply_pattern install_python_modules
+apply_pattern linker_library library=PSD

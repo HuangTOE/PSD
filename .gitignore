@@ -32,5 +32,14 @@
 *.app
 
 #for cmt
-amd64_linux26
+InstallArea
+amd64_*
 *.root
+setup.*sh
+cleanup.*sh
+Makefile
+install.history
+*~
+*.swp
+*.pyc
+*.log
