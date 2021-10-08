@@ -1,8 +1,8 @@
 #ifndef TESTPSDTOOL_H
 #define TESTPSDTOOL_H
 
-#include "IPSDTool.h"
-#include "PSDInput.h"
+#include "PSD/IPSDTool.h"
+#include "PSD/PSDInput.h"
 #include "SniperKernel/ToolBase.h"
 
 #include "TTree.h"

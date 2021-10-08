@@ -5,7 +5,6 @@
 #include "RootWriter/RootWriter.h"
 #include "Event/CalibHeader.h"
 #include "Event/RecHeader.h"
-#include "IPSDTool.h"
 
 DECLARE_ALGORITHM(PSDAlg);
 
