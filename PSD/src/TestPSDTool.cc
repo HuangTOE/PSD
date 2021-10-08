@@ -1,5 +1,6 @@
 #include "TestPSDTool.h"
 
+#include "SniperKernel/ToolBase.h"
 #include "SniperKernel/ToolFactory.h"
 #include "SniperKernel/SniperPtr.h"
 #include "RootWriter/RootWriter.h"
@@ -32,16 +33,20 @@ bool TestPSDTool::initialize(){
     m_psdTree->Branch("psdVal", &m_psdEvent.psdVal, "psdVal/D");
     m_psdTree->Branch("evtType", &m_psdEvent.evtType, "psdVal/I");
     rwsvc->attach("PSD_OUTPUT", m_psdTree);
+
+    m_psdInput = new PSDInput();
     return true;
 }
 
 bool TestPSDTool::finalize(){
-    LogInfo<<"Initializing TestPSDTool..."<<std::endl;
+    LogInfo<<"Finalizing TestPSDTool..."<<std::endl;
+    delete m_psdInput;
     return true;
 }
 
 bool TestPSDTool::preProcess(JM::CalibEvent *calibevent, JM::CDRecEvent *recevent){
     LogDebug<<"pre processing an event..."<<std::endl;
+    if (!m_psdInput->extractHitInfo(calibevent, recevent)) return false;
     d_psdVar = 100;
     if (!b_usePredict) m_userTree->Fill();
     return true;

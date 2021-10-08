@@ -2,6 +2,7 @@
 #define TESTPSDTOOL_H
 
 #include "IPSDTool.h"
+#include "PSDInput.h"
 #include "SniperKernel/ToolBase.h"
 
 #include "TTree.h"
@@ -22,5 +23,7 @@ class TestPSDTool: public ToolBase, public IPSDTool{
         TTree *m_userTree;
         double d_psdVar;
         TTree *m_psdTree;
+
+        PSDInput *m_psdInput;
 };
 #endif

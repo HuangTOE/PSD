@@ -1,18 +1,15 @@
-#include "PSDInputTool.h"
+#include "PSDInput.h"
 
 #include "Identifier/Identifier.h"
 #include "Identifier/CdID.h"
 
-#include "SniperKernel/ToolFactory.h"
 
 #include "TH1.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "TMath.h"
 
-DECLARE_TOOL(PSDInputTool);
-
-PSDInputTool::PSDInputTool(const std::string &name):ToolBase(name){
+PSDInput::PSDInput(){
     b_weightOpt = false;
     v_PMTPosi.clear();
     v_hitTime.clear();
@@ -22,10 +19,10 @@ PSDInputTool::PSDInputTool(const std::string &name):ToolBase(name){
     d_vtxZ = 0;
 }
 
-PSDInputTool::~PSDInputTool(){
+PSDInput::~PSDInput(){
 }
 
-bool PSDInputTool::extractHitInfo(JM::CalibEvent *calibevent, JM::CDRecEvent *recevent){
+bool PSDInput::extractHitInfo(JM::CalibEvent *calibevent, JM::CDRecEvent *recevent){
     v_hitTime.clear();
     v_hitTime.reserve(10000);
     v_hitCharge.clear();
@@ -58,7 +55,7 @@ bool PSDInputTool::extractHitInfo(JM::CalibEvent *calibevent, JM::CDRecEvent *re
     return true;
 }
 
-void PSDInputTool::alignTime(std::string algnmethod){
+void PSDInput::alignTime(std::string algnmethod){
     //-------shift the time by t0------------
     if (!algnmethod.compare("noShift")) return;
     double t0=0;
@@ -92,7 +89,7 @@ void PSDInputTool::alignTime(std::string algnmethod){
     }
 }
 
-double PSDInputTool::calTOF(int id){
+double PSDInput::calTOF(int id){
     if (v_PMTPosi.size() == 0){
         //read the position info from the root file
         v_PMTPosi.reserve(18000);

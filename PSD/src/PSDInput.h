@@ -1,7 +1,6 @@
-#ifndef PSDINPUTTOOL_H
-#define PSDINPUTTOOL_H
+#ifndef PSDINPUT_H
+#define PSDINPUT_H
 
-#include "SniperKernel/ToolBase.h"
 #include <vector>
 #include <string>
 
@@ -10,10 +9,10 @@
 #include "Event/CalibHeader.h"
 #include "Event/RecHeader.h"
 
-class PSDInputTool: public ToolBase{
+class PSDInput{
     public:
-        PSDInputTool(const std::string &name);
-        ~PSDInputTool();
+        PSDInput();
+        ~PSDInput();
 
         bool extractHitInfo(JM::CalibEvent*, JM::CDRecEvent*);
         void alignTime(std::string algnmethod = "");
