@@ -11,4 +11,4 @@ LOGFILE=log.txt
 
 METHOD=TestPSDTool
 
-(time python runPSD.py --evtmax 10 --inputList ${INPUTFILELIST} --user-output ${USEROUTPUT} --method ${METHOD} --disablePredict) >& ${LOGFILE}
+(time python runPSD.py --evtmax 10 --inputList ${INPUTFILELIST} --user-output ${USEROUTPUT} --method ${METHOD} --enablePredict) >& ${LOGFILE}

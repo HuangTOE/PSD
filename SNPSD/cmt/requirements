@@ -1,0 +1,17 @@
+package SNPSD
+
+use ROOT v* Externals
+use SniperKernel v*
+use RootWriter v* SniperSvc
+#use EvtNavigator v* DataModel
+#use CalibEvent v* DataModel
+#use RecEvent v* DataModel
+#use Identifier v* Detector
+use PSD v* PSD
+
+#macro_append SNPSD_shlibflags " -lTMVA"
+
+library SNPSD *.cc
+
+apply_pattern install_python_modules
+apply_pattern linker_library library=SNPSD
