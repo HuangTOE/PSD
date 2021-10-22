@@ -14,3 +14,4 @@ library PSD *.cc
 
 apply_pattern install_python_modules
 apply_pattern linker_library library=PSD
+apply_pattern install_more_includes more=PSD

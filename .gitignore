@@ -34,7 +34,6 @@
 #for cmt
 InstallArea
 amd64_*
-*.root
 setup.*sh
 cleanup.*sh
 Makefile
@@ -43,3 +42,8 @@ install.history
 *.swp
 *.pyc
 *.log
+
+#data files
+*.root
+*.npy
+myJob

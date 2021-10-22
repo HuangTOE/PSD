@@ -1,7 +1,7 @@
 #ifndef IPSDTOOL_H
 #define IPSDTOOL_H
 
-#include "EvtNavigator/EvtNavigator.h"
+//#include "EvtNavigator/EvtNavigator.h"
 #include "Event/CalibEvent.h"
 #include "Event/CDRecEvent.h"
 

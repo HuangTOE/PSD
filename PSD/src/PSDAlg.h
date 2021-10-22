@@ -1,7 +1,7 @@
 #ifndef PSDALG_H
 #define PSDALG_H
 
-#include "IPSDTool.h"
+#include "PSD/IPSDTool.h"
 
 #include "SniperKernel/AlgBase.h"
 #include "EvtNavigator/NavBuffer.h"
