@@ -16,11 +16,12 @@ def get_parser():
     #---------------input and output-----------------
     parser.add_argument("--input", help="input file name")
     parser.add_argument("--inputList", action="append", help="input file list name, this file list contains the names of input files")
+    parser.add_argument("--model", default="/afs/ihep.ac.cn/users/l/luoxj/scratchfs_juno_500G/MyProject/MyProject/PSD/PSD/share/Induction__BDTG.weights.xml", help="ML model to do the prediction, default is for TMVA method")
     parser.add_argument("--output", default="", help="The user output file")
     parser.add_argument("--user-output", default="", help="The user output file")
 
     #--------------------For PSD--------------------------
-    parser.add_argument("--method", default="TestPSDTool", choices=["TestPSDTool"], help="The PSD method")
+    parser.add_argument("--method", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA"], help="The PSD method")
     parser.add_argument("--enablePredict", dest="usePredict", action="store_true")
     parser.add_argument("--disablePredict", dest="usePredict", action="store_false")
     parser.set_defaults(usePredict = True)
@@ -63,7 +64,8 @@ if __name__ == "__main__":
     ##########################################################
     import RootWriter
     rootwriter = topTask.createSvc("RootWriter")
-    userOutputMap = {"USER_OUTPUT":args.user_output, "PSD_OUTPUT":args.user_output}
+    #userOutputMap = {"USER_OUTPUT":args.user_output, "PSD_OUTPUT":"tmp.root"}
+    userOutputMap = { "PSD_OUTPUT":args.user_output,"USER_OUTPUT":args.user_output}
     rootwriter.property("Output").set(userOutputMap)
 
     #=======================PSD related======================
@@ -71,6 +73,7 @@ if __name__ == "__main__":
     psdalg = topTask.createAlg("PSDAlg")
     psdtool = psdalg.createTool(args.method)
     psdalg.property("Method").set(args.method)
+    psdalg.property("Model").set(args.model)
     psdalg.property("UsePredict").set(args.usePredict)
 
     topTask.show()

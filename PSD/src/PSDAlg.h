@@ -23,6 +23,7 @@ class PSDAlg:public AlgBase{
         //----------------Options-------------
         bool b_usePredict;
         std::string s_psdMethod;
+        std::string b_model;
 
         int i_ithEvt;
         JM::NavBuffer *m_buf;

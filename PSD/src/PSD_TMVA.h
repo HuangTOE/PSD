@@ -31,7 +31,7 @@ class PSD_TMVA: public ToolBase, public IPSDTool{
         virtual bool initialize();
         virtual bool finalize();
         virtual bool preProcess(JM::EvtNavigator *);
-        virtual double predict();
+        virtual double CalPSDVal();
 
     private:
         struct fitRes FitToGetTimeConstants( int fittag);

@@ -1,2 +1,2 @@
-/junofs/users/valprod2/CI_scripts/supernova-burst/sn/intp2013.data/1/10/8/0/DN/cal.root
-/junofs/users/valprod2/CI_scripts/supernova-burst/sn/intp2013.data/1/10/8/0/DN/rec.root
+/dybfs/users/chengjie/data/PSD/J21/DSNB/CS/calib_sample_3.root 
+/dybfs/users/chengjie/data/PSD/J21/DSNB/REC/rec_sample_3.root

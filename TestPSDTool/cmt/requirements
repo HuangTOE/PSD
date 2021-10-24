@@ -1,0 +1,13 @@
+package TestPSDTool
+
+use ROOT v* Externals
+use SniperKernel v*
+use RootWriter v* SniperSvc
+use EvtNavigator v* DataModel
+use CalibEvent v* DataModel
+use RecEvent v* DataModel
+use Identifier v* Detector
+use PSD v* PSD
+
+library TestPSDTool *.cc
+

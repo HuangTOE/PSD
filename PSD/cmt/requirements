@@ -4,11 +4,13 @@ use ROOT v* Externals
 use SniperKernel v*
 use RootWriter v* SniperSvc
 use EvtNavigator v* DataModel
+use ElecEvent v* DataModel
 use CalibEvent v* DataModel
 use RecEvent v* DataModel
 use Identifier v* Detector
 
 macro_append PSD_shlibflags " -lTMVA"
+macro_append PSD_shlibflags " -lRooFit -lRooFitCore -lMinuit2 -lMathMore "
 
 library PSD *.cc
 

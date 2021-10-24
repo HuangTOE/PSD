@@ -18,7 +18,7 @@ class TestPSDTool: public ToolBase, public IPSDTool{
         virtual bool initialize();
         virtual bool finalize();
         virtual bool preProcess(JM::EvtNavigator *);
-        virtual double predict();
+        virtual double CalPSDVal();
 
     private:
         TTree *m_userTree;

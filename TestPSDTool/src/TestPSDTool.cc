@@ -60,7 +60,7 @@ bool TestPSDTool::preProcess(JM::EvtNavigator *nav){
     return true;
 }
 
-double TestPSDTool::predict(){
+double TestPSDTool::CalPSDVal(){
     m_psdEvent.psdVal = 0.3;
     m_psdEvent.evtType = EVTTYPE::Electron;
     m_psdTree->Fill();

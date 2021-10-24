@@ -9,6 +9,8 @@ INPUTFILELIST=fileList.txt
 USEROUTPUT=user.root
 LOGFILE=log.txt
 
-METHOD=TestPSDTool
+#METHOD=TestPSDTool
+METHOD=PSD_TMVA
 
-(time python runPSD.py --evtmax 10 --inputList ${INPUTFILELIST} --user-output ${USEROUTPUT} --method ${METHOD} --enablePredict) >& ${LOGFILE}
+#(time python runPSD.py --evtmax 10 --inputList ${INPUTFILELIST} --user-output ${USEROUTPUT} --method ${METHOD} --disablePredict) >& ${LOGFILE}
+(time python runPSD.py --evtmax 10 --inputList ${INPUTFILELIST} --user-output ${USEROUTPUT} --method ${METHOD} --disablePredict) 

@@ -18,6 +18,7 @@ PSDAlg::PSDAlg(const std::string &name):AlgBase(name){
 
     declProp("Method", s_psdMethod = "");
     declProp("UsePredict", b_usePredict = true);
+    declProp("Model", b_model="");
 }
 
 PSDAlg::~PSDAlg(){
@@ -40,6 +41,9 @@ bool PSDAlg::initialize(){
     }
     if (b_usePredict) m_psdTool->enablePredict();
     else m_psdTool->disablePredict();
+
+    m_psdTool->setModelToPredict(b_model);
+
     if (!m_psdTool->initialize()){
         LogError<<"Fail to initialize Tool:"<<s_psdMethod<<"!"<<std::endl;
         return false;
@@ -75,8 +79,8 @@ bool PSDAlg::execute(){
 
     //===============get the current event=================
     JM::EvtNavigator *nav=m_buf->curEvt();
-    JM::CalibHeader *calibheader=dynamic_cast<JM::CalibHeader*>(nav->getHeader("/Event/Calib"));
-    JM::CalibEvent *thisCalibEvent=calibheader->event();
+    //  JM::CalibHeader *calibheader=dynamic_cast<JM::CalibHeader*>(nav->getHeader("/Event/Calib"));
+    //  JM::CalibEvent *thisCalibEvent=calibheader->event();
     JM::RecHeader *recheader=dynamic_cast<JM::RecHeader*>(nav->getHeader("/Event/Rec"));
     JM::CDRecEvent *thisRecEvent=recheader->cdEvent();
 
@@ -90,7 +94,7 @@ bool PSDAlg::execute(){
     m_outTree->Fill();
 
     //=====================PSD procedure=====================
-    if (!m_psdTool->preProcess(thisCalibEvent, thisRecEvent)){
+    if (!m_psdTool->preProcess(nav)){
         LogError<<"Error when pre-processing the "<<i_ithEvt<<"th event!"<<std::endl;
         return false;
     }
