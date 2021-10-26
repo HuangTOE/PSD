@@ -1,14 +1,14 @@
 #ifndef TESTPSDTOOL_H
 #define TESTPSDTOOL_H
+//#pragma once
 
-#include "PSD/IPSDTool.h"
-#include "PSD/PSDInput.h"
+#include "../PSD/IPSDTool.h"
+#include "../PSD/IPSDInputSvc.h"
 #include "SniperKernel/ToolBase.h"
 #include "EvtNavigator/NavBuffer.h"
+#include "SniperKernel/SniperPtr.h"
 
 #include "TTree.h"
-
-#include <string>
 
 class TestPSDTool: public ToolBase, public IPSDTool{
     public:
@@ -25,6 +25,6 @@ class TestPSDTool: public ToolBase, public IPSDTool{
         double d_psdVar;
         TTree *m_psdTree;
 
-        PSDInput *m_psdInput;
+        IPSDInputSvc* m_psdInput;
 };
 #endif

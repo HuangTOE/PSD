@@ -1,4 +1,4 @@
-#include "PSDAlg.h"
+#include "PSD/PSDAlg.h"
 
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/AlgFactory.h"
@@ -42,7 +42,7 @@ bool PSDAlg::initialize(){
     if (b_usePredict) m_psdTool->enablePredict();
     else m_psdTool->disablePredict();
 
-    m_psdTool->setModelToPredict(b_model);
+//    m_psdTool->setModelToPredict(b_model);
 
     if (!m_psdTool->initialize()){
         LogError<<"Fail to initialize Tool:"<<s_psdMethod<<"!"<<std::endl;
@@ -98,7 +98,7 @@ bool PSDAlg::execute(){
         LogError<<"Error when pre-processing the "<<i_ithEvt<<"th event!"<<std::endl;
         return false;
     }
-    if (b_usePredict) d_psdVal = m_psdTool->predict();
+    if (b_usePredict) d_psdVal = m_psdTool->CalPSDVal();
 
     return true;
 }

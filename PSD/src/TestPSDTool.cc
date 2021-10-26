@@ -1,9 +1,11 @@
-#include "TestPSDTool.h"
+#include "PSD/TestPSDTool.h"
 
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/ToolFactory.h"
 #include "SniperKernel/SniperPtr.h"
 #include "RootWriter/RootWriter.h"
+
+//#include "string.h"
 
 using namespace std;
 DECLARE_TOOL(TestPSDTool);
@@ -35,19 +37,19 @@ bool TestPSDTool::initialize(){
     m_psdTree->Branch("evtType", &m_psdEvent.evtType, "psdVal/I");
     rwsvc->attach("PSD_OUTPUT", m_psdTree);
 
-    m_psdInput = new PSDInput();
+//    SniperPtr<IPSDInputSvc> m_psdInput(getParent(), "PSDInputSvc");
+    m_psdInput = dynamic_cast<IPSDInputSvc*>(getParent()->find("PSDInputSvc"));
     return true;
 }
 
 bool TestPSDTool::finalize(){
     LogInfo<<"Finalizing TestPSDTool..."<<std::endl;
-    delete m_psdInput;
     return true;
 }
 
 bool TestPSDTool::preProcess(JM::EvtNavigator *nav){
     LogDebug<<"pre processing an event..."<<std::endl;
-    if (!m_psdInput->extractHitInfo(nav)) return false;
+    if (!m_psdInput->extractHitInfo(nav,"alignPeak")) return false;
 
     // Extract  Raw Waveform from ElecSim
     if (!m_psdInput->extractHitsWaveform(nav)) return false;
@@ -60,7 +62,7 @@ bool TestPSDTool::preProcess(JM::EvtNavigator *nav){
     return true;
 }
 
-double TestPSDTool::predict(){
+double TestPSDTool::CalPSDVal(){
     m_psdEvent.psdVal = 0.3;
     m_psdEvent.evtType = EVTTYPE::Electron;
     m_psdTree->Fill();

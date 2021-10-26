@@ -1,4 +1,4 @@
-package PSD
+package PSDAlg
 
 use ROOT v* Externals
 use SniperKernel v*
@@ -8,12 +8,15 @@ use ElecEvent v* DataModel
 use CalibEvent v* DataModel
 use RecEvent v* DataModel
 use Identifier v* Detector
+use PSD v* PSD
 
 macro_append PSD_shlibflags " -lTMVA"
 macro_append PSD_shlibflags " -lRooFit -lRooFitCore -lMinuit2 -lMathMore "
+include_dirs /afs/ihep.ac.cn/users/l/luoxj/scratchfs_juno_500G/MyProject/MyProject/PSD/PSD/
 
 library PSD *.cc
 
 apply_pattern install_python_modules
 apply_pattern linker_library library=PSD
 apply_pattern install_more_includes more=PSD
+

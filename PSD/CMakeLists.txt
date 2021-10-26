@@ -1,0 +1,15 @@
+PKG(PSD
+    DEPENDS
+        ElecEvent 
+        CalibEvent 
+        RecEvent 
+        EvtNavigator 
+        BufferMemMgr
+        DataRegistritionSvc
+        Identifier 
+        RootIOSvc      
+        TMVA
+        RooFit
+        RooFitCore
+        Minuit2
+)

@@ -1,5 +1,6 @@
-#ifndef IPSDTOOL_H
-#define IPSDTOOL_H
+//#ifndef IPSDTOOL_H
+//#define IPSDTOOL_H
+#pragma once
 
 #include "EvtNavigator/EvtNavigator.h"
 #include "Event/CalibEvent.h"
@@ -21,7 +22,7 @@ class IPSDTool{
 
         void enablePredict(){b_usePredict = true;}
         void disablePredict(){b_usePredict = false;}
-        void setModelToPredict(std::string model){ b_model=model; }
+//        void setModelToPredict(std::string model){ b_model=model; }
 
         struct PSDEVENT{
             double psdVal;
@@ -35,11 +36,11 @@ class IPSDTool{
         virtual bool initialize() = 0;
         virtual bool finalize() = 0;
         virtual bool preProcess(JM::EvtNavigator *) = 0;
-        virtual double predict() = 0;
+        virtual double CalPSDVal() = 0;
 
     protected:
         bool b_usePredict;//whether to give prediction or not, default is true
-        std::string b_model;
+//        std::string b_model;
         PSDEVENT m_psdEvent;
 };
-#endif
+//#endif
