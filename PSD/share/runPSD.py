@@ -14,7 +14,7 @@ def get_parser():
     parser.add_argument("--loglevel", default="Debug", choices=["Test", "Debug", "Info", "Warn", "Error", "Fatal"],help="Set the Log Level")
 
     #---------------input and output-----------------
-    parser.add_argument("--input", help="input file name")
+    parser.add_argument("--input", nargs="+" ,help="input list of files name", required=True)
     parser.add_argument("--inputList", action="append", help="input file list name, this file list contains the names of input files")
     parser.add_argument("--inputSvc", default="PSDInputSvc", help="Which PSD input service will be use, default for PSDInputSvc.*")
     parser.add_argument("--pmt_map", default="/cvmfs/juno.ihep.ac.cn/centos7_amd64_gcc830/Pre-Release/J21v1r0-Pre2/data/Simulation/ElecSim/PmtData_Lpmt.root",  help="Map from pmtID to PMT Location")
@@ -47,8 +47,9 @@ if __name__ == "__main__":
 
     #=======================Input using framework======================
     filelist=[]
-    if args.input:
-        filelist.append(args.input)
+
+    for input in args.input:
+        filelist.append(input)
     if args.inputList:
         for fname in args.inputList:
             with open(fname) as hxf:
