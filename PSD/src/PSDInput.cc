@@ -1,4 +1,4 @@
-#include "PSD/PSDInput.h"
+#include "../PSD/PSDInput.h"
 
 #include "DataRegistritionSvc/DataRegistritionSvc.h"
 #include "Event/ElecHeader.h"

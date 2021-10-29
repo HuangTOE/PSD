@@ -1,4 +1,4 @@
-#include "PSD/PSDTool_TMVA.h"
+#include "../PSD/PSDTool_TMVA.h"
 
 #include "SniperKernel/ToolFactory.h"
 #include "SniperKernel/SniperPtr.h"
@@ -75,35 +75,44 @@ float GetW2(TH1F* h1tem, int ss)
 }
 
 
-struct fitRes PSD_TMVA::FitToGetTimeConstants( int fittag=0)
+
+struct fitRes PSD_TMVA::FitToGetTimeConstants( int fittag=0, double xhigh=1100. )
 // tree_time_falling_edge is for the falling edge t~[0,1000] and h_time_rising_edge is for the rising edge t~[-200,0]
 {
 
   gSystem->Load("libRooFit");
-  RooRealVar tt_0("tt_0", "time [ns]", 40., 800., "");
+  RooRealVar tt_0("tt_0", "time [ns]", 40., xhigh, "");
   RooRealVar ncharge("ncharge", "Q", 0., 100., "");
+  // RooRealVar tau1("#tau_{1}", "tau1", 20., 0., 100.);
   RooRealVar tau1("#tau_{1}", "tau1", 20., 0., 800.);
+  // RooRealVar tau2("#tau_{2}", "tau2", 150., 50., 500.);
   RooRealVar tau2("#tau_{2}", "tau2", 150., 0., 800.);
+  // RooRealVar tau3("#tau_{3}", "tau3", 400, 200., 800.);
   RooRealVar eta1("#eta_{1}", "eta1", 0.7, 0., 1.);
+  // RooRealVar eta2("#eta_{2}", "eta2", 0.2, 0., 1.);
   RooRealVar Nhit("N_{hit}", "Nhit", 10000, 1.e3, 1.e6);
   RooRealVar Ndark("N_{dark}", "Ndark", 0);
+  // RooRealVar Ndark("N_{dark}", "Ndark", 0.5, 0.1, 10.);
 
   RooFormulaVar lambda1("lambda1", "lambda1", "-1./@0", RooArgList(tau1));
   RooFormulaVar lambda2("lambda2", "lambda2", "-1./@0", RooArgList(tau2));
+  // RooFormulaVar lambda3("lambda3", "lambda3", "-1./@0", RooArgList(tau3));
 
   RooExponential exp1("exp1", "exp1 distribution", tt_0, lambda1);
   RooExponential exp2("exp2", "exp2 distribution", tt_0, lambda2);
+  // RooExponential exp3("exp3", "exp3 distribution", tt_0, lambda3);
 
   RooFormulaVar bpN1("bpN1", "bpN1", "@0*@1", RooArgList(Nhit, eta1));
   RooFormulaVar bpN2("bpN2", "bpN2", "@0*(1.-@1)", RooArgList(Nhit, eta1));
-  RooFormulaVar bpdark("bpdark", "bpdark", "@0*(800.-40.)", RooArgList(Ndark));
+  // RooFormulaVar bpN3("bpN3", "bpN3", "@0*(1.-@1-@2)", RooArgList(Nhit, eta1, eta2));
+  RooFormulaVar bpdark("bpdark", "bpdark", "@0*(900.-40.)", RooArgList(Ndark));
 
   RooPolynomial polybkg1("polybkg1", "bkg1 distribution", tt_0, RooArgList());
 
   TF1* ffpoly = new TF1("ffpoly", "[0]", -200, -100);
   h_time_rising_edge->Fit(ffpoly, "RL");
-  double ndarkfit = ffpoly->GetParameter(0) * (800 - 40);
-  double ndarkerrfit = ffpoly->GetParError(0) * (800 - 40);
+  double ndarkfit = ffpoly->GetParameter(0) * (xhigh - 40);
+  double ndarkerrfit = ffpoly->GetParError(0) * (xhigh - 40);
   Ndark.setVal(ndarkfit);
   Ndark.setError(ndarkerrfit);
 
@@ -152,8 +161,16 @@ struct fitRes PSD_TMVA::FitToGetTimeConstants( int fittag=0)
   struct fitRes fs;
   fs.tau1 = vec[0].first;
   fs.tau2 = vec[1].first;
-  // fs.tau3 = tau3.getVal(0);
   fs.tau1ratio = vec[0].second;
+  if (vec[0].first == tau1.getVal(0)) {
+    fs.tau1err = tau1.getError();
+    fs.tau2err = tau2.getError();
+    fs.tau1ratioerr = eta1.getError();
+  } else {
+    fs.tau1err = tau2.getError();
+    fs.tau2err = tau1.getError();
+    fs.tau1ratioerr = 0;
+  }
   // fs.tau2ratio = eta2.getVal(0);
   fs.ndark = Ndark.getVal(0);
   fs.nn0 = Nhit.getVal(0);
@@ -365,9 +382,10 @@ bool PSD_TMVA::preProcess(JM::EvtNavigator *nav){
     // Only when disable Predict mode is on, we will save the fitting outputs so that we can do the training in the next step
     if (!b_usePredict) 
     {
-        m_userTree->Fill();
+//        m_userTree->Fill();
         evtID ++;
     }
+    m_userTree->Fill();
 
     return true;
 }

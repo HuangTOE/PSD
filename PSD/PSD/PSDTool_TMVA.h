@@ -19,6 +19,9 @@ struct fitRes {
   float nn0;
   float chi2;
   float ndf;
+  double tau1err;
+  double tau2err;
+  double tau1ratioerr;
 };
 
 
@@ -33,7 +36,7 @@ class PSD_TMVA: public ToolBase, public IPSDTool{
         virtual double CalPSDVal();
 
     private:
-        struct fitRes FitToGetTimeConstants( int fittag);
+    struct fitRes FitToGetTimeConstants( int fittag,double xhigh);
 
         TTree *m_userTree;
         TTree *m_psdTree;

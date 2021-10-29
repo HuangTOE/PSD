@@ -14,7 +14,7 @@ def get_parser():
     parser.add_argument("--loglevel", default="Debug", choices=["Test", "Debug", "Info", "Warn", "Error", "Fatal"],help="Set the Log Level")
 
     #---------------input and output-----------------
-    parser.add_argument("--input", nargs="+" ,help="input list of files name", required=True)
+    parser.add_argument("--input", nargs="+" ,help="input list of files name")
     parser.add_argument("--inputList", action="append", help="input file list name, this file list contains the names of input files")
     parser.add_argument("--inputSvc", default="PSDInputSvc", help="Which PSD input service will be use, default for PSDInputSvc.*")
     parser.add_argument("--pmt_map", default="/cvmfs/juno.ihep.ac.cn/centos7_amd64_gcc830/Pre-Release/J21v1r0-Pre2/data/Simulation/ElecSim/PmtData_Lpmt.root",  help="Map from pmtID to PMT Location")
@@ -23,8 +23,8 @@ def get_parser():
 
     #--------------------For PSD--------------------------
     parser.add_argument("--method", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA"], help="The PSD method")
-    parser.add_argument("--enablePredict", dest="usePredict", action="store_true")
-    parser.add_argument("--disablePredict", dest="usePredict", action="store_false")
+    parser.add_argument("--Predict", dest="usePredict", action="store_true")
+    parser.add_argument("--Train", dest="usePredict", action="store_false")
     parser.set_defaults(usePredict = True)
 
     #-------------------For TMVA method-----------------------------
@@ -48,8 +48,9 @@ if __name__ == "__main__":
     #=======================Input using framework======================
     filelist=[]
 
-    for input in args.input:
-        filelist.append(input)
+    if args.input:
+        for input in args.input:
+            filelist.append(input)
     if args.inputList:
         for fname in args.inputList:
             with open(fname) as hxf:

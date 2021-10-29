@@ -26,12 +26,12 @@ IPSDInputSvc::IPSDInputSvc() {
 
 IPSDInputSvc::~IPSDInputSvc() = default;
 
-
 bool IPSDInputSvc::extractHitInfo(JM::EvtNavigator * nav, const std::string method_to_align) {
     if (!getEDMEvent(nav)) return false;
     cout << method_to_align << endl;
     return false;
 }
+
 
 bool IPSDInputSvc::extractHitsWaveform(JM::EvtNavigator * nav) {
     if (!getEDMEvent(nav)) return false;

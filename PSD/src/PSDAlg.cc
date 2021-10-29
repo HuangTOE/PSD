@@ -1,4 +1,4 @@
-#include "PSD/PSDAlg.h"
+#include "../PSD/PSDAlg.h"
 
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/AlgFactory.h"
@@ -79,8 +79,15 @@ bool PSDAlg::execute(){
 
     //===============get the current event=================
     JM::EvtNavigator *nav=m_buf->curEvt();
-    //  JM::CalibHeader *calibheader=dynamic_cast<JM::CalibHeader*>(nav->getHeader("/Event/Calib"));
-    //  JM::CalibEvent *thisCalibEvent=calibheader->event();
+
+    //=====================PSD procedure=====================
+    if (!m_psdTool->preProcess(nav)){
+        LogError<<"Error when pre-processing the "<<i_ithEvt<<"th event!"<<std::endl;
+        return false;
+    }
+    if (b_usePredict) d_psdVal = m_psdTool->CalPSDVal();
+
+    // ==============Get current rec event ==========================================
     JM::RecHeader *recheader=dynamic_cast<JM::RecHeader*>(nav->getHeader("/Event/Rec"));
     JM::CDRecEvent *thisRecEvent=recheader->cdEvent();
 
@@ -92,13 +99,6 @@ bool PSDAlg::execute(){
     LogInfo<<"Energy:"<<d_recE<<"MeV"<<std::endl;
     LogInfo<<"Vertex: ("<<d_recX<<", "<<d_recY<<", "<<d_recZ<<") mm."<<std::endl;
     m_outTree->Fill();
-
-    //=====================PSD procedure=====================
-    if (!m_psdTool->preProcess(nav)){
-        LogError<<"Error when pre-processing the "<<i_ithEvt<<"th event!"<<std::endl;
-        return false;
-    }
-    if (b_usePredict) d_psdVal = m_psdTool->CalPSDVal();
 
     return true;
 }

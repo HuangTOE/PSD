@@ -1,4 +1,4 @@
-#include "PSD/TestPSDTool.h"
+#include "../PSD/TestPSDTool.h"
 
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/ToolFactory.h"
