@@ -24,7 +24,7 @@ def get_parser():
     #--------------------For PSD--------------------------
     parser.add_argument("--method", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA"], help="The PSD method")
     parser.add_argument("--Predict", dest="usePredict", action="store_true")
-    parser.add_argument("--Train", dest="usePredict", action="store_false")
+    parser.add_argument("--PrepareForTraining", dest="usePredict", action="store_false")
     parser.set_defaults(usePredict = True)
 
     #-------------------For TMVA method-----------------------------

@@ -1,0 +1,523 @@
+Setup Official Offline Software
+**************************************************
+***          Welcome to SNiPER Python          ***
+**************************************************
+Running @ lxslc709.ihep.ac.cn on Wed Oct 13 14:56:12 2021
+
+[1mRooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby[0m 
+                Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
+                All rights reserved, please read http://roofit.sourceforge.net/license.txt
+
+[TopTask]TopTask
+   +--[Var]EvtMax     = 10
+   +--[Var]LogLevel   = 2
+   +--[DataMemSvc]DataMemSvc
+   |     +--[Var]LogLevel   = 2
+   +--[BufferMemMgr]BufferMemMgr
+   |     +--[Var]LogLevel   = 2
+   |     +--[Var]StopTaskOpt = 1
+   |     +--[Var]TimeWindow = []
+   +--[RootInputSvc]InputSvc
+   |     +--[Var]InputFile  = [/dybfs/users/chengjie/data/PSD/J21/DSNB/CS/calib_sample_1.root, /dybfs/users/chengjie/data/PSD/J21/DSNB/REC/rec_sample_1.root]
+   |     +--[Var]LogLevel   = 2
+   +--[RootWriter]RootWriter
+   |     +--[Var]LogLevel   = 2
+   |     +--[Var]Output     = {PSD_OUTPUT:user.root, USER_OUTPUT:user.root}
+   +--[PSDAlg]PSDAlg
+   |     +--[Var]LogLevel   = 2
+   |     +--[Var]Method     = PSD_TMVA
+   |     +--[Var]UsePredict = 1
+   |     +--[PSD_TMVA]PSD_TMVA
+   |     |     +--[Var]LogLevel   = 2
+TopTask.find                    WARN: Cann't find Object OutputSvc
+TopTask:BufferMemMgr.initialize DEBUG: Initialized Sucessfully.
+TopTask:InputSvc.initialize     INFO: Initialize RootInputSvc...
+TopTask:InputSvc.initNavStream DEBUG: Creating NavInputStream...
+TopTask:InputSvc.initialize     INFO: RootInputSvc successfully initialized.
+TopTask:PSD_TMVA.initialize     INFO: Initializing PSD_TMVA...
+                         : Booking "BDTG method" of type "BDT" from /afs/ihep.ac.cn/users/l/luoxj/scratchfs_juno_500G/MyProject/MyProject/PSD/PSD/share/Induction__BDTG.weights.xml.
+                         : Reading weight file: /afs/ihep.ac.cn/users/l/luoxj/scratchfs_juno_500G/MyProject/MyProject/PSD/PSD/share/Induction__BDTG.weights.xml
+<HEADER> DataSetInfo              : [Default] : Added class "Background"
+<HEADER> DataSetInfo              : [Default] : Added class "Signal"
+                         : Booked classifier "BDTG" of type: "BDT"
+TopTask.initialize              INFO: initialized
+TopTask:PSDAlg.execute          INFO: 0th event!
+TopTask:PSDAlg.execute          INFO: Energy:25.3013MeV
+TopTask:PSDAlg.execute          INFO: Vertex: (10959.3, -2645.9, -6048.35) mm.
+TopTask:PSD_TMVA.preProcess    DEBUG: pre processing an event...
+R3 of event vertex:	2094.26
+ FCN=48.8141 FROM MIGRAD    STATUS=CONVERGED      45 CALLS          46 TOTAL
+                     EDM=7.74874e-06    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  p0           3.57300e-01   5.97606e-02   2.79714e-04  -4.65801e-02
+                               ERR DEF= 0.5
+------------------> test 20210917
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #0 because tt_0 cannot accommodate the value 33.5978
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #1 because tt_0 cannot accommodate the value 7.85851
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #2 because tt_0 cannot accommodate the value 7.95447
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #3 because tt_0 cannot accommodate the value 3.21655
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping ...
+[#0] WARNING:DataHandling -- RooTreeDataStore::loadValues(data) Ignored 8518 out-of-range events
+[#0] WARNING:InputArguments -- RooAbsPdf::fitTo(sum1) WARNING: a likelihood fit is requested of what appears to be weighted data.
+       While the estimated values of the parameters will always be calculated taking the weights into account,
+       there are multiple ways to estimate the errors of the parameters. You are advised to make an 
+       explicit choice for the error calculation:
+           - Either provide SumW2Error(true), to calculate a sum-of-weights-corrected HESSE error matrix
+             (error will be proportional to the number of events in MC).
+           - Or provide SumW2Error(false), to return errors from original HESSE error matrix
+             (which will be proportional to the sum of the weights, i.e., a dataset with <sum of weights> events).
+           - Or provide AsymptoticError(true), to use the asymptotically correct expression
+             (for details see https://arxiv.org/abs/1911.01303).
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+[#1] INFO:Minization --  The following expressions have been identified as constant and will be precalculated and cached: (polybkg1)
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (exp1,exp2)
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: deactivating const optimization
+
+  RooFitResult: minimized FCN value: -25042.6, estimated distance to minimum: 4.3916e-06
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  #eta_{1}                7.8059e-01 +/-  2.24e-02
+  #tau_{1}                5.1078e+01 +/-  1.60e+00
+  #tau_{2}                2.5333e+02 +/-  2.59e+01
+  N_{hit}                 9.1003e+03 +/-  9.68e+01
+
+-------Try to Predict----
+BDTG Output:	0.961489
+--------------------------
+TopTask:PSDAlg.execute          INFO: 1th event!
+TopTask:PSDAlg.execute          INFO: Energy:7.31325MeV
+TopTask:PSDAlg.execute          INFO: Vertex: (-13724.7, -1565.22, 6075.59) mm.
+TopTask:PSD_TMVA.preProcess    DEBUG: pre processing an event...
+R3 of event vertex:	3436.59
+ FCN=39.9613 FROM MIGRAD    STATUS=CONVERGED      45 CALLS          46 TOTAL
+                     EDM=5.16355e-06    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  p0           3.41123e-01   5.83944e-02   2.48192e-04  -3.89138e-02
+                               ERR DEF= 0.5
+------------------> test 20210917
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #0 because tt_0 cannot accommodate the value 3.38293
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #1 because tt_0 cannot accommodate the value 8.90968
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #3 because tt_0 cannot accommodate the value 3.89238
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #4 because tt_0 cannot accommodate the value 11.4979
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping ...
+[#0] WARNING:DataHandling -- RooTreeDataStore::loadValues(data) Ignored 3724 out-of-range events
+[#0] WARNING:InputArguments -- RooAbsPdf::fitTo(sum1) WARNING: a likelihood fit is requested of what appears to be weighted data.
+       While the estimated values of the parameters will always be calculated taking the weights into account,
+       there are multiple ways to estimate the errors of the parameters. You are advised to make an 
+       explicit choice for the error calculation:
+           - Either provide SumW2Error(true), to calculate a sum-of-weights-corrected HESSE error matrix
+             (error will be proportional to the number of events in MC).
+           - Or provide SumW2Error(false), to return errors from original HESSE error matrix
+             (which will be proportional to the sum of the weights, i.e., a dataset with <sum of weights> events).
+           - Or provide AsymptoticError(true), to use the asymptotically correct expression
+             (for details see https://arxiv.org/abs/1911.01303).
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+[#1] INFO:Minization --  The following expressions have been identified as constant and will be precalculated and cached: (polybkg1)
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (exp1,exp2)
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: deactivating const optimization
+
+  RooFitResult: minimized FCN value: -3469.85, estimated distance to minimum: 3.73903e-05
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  #eta_{1}                7.0177e-01 +/-  7.97e-02
+  #tau_{1}                4.9453e+01 +/-  5.30e+00
+  #tau_{2}                2.1600e+02 +/-  5.34e+01
+  N_{hit}                 2.5153e+03 +/-  5.30e+01
+
+-------Try to Predict----
+BDTG Output:	-0.998503
+--------------------------
+TopTask:PSDAlg.execute          INFO: 2th event!
+TopTask:PSDAlg.execute          INFO: Energy:15.6587MeV
+TopTask:PSDAlg.execute          INFO: Vertex: (-5325.49, 1622.67, 14015.5) mm.
+TopTask:PSD_TMVA.preProcess    DEBUG: pre processing an event...
+R3 of event vertex:	3429.8
+ FCN=47.395 FROM MIGRAD    STATUS=CONVERGED      48 CALLS          49 TOTAL
+                     EDM=1.97137e-08    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  p0           3.80598e-01   6.16919e-02   2.94654e-04  -2.27592e-03
+                               ERR DEF= 0.5
+------------------> test 20210917
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #0 because tt_0 cannot accommodate the value 35.8144
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #2 because tt_0 cannot accommodate the value 0.743933
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #3 because tt_0 cannot accommodate the value 23.7439
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #6 because tt_0 cannot accommodate the value 5.41092
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping ...
+[#0] WARNING:DataHandling -- RooTreeDataStore::loadValues(data) Ignored 6014 out-of-range events
+[#0] WARNING:InputArguments -- RooAbsPdf::fitTo(sum1) WARNING: a likelihood fit is requested of what appears to be weighted data.
+       While the estimated values of the parameters will always be calculated taking the weights into account,
+       there are multiple ways to estimate the errors of the parameters. You are advised to make an 
+       explicit choice for the error calculation:
+           - Either provide SumW2Error(true), to calculate a sum-of-weights-corrected HESSE error matrix
+             (error will be proportional to the number of events in MC).
+           - Or provide SumW2Error(false), to return errors from original HESSE error matrix
+             (which will be proportional to the sum of the weights, i.e., a dataset with <sum of weights> events).
+           - Or provide AsymptoticError(true), to use the asymptotically correct expression
+             (for details see https://arxiv.org/abs/1911.01303).
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+[#1] INFO:Minization --  The following expressions have been identified as constant and will be precalculated and cached: (polybkg1)
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (exp1,exp2)
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: deactivating const optimization
+
+  RooFitResult: minimized FCN value: -10998.8, estimated distance to minimum: 2.34339e-05
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  #eta_{1}                7.6013e-01 +/-  3.39e-02
+  #tau_{1}                5.0788e+01 +/-  2.25e+00
+  #tau_{2}                2.2957e+02 +/-  3.08e+01
+  N_{hit}                 5.0808e+03 +/-  7.33e+01
+
+-------Try to Predict----
+BDTG Output:	-0.983938
+--------------------------
+TopTask:PSDAlg.execute          INFO: 3th event!
+TopTask:PSDAlg.execute          INFO: Energy:5.52962MeV
+TopTask:PSDAlg.execute          INFO: Vertex: (-4355.12, 4455.99, 3341.52) mm.
+TopTask:PSD_TMVA.preProcess    DEBUG: pre processing an event...
+R3 of event vertex:	353.433
+ FCN=53.3561 FROM MIGRAD    STATUS=CONVERGED      48 CALLS          49 TOTAL
+                     EDM=7.03456e-08    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  p0           4.26157e-01   6.52794e-02   3.30530e-04  -4.06296e-03
+                               ERR DEF= 0.5
+------------------> test 20210917
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #0 because tt_0 cannot accommodate the value 0.385728
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #3 because tt_0 cannot accommodate the value 10.1787
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #4 because tt_0 cannot accommodate the value 10.8037
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #8 because tt_0 cannot accommodate the value 15.8154
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping ...
+[#0] WARNING:DataHandling -- RooTreeDataStore::loadValues(data) Ignored 3829 out-of-range events
+[#0] WARNING:InputArguments -- RooAbsPdf::fitTo(sum1) WARNING: a likelihood fit is requested of what appears to be weighted data.
+       While the estimated values of the parameters will always be calculated taking the weights into account,
+       there are multiple ways to estimate the errors of the parameters. You are advised to make an 
+       explicit choice for the error calculation:
+           - Either provide SumW2Error(true), to calculate a sum-of-weights-corrected HESSE error matrix
+             (error will be proportional to the number of events in MC).
+           - Or provide SumW2Error(false), to return errors from original HESSE error matrix
+             (which will be proportional to the sum of the weights, i.e., a dataset with <sum of weights> events).
+           - Or provide AsymptoticError(true), to use the asymptotically correct expression
+             (for details see https://arxiv.org/abs/1911.01303).
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+[#1] INFO:Minization --  The following expressions have been identified as constant and will be precalculated and cached: (polybkg1)
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (exp1,exp2)
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: deactivating const optimization
+
+  RooFitResult: minimized FCN value: -3362.94, estimated distance to minimum: 3.31271e-06
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  #eta_{1}                8.8931e-01 +/-  3.47e-02
+  #tau_{1}                5.9926e+01 +/-  2.85e+00
+  #tau_{2}                4.4782e+02 +/-  2.47e+02
+  N_{hit}                 2.3886e+03 +/-  5.21e+01
+
+-------Try to Predict----
+BDTG Output:	-0.844647
+--------------------------
+TopTask:PSDAlg.execute          INFO: 4th event!
+TopTask:PSDAlg.execute          INFO: Energy:20.2266MeV
+TopTask:PSDAlg.execute          INFO: Vertex: (2033.12, 8158.82, 10609.9) mm.
+TopTask:PSD_TMVA.preProcess    DEBUG: pre processing an event...
+R3 of event vertex:	2481.05
+ FCN=62.6612 FROM MIGRAD    STATUS=CONVERGED      51 CALLS          52 TOTAL
+                     EDM=2.33251e-11    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  p0           4.60696e-01   6.78746e-02   3.72061e-04  -7.11549e-05
+                               ERR DEF= 0.5
+------------------> test 20210917
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #0 because tt_0 cannot accommodate the value 17.7699
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #2 because tt_0 cannot accommodate the value 12.2055
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #3 because tt_0 cannot accommodate the value 6.43192
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #4 because tt_0 cannot accommodate the value 22.9784
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping ...
+[#0] WARNING:DataHandling -- RooTreeDataStore::loadValues(data) Ignored 7325 out-of-range events
+[#0] WARNING:InputArguments -- RooAbsPdf::fitTo(sum1) WARNING: a likelihood fit is requested of what appears to be weighted data.
+       While the estimated values of the parameters will always be calculated taking the weights into account,
+       there are multiple ways to estimate the errors of the parameters. You are advised to make an 
+       explicit choice for the error calculation:
+           - Either provide SumW2Error(true), to calculate a sum-of-weights-corrected HESSE error matrix
+             (error will be proportional to the number of events in MC).
+           - Or provide SumW2Error(false), to return errors from original HESSE error matrix
+             (which will be proportional to the sum of the weights, i.e., a dataset with <sum of weights> events).
+           - Or provide AsymptoticError(true), to use the asymptotically correct expression
+             (for details see https://arxiv.org/abs/1911.01303).
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+[#1] INFO:Minization --  The following expressions have been identified as constant and will be precalculated and cached: (polybkg1)
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (exp1,exp2)
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: deactivating const optimization
+
+  RooFitResult: minimized FCN value: -16888.5, estimated distance to minimum: 2.4526e-05
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  #eta_{1}                7.0857e-01 +/-  4.36e-02
+  #tau_{1}                4.8378e+01 +/-  2.52e+00
+  #tau_{2}                1.7711e+02 +/-  1.96e+01
+  N_{hit}                 6.7806e+03 +/-  8.45e+01
+
+-------Try to Predict----
+BDTG Output:	-0.960057
+--------------------------
+TopTask:PSDAlg.execute          INFO: 5th event!
+TopTask:PSDAlg.execute          INFO: Energy:8.64606MeV
+TopTask:PSDAlg.execute          INFO: Vertex: (4787.23, -12234.6, 8490.07) mm.
+TopTask:PSD_TMVA.preProcess    DEBUG: pre processing an event...
+R3 of event vertex:	3827.44
+ FCN=54.3276 FROM MIGRAD    STATUS=CONVERGED      48 CALLS          49 TOTAL
+                     EDM=6.90312e-08    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  p0           4.25444e-01   6.52247e-02   3.33220e-04  -4.02820e-03
+                               ERR DEF= 0.5
+------------------> test 20210917
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #2 because tt_0 cannot accommodate the value 11.3497
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #4 because tt_0 cannot accommodate the value 8.21564
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #6 because tt_0 cannot accommodate the value 10.3837
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #8 because tt_0 cannot accommodate the value 23.1487
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping ...
+[#0] WARNING:DataHandling -- RooTreeDataStore::loadValues(data) Ignored 4085 out-of-range events
+[#0] WARNING:InputArguments -- RooAbsPdf::fitTo(sum1) WARNING: a likelihood fit is requested of what appears to be weighted data.
+       While the estimated values of the parameters will always be calculated taking the weights into account,
+       there are multiple ways to estimate the errors of the parameters. You are advised to make an 
+       explicit choice for the error calculation:
+           - Either provide SumW2Error(true), to calculate a sum-of-weights-corrected HESSE error matrix
+             (error will be proportional to the number of events in MC).
+           - Or provide SumW2Error(false), to return errors from original HESSE error matrix
+             (which will be proportional to the sum of the weights, i.e., a dataset with <sum of weights> events).
+           - Or provide AsymptoticError(true), to use the asymptotically correct expression
+             (for details see https://arxiv.org/abs/1911.01303).
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+[#1] INFO:Minization --  The following expressions have been identified as constant and will be precalculated and cached: (polybkg1)
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (exp1,exp2)
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: deactivating const optimization
+
+  RooFitResult: minimized FCN value: -4282.24, estimated distance to minimum: 9.65316e-07
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  #eta_{1}                5.3845e-01 +/-  8.20e-02
+  #tau_{1}                3.6355e+01 +/-  4.40e+00
+  #tau_{2}                1.3011e+02 +/-  1.72e+01
+  N_{hit}                 2.7064e+03 +/-  5.50e+01
+
+-------Try to Predict----
+BDTG Output:	-0.976237
+--------------------------
+TopTask:PSDAlg.execute          INFO: 6th event!
+TopTask:PSDAlg.execute          INFO: Energy:11.2269MeV
+TopTask:PSDAlg.execute          INFO: Vertex: (-10176.7, 11921.7, -4472.61) mm.
+TopTask:PSD_TMVA.preProcess    DEBUG: pre processing an event...
+R3 of event vertex:	4330.93
+ FCN=58.1948 FROM MIGRAD    STATUS=CONVERGED      51 CALLS          52 TOTAL
+                     EDM=9.97574e-11    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  p0           5.26506e-01   7.25607e-02   3.83185e-04  -1.37648e-04
+                               ERR DEF= 0.5
+------------------> test 20210917
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #0 because tt_0 cannot accommodate the value 39.4699
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #1 because tt_0 cannot accommodate the value 17.5144
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #2 because tt_0 cannot accommodate the value 24.4984
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #6 because tt_0 cannot accommodate the value 1.20776
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping ...
+[#0] WARNING:DataHandling -- RooTreeDataStore::loadValues(data) Ignored 4261 out-of-range events
+[#0] WARNING:InputArguments -- RooAbsPdf::fitTo(sum1) WARNING: a likelihood fit is requested of what appears to be weighted data.
+       While the estimated values of the parameters will always be calculated taking the weights into account,
+       there are multiple ways to estimate the errors of the parameters. You are advised to make an 
+       explicit choice for the error calculation:
+           - Either provide SumW2Error(true), to calculate a sum-of-weights-corrected HESSE error matrix
+             (error will be proportional to the number of events in MC).
+           - Or provide SumW2Error(false), to return errors from original HESSE error matrix
+             (which will be proportional to the sum of the weights, i.e., a dataset with <sum of weights> events).
+           - Or provide AsymptoticError(true), to use the asymptotically correct expression
+             (for details see https://arxiv.org/abs/1911.01303).
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+[#1] INFO:Minization --  The following expressions have been identified as constant and will be precalculated and cached: (polybkg1)
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (exp1,exp2)
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: deactivating const optimization
+
+  RooFitResult: minimized FCN value: -7857.31, estimated distance to minimum: 5.27539e-07
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  #eta_{1}                5.8231e-01 +/-  8.34e-02
+  #tau_{1}                4.4298e+01 +/-  4.71e+00
+  #tau_{2}                1.4596e+02 +/-  1.96e+01
+  N_{hit}                 4.0448e+03 +/-  6.68e+01
+
+-------Try to Predict----
+BDTG Output:	-0.960525
+--------------------------
+TopTask:PSDAlg.execute          INFO: 7th event!
+TopTask:PSDAlg.execute          INFO: Energy:10.6767MeV
+TopTask:PSDAlg.execute          INFO: Vertex: (-14944.4, 7320.76, 441.536) mm.
+TopTask:PSD_TMVA.preProcess    DEBUG: pre processing an event...
+R3 of event vertex:	4613.29
+ FCN=40.9169 FROM MIGRAD    STATUS=CONVERGED      45 CALLS          46 TOTAL
+                     EDM=8.27628e-06    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  p0           3.59914e-01   5.99785e-02   2.57166e-04  -4.79648e-02
+                               ERR DEF= 0.5
+------------------> test 20210917
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #0 because tt_0 cannot accommodate the value 7.0567
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #1 because tt_0 cannot accommodate the value 11.3779
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #9 because tt_0 cannot accommodate the value 10.8178
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #10 because tt_0 cannot accommodate the value 27.276
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping ...
+[#0] WARNING:DataHandling -- RooTreeDataStore::loadValues(data) Ignored 3866 out-of-range events
+[#0] WARNING:InputArguments -- RooAbsPdf::fitTo(sum1) WARNING: a likelihood fit is requested of what appears to be weighted data.
+       While the estimated values of the parameters will always be calculated taking the weights into account,
+       there are multiple ways to estimate the errors of the parameters. You are advised to make an 
+       explicit choice for the error calculation:
+           - Either provide SumW2Error(true), to calculate a sum-of-weights-corrected HESSE error matrix
+             (error will be proportional to the number of events in MC).
+           - Or provide SumW2Error(false), to return errors from original HESSE error matrix
+             (which will be proportional to the sum of the weights, i.e., a dataset with <sum of weights> events).
+           - Or provide AsymptoticError(true), to use the asymptotically correct expression
+             (for details see https://arxiv.org/abs/1911.01303).
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+[#1] INFO:Minization --  The following expressions have been identified as constant and will be precalculated and cached: (polybkg1)
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (exp1,exp2)
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: deactivating const optimization
+
+  RooFitResult: minimized FCN value: -7579.94, estimated distance to minimum: 6.7225e-06
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  #eta_{1}                4.4820e-01 +/-  6.71e-02
+  #tau_{1}                4.2748e+01 +/-  5.08e+00
+  #tau_{2}                1.5477e+02 +/-  1.35e+01
+  N_{hit}                 4.2165e+03 +/-  6.71e+01
+
+-------Try to Predict----
+BDTG Output:	-0.996912
+--------------------------
+TopTask:PSDAlg.execute          INFO: 8th event!
+TopTask:PSDAlg.execute          INFO: Energy:15.5285MeV
+TopTask:PSDAlg.execute          INFO: Vertex: (-10985, 2460.22, 8990.68) mm.
+TopTask:PSD_TMVA.preProcess    DEBUG: pre processing an event...
+R3 of event vertex:	2990.19
+ FCN=64.586 FROM MIGRAD    STATUS=CONVERGED      49 CALLS          50 TOTAL
+                     EDM=1.23053e-09    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  p0           6.46246e-01   8.03892e-02   4.46370e-04  -4.36364e-04
+                               ERR DEF= 0.5
+------------------> test 20210917
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #1 because tt_0 cannot accommodate the value 2.16269
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #3 because tt_0 cannot accommodate the value 3.21854
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #5 because tt_0 cannot accommodate the value 17.7459
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #6 because tt_0 cannot accommodate the value 36.7459
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping ...
+[#0] WARNING:DataHandling -- RooTreeDataStore::loadValues(data) Ignored 6038 out-of-range events
+[#0] WARNING:InputArguments -- RooAbsPdf::fitTo(sum1) WARNING: a likelihood fit is requested of what appears to be weighted data.
+       While the estimated values of the parameters will always be calculated taking the weights into account,
+       there are multiple ways to estimate the errors of the parameters. You are advised to make an 
+       explicit choice for the error calculation:
+           - Either provide SumW2Error(true), to calculate a sum-of-weights-corrected HESSE error matrix
+             (error will be proportional to the number of events in MC).
+           - Or provide SumW2Error(false), to return errors from original HESSE error matrix
+             (which will be proportional to the sum of the weights, i.e., a dataset with <sum of weights> events).
+           - Or provide AsymptoticError(true), to use the asymptotically correct expression
+             (for details see https://arxiv.org/abs/1911.01303).
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+[#1] INFO:Minization --  The following expressions have been identified as constant and will be precalculated and cached: (polybkg1)
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (exp1,exp2)
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: deactivating const optimization
+
+  RooFitResult: minimized FCN value: -11681.6, estimated distance to minimum: 4.47109e-06
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  #eta_{1}                5.5723e-01 +/-  6.23e-02
+  #tau_{1}                3.9519e+01 +/-  3.15e+00
+  #tau_{2}                1.2514e+02 +/-  1.13e+01
+  N_{hit}                 5.1115e+03 +/-  7.45e+01
+
+-------Try to Predict----
+BDTG Output:	-0.904453
+--------------------------
+TopTask:PSDAlg.execute          INFO: 9th event!
+TopTask:PSDAlg.execute          INFO: Energy:16.206MeV
+TopTask:PSDAlg.execute          INFO: Vertex: (4975.38, 5487.94, 13254) mm.
+TopTask:PSD_TMVA.preProcess    DEBUG: pre processing an event...
+R3 of event vertex:	3500.45
+ FCN=68.1971 FROM MIGRAD    STATUS=CONVERGED      51 CALLS          52 TOTAL
+                     EDM=2.41522e-11    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  p0           4.59909e-01   6.78165e-02   3.87694e-04  -7.24674e-05
+                               ERR DEF= 0.5
+------------------> test 20210917
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #0 because tt_0 cannot accommodate the value 0.0834563
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #2 because tt_0 cannot accommodate the value 10.6449
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #4 because tt_0 cannot accommodate the value 26.0364
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping event #6 because tt_0 cannot accommodate the value 1.54835
+[#1] INFO:DataHandling -- RooTreeDataStore::loadValues(data) Skipping ...
+[#0] WARNING:DataHandling -- RooTreeDataStore::loadValues(data) Ignored 6071 out-of-range events
+[#0] WARNING:InputArguments -- RooAbsPdf::fitTo(sum1) WARNING: a likelihood fit is requested of what appears to be weighted data.
+       While the estimated values of the parameters will always be calculated taking the weights into account,
+       there are multiple ways to estimate the errors of the parameters. You are advised to make an 
+       explicit choice for the error calculation:
+           - Either provide SumW2Error(true), to calculate a sum-of-weights-corrected HESSE error matrix
+             (error will be proportional to the number of events in MC).
+           - Or provide SumW2Error(false), to return errors from original HESSE error matrix
+             (which will be proportional to the sum of the weights, i.e., a dataset with <sum of weights> events).
+           - Or provide AsymptoticError(true), to use the asymptotically correct expression
+             (for details see https://arxiv.org/abs/1911.01303).
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+[#1] INFO:Minization --  The following expressions have been identified as constant and will be precalculated and cached: (polybkg1)
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (exp1,exp2)
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: deactivating const optimization
+
+  RooFitResult: minimized FCN value: -11394.3, estimated distance to minimum: 1.34355e-05
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  #eta_{1}                7.4751e-01 +/-  4.70e-02
+  #tau_{1}                5.2287e+01 +/-  3.02e+00
+  #tau_{2}                2.1526e+02 +/-  3.46e+01
+  N_{hit}                 5.2186e+03 +/-  7.48e+01
+
+-------Try to Predict----
+BDTG Output:	-0.98406
+--------------------------
+TopTask:PSD_TMVA.finalize       INFO: Finalizing PSD_TMVA...
+TopTask:InputSvc.finalize       INFO: Finalizing RootInputSvc...
+TopTask:InputSvc.finalize       INFO: RootInputSvc sucessfully finalized
+TopTask.finalize                INFO: events processed 10
+
+**************************************************
+Terminating @ lxslc709.ihep.ac.cn on Wed Oct 13 14:56:18 2021
+SNiPER::Context Running Mode = { BASIC }
+SNiPER::Context Terminated Successfully
+

@@ -10,6 +10,7 @@
 #include "TH1F.h"
 #include "TMVA/Reader.h"
 #include "TTree.h"
+#include "vector"
 
 struct fitRes {
   float tau1;
@@ -45,12 +46,14 @@ class PSD_TMVA: public ToolBase, public IPSDTool{
 
         IPSDInputSvc *m_psdInput;
 
+        TH1F* h_time;
         TH1F* h_time_rising_edge;
         TTree* tree_time_falling_edge;
         TH1F* h_time_falling_edge;
         
         // only Hamamtsu PMTs 
         TH1F* h_time_around_peak_ham ;
+        std::vector<float> v_h_time_w;
         
         double tt;
         double charge;
@@ -79,6 +82,9 @@ class PSD_TMVA: public ToolBase, public IPSDTool{
         float id_tag;
         int isoz;
         int ison;
+
+        float m_peak_to_tail_ratio;
+        float m_tail_to_tail_ratio;
 
 
         

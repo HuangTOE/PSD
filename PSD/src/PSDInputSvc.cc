@@ -28,11 +28,33 @@ using namespace std;
 ///// definition for Service
 DECLARE_SERVICE(PSDInputSvc);
 
+typedef pair<int, double> PAIR;
+int cmp(const PAIR& x, const PAIR& y)  //
+{
+    return x.second > y.second;
+}
+double GetTimetag(TH1F* h1tem)
+{
+    std::map<int, double> timecount1;
+    timecount1.clear();
+    for (int ibin = 1; ibin <= 1800; ibin++) {
+        double co1 = h1tem->GetBinContent(ibin);
+        int t_tem = ibin - 200;
+        timecount1.insert(pair<int, double>(t_tem, co1));
+    }
+    vector<PAIR> vec_fs(timecount1.begin(), timecount1.end());
+    sort(vec_fs.begin(), vec_fs.end(), cmp);
+    double timetag = vec_fs[0].first;
+    return timetag;
+}
+
 PSDInputSvc::PSDInputSvc(const std::string& name)
 : SvcBase(name)
 {
     b_weightOpt = false;
     hist_to_align = new TH1F("h_to_align", "", 2000, -200, 1800);
+    hist_to_align_Ham = new TH1F("h_to_align", "", 2000, -200, 1800);
+    hist_to_align_MCP = new TH1F("h_to_align", "", 2000, -200, 1800);
     declProp("PMT_Map", pmt_map);
 }
 
@@ -123,6 +145,8 @@ bool PSDInputSvc::alignTime(std::string algnmethod){
     //-------shift the time by t0------------
     if (!algnmethod.compare("noShift")) return true;
     double t0=0;
+    double t0_Ham=0;
+    double t0_MCP=0;
     if (!algnmethod.compare("alignPeak")){
         hist_to_align->Reset();
         int isize=v_hitTime.size();
@@ -133,6 +157,10 @@ bool PSDInputSvc::alignTime(std::string algnmethod){
         }
         int binno=hist_to_align->GetMaximumBin();
         t0=hist_to_align->GetBinCenter(binno)-100;//the peak aligned to 100
+
+        for (std::vector<double>::iterator it=v_hitTime.begin();it!=v_hitTime.end();++it){
+            *it-=t0;
+        }
     }
     else if (!algnmethod.compare("alignMean")){
         double sum=0;
@@ -146,28 +174,50 @@ bool PSDInputSvc::alignTime(std::string algnmethod){
         }
         sum/=totcharge;
         t0=sum-100;
+
+        for (std::vector<double>::iterator it=v_hitTime.begin();it!=v_hitTime.end();++it){
+            *it-=t0;
+        }
     }
     else if (!algnmethod.compare("alignPeak2"))
     {
         b_weightOpt = true;
         t0 = 0;
         hist_to_align->Reset();
+        hist_to_align_Ham->Reset();
+        hist_to_align_MCP->Reset();
+
         int isize=v_hitTime.size();
         for (int i=0;i<isize;i++)
         {
             double dweight=1;
             if (b_weightOpt) dweight=v_hitCharge.at(i);
             hist_to_align->Fill(v_hitTime.at(i),dweight);
+            if (v_hitIsHama.at(i))
+                hist_to_align_Ham->Fill(v_hitTime.at(i),dweight);
+            else
+                hist_to_align_MCP->Fill(v_hitTime.at(i),dweight);
         }
-        //double t0 = GetTimetag(hist_to_align)-1  ;
-        int binno=hist_to_align->GetMaximumBin();
-        t0=hist_to_align->GetBinCenter(binno)-1;//the peak aligned to 100
+        t0 = GetTimetag(hist_to_align)-1  ;
+        t0_Ham = GetTimetag(hist_to_align_Ham)-1;
+        cout << "My puzzle-GetTimetag():\t"<< t0_Ham <<endl;
+        cout << "My puzzle-GetMaximum():\t"<<  hist_to_align_Ham->GetBinCenter(hist_to_align_Ham->GetMaximumBin())<<endl;
+        cout<<endl;
+        t0_MCP = GetTimetag(hist_to_align_MCP)-1;
+
+        for (int i=0; i<v_hitTime.size(); i++)
+        {
+            if (v_hitIsHama[i])
+                v_hitTime[i] = v_hitTime[i]-t0_Ham;
+            else
+                v_hitTime[i] = v_hitTime[i]-t0_MCP;
+        }
+//        int binno=hist_to_align_Ham->GetMaximumBin();
+//        t0=hist_to_align_Ham->GetBinCenter(binno)-1;
         
     }
 
-    for (std::vector<double>::iterator it=v_hitTime.begin();it!=v_hitTime.end();++it){
-        *it-=t0;
-    }
+
     return true;
 }
 
@@ -175,9 +225,12 @@ bool PSDInputSvc::alignTime(std::string algnmethod){
 double PSDInputSvc::calTOF(int id){
 
     //calculate the time of flight
-	double PMT_R = 19.434;
-	double Ball_R = 19.18;
-    TVector3 pmtposi=Ball_R/PMT_R*v_PMTPosi.at(id);
+//	double PMT_R = 19.434;
+//	double Ball_R = 19.18;
+//  TVector3 pmtposi=Ball_R/PMT_R*v_PMTPosi.at(id);
+
+    TVector3 pmtposi = v_PMTPosi.at(id);
+
     //std::cout<<id<<":("<<pmtposi.X()<<", "<<pmtposi.Y()<<", "<<pmtposi.Z()<<")"<<std::endl;
     
     double dx=(d_vtxX-pmtposi.X())/1000.;

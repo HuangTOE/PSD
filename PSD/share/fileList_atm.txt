@@ -1,0 +1,3 @@
+/dybfs/users/chengjie/data/PSD/J21/AtmNC/Model-G/ES/elec_sample_005334.root
+/dybfs/users/chengjie/data/PSD/J21/AtmNC/Model-G/CS/calib_sample_005334.root
+/dybfs/users/chengjie/data/PSD/J21/AtmNC/Model-G/REC/rec_sample_005334.root
