@@ -53,8 +53,8 @@ PSDInputSvc::PSDInputSvc(const std::string& name)
 {
     b_weightOpt = false;
     hist_to_align = new TH1F("h_to_align", "", 2000, -200, 1800);
-    hist_to_align_Ham = new TH1F("h_to_align", "", 2000, -200, 1800);
-    hist_to_align_MCP = new TH1F("h_to_align", "", 2000, -200, 1800);
+    hist_to_align_Ham = new TH1F("h_to_align_Ham", "", 2000, -200, 1800);
+    hist_to_align_MCP = new TH1F("h_to_align_MCP", "", 2000, -200, 1800);
     declProp("PMT_Map", pmt_map);
 }
 
