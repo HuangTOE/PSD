@@ -20,7 +20,7 @@ echo $id
 
 #(time python $PSDROOT/share/DetToPSD/tut_calib_rec2PSD.py --evtmax 20 --input-list  $INPUTFILELIST  --user-output ${USEROUTPUT} --method ${METHOD} --PrepareForTraining  )
 
-(time python $PSDROOT/share/DetToPSD/tut_det2PSD.py --evtmax 2  --seed $1 \
+(time python $PSDROOT/share/DetToPSD/tut_det2PSD.py --evtmax 1  --seed $1 \
 --disableAfterPulse  --input "eventinput:$path_atm/DS/det_sample_$id.root" --rate eventinput:1 \
 --gdml $Opt_ERec  --SaveMC 0 --VtxCorr 0 --elec yes \
  --user-output ${USEROUTPUT} --method-PSD ${METHOD} --PrepareForTraining  )

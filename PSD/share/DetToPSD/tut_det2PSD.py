@@ -39,12 +39,11 @@ if '--no-evtrec' in sys.argv:
 
 juno_application = JUNOApplication(description="JUNO Electronics Simulation && Waveform Reconstruction && Event Reconstruction && PSD")
 juno_application.set_default_input_action("append")
-juno_application.set_default_output("sample_PSD.root")
+# juno_application.set_default_output("sample_PSD.root")
 juno_application.set_default_user_output("sample_PSD_user.root")
 
 databuffer_module = JUNODataBufferModule()
 # rootinput_module = JUNORootInputModule()
-rootoutput_module = JUNORootOutputModule()
 rootwriter_module = JUNORootWriterModule()
 geometry_module = JUNOGeometryModule()
 mcparam_module = JUNOMCParameterModule()
@@ -52,7 +51,17 @@ pmtparam_module = JUNOPMTParameterModule()
 pmtcalib_module = JUNOPMTCalibSvcModule()
 conddb_module = JUNOCondDBModule()
 
-rootoutput_module.unregister_output_key("/Event/Elec") # disable the waveform
+#########################################################################
+# To Enable EDM output, uncomment this code block
+# rootoutput_module = JUNORootOutputModule()
+# rootoutput_module.unregister_output_key("/Event/Elec") # disable the waveform
+# rootoutput_module.unregister_output_key("/Event/Calib") # disable the calib output
+# rootoutput_module.unregister_output_key("/Event/Rec") # disable the rec output
+# rootoutput_module.unregister_output_key("/Event/Sim") # disable the simulation output
+# rootoutput_module.unregister_output_key("/Event/Gen") # disable the generator output
+# juno_application.register(rootoutput_module)
+#########################################################################
+
 
 elecsim_module = JUNOElecSimModule()
 waverec_module = JUNOWaveRecModule()
@@ -61,7 +70,6 @@ PSD_module = JUNOPSDModule.JUNOPSDModule()
 
 juno_application.register(databuffer_module)
 # juno_application.register(rootinput_module) # this module will cause elecsim input error!
-juno_application.register(rootoutput_module)
 juno_application.register(rootwriter_module)
 juno_application.register(geometry_module)
 juno_application.register(mcparam_module)
