@@ -53,6 +53,7 @@ class PSD_TMVA: public ToolBase, public IPSDTool{
         
         // only Hamamtsu PMTs 
         TH1F* h_time_around_peak_ham ;
+        TH1F* h_time_ham ; //------added by Jie in 2021/11/26
         std::vector<float> v_h_time_w;
         
         double tt;
@@ -86,6 +87,8 @@ class PSD_TMVA: public ToolBase, public IPSDTool{
         float m_peak_to_tail_ratio;
         float m_tail_to_tail_ratio;
 
+        float m_peak_to_total_ratio_ham; //----------added by Jie in 2021/11/26
+        float m_tail_to_total_ratio_ham; //----------added by Jie in 2021/11/26
 
         
 };
