@@ -1,9 +1,13 @@
 #ifndef TESTPSDTOOL_H
 #define TESTPSDTOOL_H
 //#pragma once
-
-#include "../PSD/IPSDTool.h"
-#include "../PSD/IPSDInputSvc.h"
+// Created by luoxj@ihep.ac.cn on 2021/10/24.
+/*
+ * Author: Jie Cheng, Xiaojie Luo
+ * PSDTool_TMVA is to use TMVA to do the PSD work by using parameters fitting from emission time profile
+ */
+#include "../PSDTools/IPSDTool.h"
+#include "../PSDTools/IPSDInputSvc.h"
 #include "SniperKernel/ToolBase.h"
 #include "EvtNavigator/NavBuffer.h"
 
@@ -28,16 +32,16 @@ struct fitRes {
 
 class PSD_TMVA: public ToolBase, public IPSDTool{
     public:
-        PSD_TMVA(const std::string &name);
-        ~PSD_TMVA();
+        explicit PSD_TMVA(const std::string &name);
+        ~PSD_TMVA() override;
 
-        virtual bool initialize();
-        virtual bool finalize();
-        virtual bool preProcess(JM::EvtNavigator *);
-        virtual double CalPSDVal();
+        bool initialize() override;
+        bool finalize() override;
+        bool preProcess(JM::EvtNavigator *) override;
+        double CalPSDVal() override;
 
     private:
-    struct fitRes FitToGetTimeConstants( int fittag,double xhigh);
+        struct fitRes FitToGetTimeConstants( int fittag, double xhigh);
 
         TTree *m_userTree;
         TTree *m_psdTree;

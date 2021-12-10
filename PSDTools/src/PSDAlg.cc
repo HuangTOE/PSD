@@ -1,16 +1,15 @@
-#include "../PSD/PSDAlg.h"
+#include "../PSDTools/PSDAlg.h"
 
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/AlgFactory.h"
 #include "RootWriter/RootWriter.h"
-#include "Event/CalibHeader.h"
 #include "Event/RecHeader.h"
 
 DECLARE_ALGORITHM(PSDAlg);
 
 PSDAlg::PSDAlg(const std::string &name):AlgBase(name){
     i_ithEvt = -1;
-    m_psdTool = NULL;
+    m_psdTool = nullptr;
 
     d_psdVal = -1;
     d_recE = 0;
@@ -21,8 +20,7 @@ PSDAlg::PSDAlg(const std::string &name):AlgBase(name){
     declProp("Model", b_model="");
 }
 
-PSDAlg::~PSDAlg(){
-}
+PSDAlg::~PSDAlg()= default;
 
 bool PSDAlg::initialize(){
     //==============Get the event buffer==============
@@ -33,10 +31,10 @@ bool PSDAlg::initialize(){
     }
     m_buf = navBuf.data();
 
-    //==============Initialize the PSD method==============
+    //==============Initialize the PSDTools method==============
     m_psdTool=tool<IPSDTool>(s_psdMethod);
     if (!m_psdTool){
-        LogError<<"The PSD tool is not found!"<<std::endl;
+        LogError<<"The PSDTools tool is not found!"<<std::endl;
         return false;
     }
     if (b_usePredict) m_psdTool->enablePredict();
@@ -80,7 +78,7 @@ bool PSDAlg::execute(){
     //===============get the current event=================
     JM::EvtNavigator *nav=m_buf->curEvt();
 
-    //=====================PSD procedure=====================
+    //=====================PSDTools procedure=====================
     if (!m_psdTool->preProcess(nav)){
         LogError<<"Error when pre-processing the "<<i_ithEvt<<"th event!"<<std::endl;
         return false;

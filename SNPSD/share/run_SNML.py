@@ -7,7 +7,7 @@ import SNML
 
 def get_parser():
     import argparse
-    parser=argparse.ArgumentParser(description='run SN PSD')
+    parser=argparse.ArgumentParser(description='run SN PSDTools')
 
     parser.add_argument("--input", help="input file name")
     parser.add_argument("--output", default="", help="The user output file")

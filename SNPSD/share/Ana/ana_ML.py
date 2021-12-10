@@ -31,9 +31,9 @@ class ana_ML():
             self.recE_truth += list(readin['recE'])
 
     def readPSDPredict(self, psdFileName):
-        print('Reading PSD results...')
+        print('Reading PSDTools results...')
         with up.open(psdFileName) as psdFile:
-            psdTree = psdFile['PSD']
+            psdTree = psdFile['PSDTools']
             readin = psdTree.arrays(library='np')
             self.psdVal += list(readin['psdVal'])
 
@@ -62,13 +62,13 @@ if __name__ == "__main__":
     thisana = ana_ML()
     for fileNo in range(3, 53):
         thisana.readTruth('/junofs/users/huangx/MyProject/Supernova/CCSNAnalysis/SNTruth/share/result/sn_intp2013.data/1/dist10/sn_%dth.root'%fileNo)
-        thisana.readPSDPredict('/junofs/users/huangx/MyProject/PSD/SNPSD/myJob/result/SNMLTool/sn_intp2013.data/1/dist10/predict/predict_%dth.root'%fileNo)
+        thisana.readPSDPredict('/junofs/users/huangx/MyProject/PSDTools/SNPSD/myJob/result/SNMLTool/sn_intp2013.data/1/dist10/predict/predict_%dth.root'%fileNo)
     ax = thisana.drawPSDVal(['AfterPulse'])#, 'eES', 'AfterPulse'
 
     thisana.reset()
     for fileNo in range(103, 153):
         thisana.readTruth('/junofs/users/huangx/MyProject/Supernova/CCSNAnalysis/SNTruth/share/result/sn_intp2013.data/1/dist10/sn_%dth.root'%fileNo)
-        thisana.readPSDPredict('/junofs/users/huangx/MyProject/PSD/SNPSD/myJob/result/SNMLTool/sn_intp2013.data/1/dist10/predict/predict_%dth.root'%fileNo)
+        thisana.readPSDPredict('/junofs/users/huangx/MyProject/PSDTools/SNPSD/myJob/result/SNMLTool/sn_intp2013.data/1/dist10/predict/predict_%dth.root'%fileNo)
     thisana.drawPSDVal(['pES'], ax)#, 'eES', 'AfterPulse'
 
     plt.show()

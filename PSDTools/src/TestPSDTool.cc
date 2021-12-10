@@ -1,4 +1,4 @@
-#include "../PSD/TestPSDTool.h"
+#include "../PSDTools/TestPSDTool.h"
 
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/ToolFactory.h"
@@ -31,8 +31,8 @@ bool TestPSDTool::initialize(){
     m_userTree->Branch("PSDVar", &d_psdVar, "PSDVar/D");
     rwsvc->attach("USER_OUTPUT", m_userTree);
 
-    //Store the PSD result, which may be implemented in data model in the future
-    m_psdTree=rwsvc->bookTree("PSD", "PSD");
+    //Store the PSDTools result, which may be implemented in data model in the future
+    m_psdTree=rwsvc->bookTree("PSDTools", "PSDTools");
     m_psdTree->Branch("psdVal", &m_psdEvent.psdVal, "psdVal/D");
     m_psdTree->Branch("evtType", &m_psdEvent.evtType, "psdVal/I");
     rwsvc->attach("PSD_OUTPUT", m_psdTree);
@@ -47,7 +47,7 @@ bool TestPSDTool::finalize(){
     return true;
 }
 
-bool TestPSDTool::preProcess(JM::EvtNavigator *nav){
+bool TestPSDTool::preProcess( JM::EvtNavigator *nav){
     LogDebug<<"pre processing an event..."<<std::endl;
     if (!m_psdInput->extractHitInfo(nav,"alignPeak")) return false;
 
@@ -68,3 +68,4 @@ double TestPSDTool::CalPSDVal(){
     m_psdTree->Fill();
     return m_psdEvent.psdVal;
 }
+

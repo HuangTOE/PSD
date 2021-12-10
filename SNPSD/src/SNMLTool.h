@@ -32,8 +32,8 @@ class SNMLTool: public ToolBase, public ISNPSDTool{
         double d_predictVal;
 
         //-------------for output--------------
-        //std::map<std::string, TTree*> m_userTree;//output of PSD Var
-        TTree *m_userTree;//output of PSD Var
+        //std::map<std::string, TTree*> m_userTree;//output of PSDTools Var
+        TTree *m_userTree;//output of PSDTools Var
         TTree *m_psdTree;
 
         //---------------common---------------

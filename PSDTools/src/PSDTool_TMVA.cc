@@ -1,4 +1,4 @@
-#include "../PSD/PSDTool_TMVA.h"
+#include "../PSDTools//PSDTool_TMVA.h"
 
 #include "SniperKernel/ToolFactory.h"
 #include "SniperKernel/SniperPtr.h"
@@ -91,7 +91,7 @@ double GetTail2total(TH1F* h1tem, double ttag, int istep)
   return rpsd;
 }
 
-struct fitRes PSD_TMVA::FitToGetTimeConstants(int fittag = 0, double xhigh = 1100.)
+struct fitRes PSD_TMVA::FitToGetTimeConstants(const int fittag = 0, const double xhigh = 1100.)
 // tree_time_falling_edge is for the falling edge t~[0,1000] and h_time_rising_edge is for the rising edge t~[-200,0]
 {
 
@@ -294,8 +294,8 @@ bool PSD_TMVA::initialize()
 
   rwsvc->attach("USER_OUTPUT", m_userTree);
 
-  // Store the PSD result, which may be implemented in data model in the future
-  m_psdTree = rwsvc->bookTree("PSD", "PSD");
+  // Store the PSDTools result, which may be implemented in data model in the future
+  m_psdTree = rwsvc->bookTree("PSDTools", "PSDTools");
   m_psdTree->Branch("evtID", &evtID, "evtID/I");
   m_psdTree->Branch("psdVal", &m_psdEvent.psdVal, "psdVal/D");
   m_psdTree->Branch("evtType", &m_psdEvent.evtType, "evtType/I");
@@ -403,9 +403,9 @@ bool PSD_TMVA::preProcess(JM::EvtNavigator* nav)
   // Debug
 
   if (debug_plot_fit_result) {
-    TCanvas* c1 = new TCanvas("c_rising", "c_rising", 800, 600);
+    auto c1 = new TCanvas("c_rising", "c_rising", 800, 600);
     h_time_rising_edge->Draw("hist");
-    TCanvas* c2 = new TCanvas("c_falling", "c_falling", 800, 600);
+    auto c2 = new TCanvas("c_falling", "c_falling", 800, 600);
     h_time_falling_edge->Draw("hist");
     auto c3 = new TCanvas("c_h_time", "c_h_time", 800, 600);
     h_time->Draw("hist");
@@ -421,7 +421,7 @@ bool PSD_TMVA::preProcess(JM::EvtNavigator* nav)
   //------------calculate w1 and w2
 
   if (debug_plot_fit_result) {
-    TCanvas* c1 = new TCanvas("c_around_peak", "c_around_peak", 800, 600);
+    auto c1 = new TCanvas("c_around_peak", "c_around_peak", 800, 600);
     h_time_around_peak_ham->Draw("hist");
     c1->SaveAs((TString)c1->GetTitle() + "_" + evtID + ".png");
   }

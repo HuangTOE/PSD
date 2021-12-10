@@ -103,4 +103,4 @@ class SNReader():
 
 #if __name__ == "__main__":
 #    thisreader = SNReader()
-#    thisreader.loadDataFromRoot('/junofs/users/huangx/MyProject/PSD/SNPSD/share/result/SNMLTool/sn_intp2013.data/1/dist10/prepare/prepare_0th.root', ['pES', 'eES'])
+#    thisreader.loadDataFromRoot('/junofs/users/huangx/MyProject/PSDTools/SNPSD/share/result/SNMLTool/sn_intp2013.data/1/dist10/prepare/prepare_0th.root', ['pES', 'eES'])

@@ -4,6 +4,10 @@
 # @Email: luoxj@ihep.ac.cn, huangxin.ihep.ac.cn
 # @File: tut_calib_rec2PSD.py
 
+"""
+This script use detsim data as input, to do electronic simulation, waveform construction and PSD which not save EDM to save disk quota
+"""
+
 from Tutorial import JUNOApplication
 from Tutorial import JUNODataBufferModule
 from Tutorial import JUNORootWriterModule
@@ -37,7 +41,7 @@ if '--no-evtrec' in sys.argv:
     FLAG_EVTREC = False
     sys.argv.remove('--no-evtrec')  # disable event rec.
 
-juno_application = JUNOApplication(description="JUNO Electronics Simulation && Waveform Reconstruction && Event Reconstruction && PSD")
+juno_application = JUNOApplication(description="JUNO Electronics Simulation && Waveform Reconstruction && Event Reconstruction && PSDTools")
 juno_application.set_default_input_action("append")
 # juno_application.set_default_output("sample_PSD.root")
 juno_application.set_default_user_output("sample_PSD_user.root")

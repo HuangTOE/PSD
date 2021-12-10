@@ -1,5 +1,10 @@
 //
 // Created by luoxj@ihep.ac.cn on 2021/10/24.
+/*
+ * Author: Xin Huang, Xiaojie Luo
+ * IPSDInputSvc is the base class to prepare necessary input for PSD work, PSDInputSvc is the default service.
+ * If input provided by PSDInputSvc cannot satisfy your PSDTools, you can develop your own  PSDInputSvc
+ */
 //
 
 #pragma once
@@ -26,15 +31,15 @@ public:
 
     // functions for extracting hits' time and charge information
     // virtual functions
-    virtual bool extractHitInfo(JM::EvtNavigator * , const std::string method_to_align);
+    virtual bool extractHitInfo(JM::EvtNavigator * , std::string method_to_align);
     virtual bool extractHitsWaveform(JM::EvtNavigator *);
     virtual bool extractEvtInfo(JM::EvtNavigator *);
     virtual bool Initialize_PMT_Map( TString name_file_pmt_map );
 
     // functions for getting information from the extracting functions above
-    std::vector<double>& getHitTime(){return v_hitTime;};
-    std::vector<double>& getHitCharge(){return v_hitCharge;};
-    std::vector<int   >& getHitIsHama(){return v_hitIsHama;}
+    const std::vector<double>& getHitTime(){return v_hitTime;};
+    const std::vector<double>& getHitCharge(){return v_hitCharge;};
+    const std::vector<int   >& getHitIsHama(){return v_hitIsHama;}
     std::vector<std::vector<unsigned int >> getHitsWaveform(){return v2d_waveforms;};
     std::vector<double> getEventXYZ();
     double getVertexR3() const {return d_R3_event;}
@@ -61,9 +66,9 @@ protected:
     std::vector<std::vector<unsigned int >> v2d_waveforms;
 
     // EDM in offline for current event to get related information
-    JM::CalibEvent *calibEvent;
-    JM::CDRecEvent *recEvent;
-    JM::ElecEvent * elecEvent;
+    JM::CalibEvent *calibEvent{};
+    JM::CDRecEvent *recEvent{};
+    JM::ElecEvent * elecEvent{};
 
 
 };

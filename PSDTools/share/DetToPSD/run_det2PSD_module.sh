@@ -1,5 +1,5 @@
 #!/bin/bash
-#export CMTPROJECTPATH=~/scratchfs_juno_500G/PSD_sniper/PSD/PSD/:$CMTPROJECTPATH
+#export CMTPROJECTPATH=~/scratchfs_juno_500G/PSD_sniper/PSDTools/PSDTools/:$CMTPROJECTPATH
 #source /afs/ihep.ac.cn/users/l/luoxj/scratchfs_juno_500G/J21v1r0-Pre2/bashrc
 #source /cvmfs/juno.ihep.ac.cn/centos7_amd64_gcc830/Pre-Release/J21v1r0-Pre2/setup.sh
 source /afs/ihep.ac.cn/users/l/luoxj/scratchfs_juno_500G/J21v2r0-branch/bashrc
@@ -14,14 +14,15 @@ USEROUTPUT=user${option}.root
 LOGFILE=log${option}.txt
 
 METHOD=PSD_TMVA
-path_atm=root://junoeos01.ihep.ac.cn//eos/juno/valprod/valprod0/chengjie_J21/AtmNC/Model-G
+#path_atm=root://junoeos01.ihep.ac.cn//eos/juno/valprod/valprod0/chengjie_J21/AtmNC/Model-G
+path_atm=./
 id=$(printf "%06d\n" $1)
 echo $id
 
 #(time python $PSDROOT/share/DetToPSD/tut_calib_rec2PSD.py --evtmax 20 --input-list  $INPUTFILELIST  --user-output ${USEROUTPUT} --method ${METHOD} --PrepareForTraining  )
 
-(time python $PSDROOT/share/DetToPSD/tut_det2PSD.py --evtmax 1  --seed $1 \
---disableAfterPulse  --input "eventinput:$path_atm/DS/det_sample_$id.root" --rate eventinput:1 \
+(time python $PSDTOOLSROOT/share/DetToPSD/tut_det2PSD.py --evtmax 1  --seed $1 \
+--disableAfterPulse  --input "eventinput:$path_atm/det_sample_$id.root" --rate eventinput:1 \
 --gdml $Opt_ERec  --SaveMC 0 --VtxCorr 0 --elec yes \
  --user-output ${USEROUTPUT} --method-PSD ${METHOD} --PrepareForTraining  )
 

@@ -4,6 +4,9 @@
 # @Email: luoxj@ihep.ac.cn, huangxin.ihep.ac.cn
 # @File: tut_calib_rec2PSD.py
 
+"""
+This script use calib data ( after waveform construction ) as input to do PSD work.
+"""
 from Tutorial import JUNOApplication
 from Tutorial import JUNODataBufferModule
 from Tutorial import JUNORootWriterModule

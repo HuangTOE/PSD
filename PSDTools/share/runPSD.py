@@ -7,7 +7,7 @@ import os
 
 def get_parser():
     import argparse
-    parser=argparse.ArgumentParser(description='run SN PSD')
+    parser=argparse.ArgumentParser(description='run SN PSDTools')
 
     #---------------log level-----------------
     parser.add_argument("--evtmax", type=int, default=-1, help='events to be processed')
@@ -16,13 +16,13 @@ def get_parser():
     #---------------input and output-----------------
     parser.add_argument("--input", nargs="+" ,help="input list of files name")
     parser.add_argument("--inputList", action="append", help="input file list name, this file list contains the names of input files")
-    parser.add_argument("--inputSvc", default="PSDInputSvc", help="Which PSD input service will be use, default for PSDInputSvc.*")
+    parser.add_argument("--inputSvc", default="PSDInputSvc", help="Which PSDTools input service will be use, default for PSDInputSvc.*")
     parser.add_argument("--pmt_map", default="/cvmfs/juno.ihep.ac.cn/centos7_amd64_gcc830/Pre-Release/J21v1r0-Pre2/data/Simulation/ElecSim/PmtData_Lpmt.root",  help="Map from pmtID to PMT Location")
     parser.add_argument("--output", default="", help="The user output file")
     parser.add_argument("--user-output", default="", help="The user output file")
 
-    #--------------------For PSD--------------------------
-    parser.add_argument("--method", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA"], help="The PSD method")
+    #--------------------For PSDTools--------------------------
+    parser.add_argument("--method", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA"], help="The PSDTools method")
     parser.add_argument("--Predict", dest="usePredict", action="store_true")
     parser.add_argument("--PrepareForTraining", dest="usePredict", action="store_false")
     parser.set_defaults(usePredict = True)
@@ -31,7 +31,7 @@ def get_parser():
     parser.add_argument("--model_FV1", default="Induction__BDTG.weights_FV1.xml", help="ML model to do the prediction, default is for TMVA method")
     parser.add_argument("--model_FV2", default="Induction__BDTG.weights_FV2.xml", help="ML model to do the prediction, default is for TMVA method")
     parser.add_argument("--R_divide", type=float, default=16, help="radius boundary to divide FV1 and FV2")
-    parser.add_argument("--PSD_divide", type=float, default=0., help="Set PSD boundary for bkg and sig, so that tag the event")
+    parser.add_argument("--PSD_divide", type=float, default=0., help="Set PSDTools boundary for bkg and sig, so that tag the event")
 
     return parser
 
@@ -67,9 +67,9 @@ if __name__ == "__main__":
 
     #=======================Output using framwork======================
     ##########################################################
-    ###For the output of data model, PSD data model is not implemented yet
+    ###For the output of data model, PSDTools data model is not implemented yet
     ###readout = topTask.createSvc("RootOutputSvc/OutputSvc")
-    ###readout.property("OutputStreams").set({"/Event/PSD":args.output})
+    ###readout.property("OutputStreams").set({"/Event/PSDTools":args.output})
     ##########################################################
     import RootWriter
     rootwriter = topTask.createSvc("RootWriter")
@@ -77,8 +77,8 @@ if __name__ == "__main__":
     userOutputMap = { "PSD_OUTPUT":args.user_output,"USER_OUTPUT":args.user_output}
     rootwriter.property("Output").set(userOutputMap)
 
-    #=======================PSD related======================
-    import PSD
+    #=======================PSDTools related======================
+    import PSDTools
     psdalg = topTask.createAlg("PSDAlg")
     psdsvc = topTask.createSvc(args.inputSvc)
     psdtool = psdalg.createTool(args.method)

@@ -1,5 +1,5 @@
 #!/bin/bash
-#export CMTPROJECTPATH=~/scratchfs_juno_500G/PSD_sniper/PSD/PSD/:$CMTPROJECTPATH
+#export CMTPROJECTPATH=~/scratchfs_juno_500G/PSD_sniper/PSDTools/PSDTools/:$CMTPROJECTPATH
 #source /afs/ihep.ac.cn/users/l/luoxj/scratchfs_juno_500G/J21v1r0-Pre2/bashrc
 #source /cvmfs/juno.ihep.ac.cn/centos7_amd64_gcc830/Pre-Release/J21v1r0-Pre2/setup.sh
 source /afs/ihep.ac.cn/users/l/luoxj/scratchfs_juno_500G/J21v2r0-branch/bashrc

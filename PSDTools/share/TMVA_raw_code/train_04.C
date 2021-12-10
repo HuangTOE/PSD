@@ -16,14 +16,14 @@ using namespace TMVA;
 
 void train_04(int vol, int charge, int isCut, int ver)
 {
-  // TFile *Output1 = new TFile("/junofs/users/chengjie/workdir/PSD/Ana-new0817/TMVA/preInput/train_atm1026mt01fs01.root");
+  // TFile *Output1 = new TFile("/junofs/users/chengjie/workdir/PSDTools/Ana-new0817/TMVA/preInput/train_atm1026mt01fs01.root");
   //
   // TString volname[6] = {"v0", "v1", "v2", "v3", "v4", "v5"};
   TString volname[2] = {"v0", "v5"};
   TString charname[2] = {"wocharge", "wcharge"};
   TString ver01[2] = {"J20", "J21"};
   TString ver02[2] = {"allJ20", "allJ21"};
-  TString inputdir = "/junofs/users/chengjie/workdir/PSD/Ana-new0817/TMVA-20210421/input/" + ver01[ver] + "/forTMVA";
+  TString inputdir = "/junofs/users/chengjie/workdir/PSDTools/Ana-new0817/TMVA-20210421/input/" + ver01[ver] + "/forTMVA";
 
   TString sigfname = "";
   TString bkgfname = "";
@@ -46,7 +46,7 @@ void train_04(int vol, int charge, int isCut, int ver)
   TTree *tSig = (TTree *)Output2->Get("sigtree");
   TTree *tBkg = (TTree *)Output1->Get("bkgtree");
 
-  TString outdir = "/junofs/users/chengjie/workdir/PSD/Ana-new0817/TMVA-20210421/output";
+  TString outdir = "/junofs/users/chengjie/workdir/PSDTools/Ana-new0817/TMVA-20210421/output";
 
   TString outfileName = "";
   if (isCut == 1) {

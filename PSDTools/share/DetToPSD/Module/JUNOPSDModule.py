@@ -4,6 +4,11 @@
 # @Email: luoxj@ihep.ac.cn, huangxin.ihep.ac.cn
 # @File: JUNOPSDModule.py
 
+"""
+version 0.0 ( by Huang Xin ) : Initialize, Add TestPSDTool for PSDTools example
+version 1.0 ( by Luo Xiaojie ): Add TMVA_Tool in DSNB Study
+"""
+
 import sys
 import os
 import Sniper
@@ -17,6 +22,9 @@ from .JUNOUtils import mh
 ##############################################################################
 
 class JUNOPSDModule(JUNOModule):
+    """
+
+    """
 
     DATA_LOG_MAP = {"Test":0, "Debug":2, "Info":3, "Warn":4, "Error":5, "Fatal":6}
 
@@ -29,11 +37,11 @@ class JUNOPSDModule(JUNOModule):
 
     def register_options_common(self, parser):
         #---------------input and output-----------------
-        parser.add_argument("--inputSvc", default="PSDInputSvc", help="Which PSD input service will be use, default for PSDInputSvc.*")
+        parser.add_argument("--inputSvc", default="PSDInputSvc", help="Which PSDTools input service will be use, default for PSDInputSvc.*")
         parser.add_argument("--pmt_map", default="/cvmfs/juno.ihep.ac.cn/centos7_amd64_gcc830/Pre-Release/J21v1r0-Pre2/data/Simulation/ElecSim/PmtData_Lpmt.root",  help="Map from pmtID to PMT Location")
 
-        #--------------------For PSD--------------------------
-        parser.add_argument("--method-PSD", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA"], help="The PSD method")
+        #--------------------For PSDTools--------------------------
+        parser.add_argument("--method-PSD", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA"], help="The PSDTools method")
         parser.add_argument("--Predict", dest="usePredict", action="store_true")
         parser.add_argument("--PrepareForTraining", dest="usePredict", action="store_false")
         parser.set_defaults(usePredict = True)
@@ -43,7 +51,7 @@ class JUNOPSDModule(JUNOModule):
         parser.add_argument("--model_FV1", default="Induction__BDTG.weights_FV1.xml", help="ML model to do the prediction, default is for TMVA method")
         parser.add_argument("--model_FV2", default="Induction__BDTG.weights_FV2.xml", help="ML model to do the prediction, default is for TMVA method")
         parser.add_argument("--R_divide", type=float, default=16, help="radius boundary to divide FV1 and FV2")
-        parser.add_argument("--PSD_divide", type=float, default=0., help="Set PSD boundary for bkg and sig, so that tag the event")
+        parser.add_argument("--PSD_divide", type=float, default=0., help="Set PSDTools boundary for bkg and sig, so that tag the event")
 
     def init(self, toptask, args):
         self.init_common(toptask, args)
@@ -57,8 +65,8 @@ class JUNOPSDModule(JUNOModule):
         topTask.setEvtMax(args.evtmax)
 
     def init_PSD(self, topTask, args):
-        #=======================PSD related======================
-        import PSD
+        #=======================PSDTools related======================
+        import PSDTools
         self.psdalg = topTask.createAlg("PSDAlg")
         self.psdsvc = topTask.createSvc(args.inputSvc)
         self.psdtool = self.psdalg.createTool(args.method_PSD)
@@ -76,9 +84,9 @@ class JUNOPSDModule(JUNOModule):
     def add_output_vec(self, output_vec, args):
         #=======================Output using framwork======================
         ##########################################################
-        ###For the output of data model, PSD data model is not implemented yet
+        ###For the output of data model, PSDTools data model is not implemented yet
         ###readout = topTask.createSvc("RootOutputSvc/OutputSvc")
-        ###readout.property("OutputStreams").set({"/Event/PSD":args.output})
+        ###readout.property("OutputStreams").set({"/Event/PSDTools":args.output})
         ##########################################################
         pass
 

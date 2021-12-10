@@ -7,7 +7,7 @@ import os
 
 def get_parser():
     import argparse
-    parser=argparse.ArgumentParser(description='run SN PSD')
+    parser=argparse.ArgumentParser(description='run SN PSDTools')
 
     #---------------log level-----------------
     parser.add_argument("--evtmax", type=int, default=-1, help='events to be processed')
@@ -21,8 +21,8 @@ def get_parser():
     parser.add_argument("--truthFile", default="", help="the truth file")
     parser.add_argument("--weightFile", default="", help="the truth file")
 
-    #--------------------For PSD--------------------------
-    parser.add_argument("--method", default="TestPSDTool", choices=["TestPSDTool", "SNMLTool"], help="The PSD method")
+    #--------------------For PSDTools--------------------------
+    parser.add_argument("--method", default="TestPSDTool", choices=["TestPSDTool", "SNMLTool"], help="The PSDTools method")
     parser.add_argument("--enablePredict", dest="usePredict", action="store_true")
     parser.add_argument("--disablePredict", dest="usePredict", action="store_false")
     parser.set_defaults(usePredict = True)
@@ -59,16 +59,16 @@ if __name__ == "__main__":
 
     #=======================Output using framwork======================
     ##########################################################
-    ###For the output of data model, PSD data model is not implemented yet
+    ###For the output of data model, PSDTools data model is not implemented yet
     ###readout = topTask.createSvc("RootOutputSvc/OutputSvc")
-    ###readout.property("OutputStreams").set({"/Event/PSD":args.output})
+    ###readout.property("OutputStreams").set({"/Event/PSDTools":args.output})
     ##########################################################
     import RootWriter
     rootwriter = topTask.createSvc("RootWriter")
     userOutputMap = {"USER_OUTPUT":args.user_output, "PSD_OUTPUT":args.user_output}
     rootwriter.property("Output").set(userOutputMap)
 
-    #=======================PSD related======================
+    #=======================PSDTools related======================
     import PSD
     psdalg = topTask.createAlg("PSDAlg")
     if args.method == 'SNMLTool':

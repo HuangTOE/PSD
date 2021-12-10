@@ -1,9 +1,13 @@
 #ifndef TESTPSDTOOL_H
 #define TESTPSDTOOL_H
 //#pragma once
+/*
+ * Author: Xin Huang, Xiaojie Luo
+ * TestPSDTool is an example for PSDTools, developers can develop their own tool base on this file
+ */
 
-#include "../PSD/IPSDTool.h"
-#include "../PSD/IPSDInputSvc.h"
+#include "../PSDTools/IPSDTool.h"
+#include "../PSDTools/IPSDInputSvc.h"
 #include "SniperKernel/ToolBase.h"
 #include "EvtNavigator/NavBuffer.h"
 #include "SniperKernel/SniperPtr.h"
@@ -12,13 +16,13 @@
 
 class TestPSDTool: public ToolBase, public IPSDTool{
     public:
-        TestPSDTool(const std::string &name);
-        ~TestPSDTool();
+        explicit TestPSDTool(const std::string &name);
+        ~TestPSDTool() override;
 
-        virtual bool initialize();
-        virtual bool finalize();
+        bool initialize() override;
+        bool finalize() override;
         virtual bool preProcess(JM::EvtNavigator *);
-        virtual double CalPSDVal();
+        double CalPSDVal() override;
 
     private:
         TTree *m_userTree;

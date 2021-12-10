@@ -1,7 +1,9 @@
-//#ifndef PSDINPUTSvc_H
-//#define PSDINPUTSvc_H
 #pragma once
 
+/*
+ * Author: Xin Huang, Xiaojie Luo
+ * PSDInputSvc is to do preprocess for data so that can be process by PSD Tools
+ */
 #include "IPSDInputSvc.h"
 
 #include "TH1F.h"
@@ -20,14 +22,14 @@
 class PSDInputSvc : public SvcBase, public IPSDInputSvc
 {
     public:
-        PSDInputSvc(const std::string &name);
-        ~PSDInputSvc();
+        explicit PSDInputSvc(const std::string &name);
+        ~PSDInputSvc() override;
 
-        bool initialize();
-        bool finalize();
+        bool initialize() override;
+        bool finalize() override;
 
         // override virtual function in IPSDInputSvc
-        bool extractHitInfo(JM::EvtNavigator *, const std::string method_to_align);
+        bool extractHitInfo(JM::EvtNavigator *, std::string method_to_align);
         bool extractHitsWaveform(JM::EvtNavigator *);
 
         // functions in this class

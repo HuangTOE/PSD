@@ -1,4 +1,4 @@
-#include "../PSD/PSDInputSvc.h"
+#include "../PSDTools/PSDInputSvc.h"
 
 #include "DataRegistritionSvc/DataRegistritionSvc.h"
 #include "Event/ElecHeader.h"
@@ -15,12 +15,6 @@
 
 #include <map>
 #include <iomanip>
-//#include "TString.h"
-//
-//#include "TH1.h"
-//#include "TFile.h"
-//#include "TTree.h"
-//#include "TMath.h"
 
 using namespace std;
 
@@ -32,7 +26,7 @@ int cmp(const PAIR& x, const PAIR& y)  //
 {
   return x.second > y.second;
 }
-double GetTimetag(TH1F* h1tem)
+double GetTimetag(const TH1F* h1tem)
 {
   std::map<int, double> timecount1;
   timecount1.clear();
@@ -57,8 +51,7 @@ PSDInputSvc::PSDInputSvc(const std::string& name) : SvcBase(name)
 }
 
 PSDInputSvc::~PSDInputSvc()
-{
-}
+= default;
 
 bool PSDInputSvc::initialize()
 {
@@ -86,16 +79,16 @@ bool PSDInputSvc::extractHitInfo(JM::EvtNavigator* nav, const std::string method
   v_hitIsHama.reserve(10000);
 
   const std::list<JM::CalibPMTChannel*>& l_pmtcol = calibEvent->calibPMTCol();
-  for (std::list<JM::CalibPMTChannel*>::const_iterator it = l_pmtcol.begin(); it != l_pmtcol.end(); ++it) {
-    unsigned int pmtid = (*it)->pmtId();
+  for (auto it : l_pmtcol) {
+    unsigned int pmtid = it->pmtId();
     Identifier id = Identifier(pmtid);
     if (not CdID::is20inch(id) || CdID::module(id) >= m_entries_LPMT) {
       continue;
     }
 
-    int hitno = (*it)->size();
-    const std::vector<double>& hittime = (*it)->time();
-    const std::vector<double>& charge = (*it)->charge();
+    int hitno = it->size();
+    const std::vector<double>& hittime = it->time();
+    const std::vector<double>& charge = it->charge();
     for (int i = 0; i < hitno; i++) {
       // v_pmtID.push_back(CdID::module(id));
       v_hitTime.push_back(hittime.at(i) - calTOF(CdID::module(id)));
@@ -118,14 +111,14 @@ bool PSDInputSvc::extractHitsWaveform(JM::EvtNavigator* nav)
   if (!extractEvtInfo(nav)) return false;
 
   const JM::ElecFeeCrate& efc = elecEvent->elecFeeCrate();
-  JM::ElecFeeCrate* m_crate = const_cast<JM::ElecFeeCrate*>(&efc);
+  auto* m_crate = const_cast<JM::ElecFeeCrate*>(&efc);
 
   map<int, JM::ElecFeeChannel> feeChannels = m_crate->channelData();
 
   map<int, JM::ElecFeeChannel>::iterator it;
   for (it = feeChannels.begin(); it != feeChannels.end(); ++it) {
     JM::ElecFeeChannel& channel = (it->second);
-    if (channel.adc().size() == 0) {
+    if (channel.adc().empty()) {
       continue;
     }
 
@@ -156,8 +149,8 @@ bool PSDInputSvc::alignTime(std::string algnmethod)
     int binno = hist_to_align->GetMaximumBin();
     t0 = hist_to_align->GetBinCenter(binno) - 100;  // the peak aligned to 100
 
-    for (std::vector<double>::iterator it = v_hitTime.begin(); it != v_hitTime.end(); ++it) {
-      *it -= t0;
+    for (double & it : v_hitTime) {
+      it -= t0;
     }
   } else if (!algnmethod.compare("alignMean")) {
     double sum = 0;
@@ -172,8 +165,8 @@ bool PSDInputSvc::alignTime(std::string algnmethod)
     sum /= totcharge;
     t0 = sum - 100;
 
-    for (std::vector<double>::iterator it = v_hitTime.begin(); it != v_hitTime.end(); ++it) {
-      *it -= t0;
+    for (double & it : v_hitTime) {
+      it -= t0;
     }
   } else if (!algnmethod.compare("alignPeak2")) {
     b_weightOpt = true;
@@ -212,7 +205,7 @@ bool PSDInputSvc::alignTime(std::string algnmethod)
   return true;
 }
 
-double PSDInputSvc::calTOF(int id)
+double PSDInputSvc::calTOF( const int id)
 {
 
   // calculate the time of flight

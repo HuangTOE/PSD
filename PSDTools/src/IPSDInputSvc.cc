@@ -2,7 +2,7 @@
 // Created by luoxj@ihep.ac.cn on 2021/10/24.
 //
 
-#include "../PSD/IPSDInputSvc.h"
+#include "../PSDTools/IPSDInputSvc.h"
 #include "SniperKernel/SniperLog.h"
 #include <vector>
 #include "Event/ElecHeader.h"
@@ -52,7 +52,7 @@ bool IPSDInputSvc::extractEvtInfo(JM::EvtNavigator * nav) {
 }
 
 
-bool IPSDInputSvc::getEDMEvent(JM::EvtNavigator * nav) {
+bool IPSDInputSvc::getEDMEvent(JM::EvtNavigator *nav) {
     JM::ElecHeader *eh = dynamic_cast<JM::ElecHeader *>(nav->getHeader("/Event/Elec"));
     // only use large pmts
     if (!eh->hasEvent()) {
@@ -77,7 +77,7 @@ bool IPSDInputSvc::getEDMEvent(JM::EvtNavigator * nav) {
     return true;
 }
 
-bool IPSDInputSvc::Initialize_PMT_Map( TString name_file_pmt_map ) {
+bool IPSDInputSvc::Initialize_PMT_Map( const  TString name_file_pmt_map ) {
     //read the position info from the root file
     v_PMTPosi.reserve(18000);
     v_PMTMap_isHama.reserve(18000);
@@ -102,7 +102,7 @@ bool IPSDInputSvc::Initialize_PMT_Map( TString name_file_pmt_map ) {
     return true;
 }
 
-std::vector<double> IPSDInputSvc::getEventXYZ() {
+vector<double> IPSDInputSvc::getEventXYZ() {
     std::vector<double> v_XYZ = {d_vtxX, d_vtxY, d_vtxZ};
     return v_XYZ;
 }

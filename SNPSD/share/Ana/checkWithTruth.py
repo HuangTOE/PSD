@@ -21,7 +21,7 @@ class PSDCheck():
 
         METHOD='BDT'
 
-        #read the PSD result
+        #read the PSDTools result
         topDir='/junofs/users/huangx/MyProject/Supernova/CCSNAnalysis/SNPSD/share/result/%s_%s/%d/dist%d'%(SNTYPE, MODEL, MO,  DISTANCE)
         inputFileName=topDir+'/Appl_%s_%dth.root'%(METHOD, ithTrail)
         inputFile=ROOT.TFile(inputFileName, 'READ')
@@ -89,7 +89,7 @@ class PSDCheck():
         DISTANCE=10
         MO=1
 
-        #read the PSD result
+        #read the PSDTools result
         topDir='/junofs/users/huangx/MyProject/Supernova/CCSNAnalysis/SNPSD/share/result/%s_%s/%d/dist%d'%(SNTYPE, MODEL, MO,  DISTANCE)
         inputFileName=topDir+'/result_0th.root'
         inputFile=ROOT.TFile(inputFileName, 'READ')
@@ -162,11 +162,11 @@ def drawPSDVal():
         #ax2.hist2d(lrecE[thistype], lpsdval[thistype], bins=[50, 50], cmap=plt.cm.Spectral_r, cmin =1)
         #ax3.hist2d(lrecR[thistype], lpsdval[thistype], bins=[50, 50], cmap=plt.cm.Spectral_r, cmin =1)
     ax.legend()
-    ax.set(xlabel='PSD Value', ylabel='a.u.', yscale='log')
+    ax.set(xlabel='PSDTools Value', ylabel='a.u.', yscale='log')
     ax2.legend()
-    ax2.set(xlabel='$E_{rec}$ [MeV]', ylabel='PSD Value', xscale='log')
+    ax2.set(xlabel='$E_{rec}$ [MeV]', ylabel='PSDTools Value', xscale='log')
     ax3.legend()
-    ax3.set(xlabel='$R^{3}$ [$m^{3}$]', ylabel='PSD Value',)
+    ax3.set(xlabel='$R^{3}$ [$m^{3}$]', ylabel='PSDTools Value',)
 
     plt.show()
     return

@@ -1,4 +1,4 @@
-PKG(PSD
+PKG(PSDTools
     DEPENDS
         ElecEvent 
         CalibEvent 
