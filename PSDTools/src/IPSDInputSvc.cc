@@ -4,19 +4,19 @@
 
 #include "../PSDTools/IPSDInputSvc.h"
 #include "SniperKernel/SniperLog.h"
+#include "SniperKernel/SniperDataPtr.h"
 #include <vector>
 #include "Event/ElecHeader.h"
 #include "Event/CalibHeader.h"
 #include "Event/RecHeader.h"
 #include "TFile.h"
 #include "TTree.h"
+#include "Geometry/PMTParamSvc.h"
 
 
 using namespace std;
 
 IPSDInputSvc::IPSDInputSvc() {
-    v_PMTPosi.clear();
-    v_PMTMap_isHama.clear();
     v_hitTime.clear();
     v_hitCharge.clear();
     d_vtxX = 0;
@@ -25,6 +25,11 @@ IPSDInputSvc::IPSDInputSvc() {
 }
 
 IPSDInputSvc::~IPSDInputSvc() = default;
+
+bool IPSDInputSvc::Initialize(PMTParamSvc* pmt_svc) {
+    m_pmt_svc = pmt_svc;
+    return true;
+}
 
 bool IPSDInputSvc::extractHitInfo(JM::EvtNavigator * nav, const std::string method_to_align) {
     if (!getEDMEvent(nav)) return false;
@@ -77,30 +82,6 @@ bool IPSDInputSvc::getEDMEvent(JM::EvtNavigator *nav) {
     return true;
 }
 
-bool IPSDInputSvc::Initialize_PMT_Map( const  TString name_file_pmt_map ) {
-    //read the position info from the root file
-    v_PMTPosi.reserve(18000);
-    v_PMTMap_isHama.reserve(18000);
-    TFile *thisfile = TFile::Open(name_file_pmt_map);
-    TTree *pmtdata=dynamic_cast<TTree*>(thisfile->Get("PmtData_Lpmt"));
-    double pmtPosX=0;
-    double pmtPosY=0;
-    double pmtPosZ=0;
-    int is_Hama = 0;
-    pmtdata->SetBranchAddress("pmtPosX", &pmtPosX);
-    pmtdata->SetBranchAddress("pmtPosY", &pmtPosY);
-    pmtdata->SetBranchAddress("pmtPosZ", &pmtPosZ);
-    pmtdata->SetBranchAddress("MCP_Hama",&is_Hama);
-    m_entries_LPMT=pmtdata->GetEntries();
-    for (int ith=0;ith<m_entries_LPMT;ith++){
-        pmtdata->GetEntry(ith);
-        TVector3 tmpv(pmtPosX, pmtPosY, pmtPosZ);
-        v_PMTPosi.push_back(tmpv);
-        v_PMTMap_isHama.push_back(is_Hama);
-    }
-
-    return true;
-}
 
 vector<double> IPSDInputSvc::getEventXYZ() {
     std::vector<double> v_XYZ = {d_vtxX, d_vtxY, d_vtxZ};

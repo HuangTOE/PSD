@@ -19,6 +19,7 @@
 #include "TString.h"
 #include <vector>
 #include "TVector3.h"
+#include "Geometry/PMTParamSvc.h"
 
 class IPSDInputSvc {
 public:
@@ -34,7 +35,7 @@ public:
     virtual bool extractHitInfo(JM::EvtNavigator * , std::string method_to_align);
     virtual bool extractHitsWaveform(JM::EvtNavigator *);
     virtual bool extractEvtInfo(JM::EvtNavigator *);
-    virtual bool Initialize_PMT_Map( TString name_file_pmt_map );
+    bool Initialize(PMTParamSvc*);
 
     // functions for getting information from the extracting functions above
     const std::vector<double>& getHitTime(){return v_hitTime;};
@@ -53,10 +54,8 @@ protected:
     double d_R3_event{}; // (x^2+y^2+z^2)^1.5, unit: m
     double m_E_rec{};    // reconstruct Energy
 
-    // pmt map for the whole detector ( only large PMTs ), length is 17162 in offline J21v1
-    Long64_t m_entries_LPMT{};
-    std::vector<TVector3> v_PMTPosi;
-    std::vector<int> v_PMTMap_isHama;
+    // pmt svc for the whole detector geometry
+    PMTParamSvc* m_pmt_svc;
 
     // hits information in one event ( first index is for the index of hit,
     // same index refer to the same hit in different variables below )

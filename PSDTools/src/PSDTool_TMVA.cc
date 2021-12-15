@@ -318,13 +318,17 @@ bool PSD_TMVA::initialize()
     reader_BDTG->AddVariable("tau2", &m_constant_to_save.tau2);
     reader_BDTG->AddVariable("eta1", &m_constant_to_save.tau1ratio);
     reader_BDTG->AddVariable("r3_tag", &m_vertex_r3_of_event);
+    reader_BDTG->AddVariable("R_peak_to_tail", &m_peak_to_tail_ratio);
+    reader_BDTG->AddVariable("R_tail_to_tail", &m_tail_to_tail_ratio);
+    reader_BDTG->AddVariable("R_peak_to_total_ham", &m_peak_to_total_ratio_ham);
+    reader_BDTG->AddVariable("R_tail_to_total_ham", &m_tail_to_total_ratio_ham);
 
     reader_BDTG->AddSpectator("Eqe_tag", &Equench);
-    reader_BDTG->AddSpectator("nPE_tag", &nPE_tag);
-    reader_BDTG->AddSpectator("vtag", &v_tag);
-    reader_BDTG->AddSpectator("id_tag", &id_tag);
-    reader_BDTG->AddSpectator("isoz", &isoz);
-    reader_BDTG->AddSpectator("ison", &ison);
+//    reader_BDTG->AddSpectator("nPE_tag", &nPE_tag);
+//    reader_BDTG->AddSpectator("vtag", &v_tag);
+//    reader_BDTG->AddSpectator("id_tag", &id_tag);
+//    reader_BDTG->AddSpectator("isoz", &isoz);
+//    reader_BDTG->AddSpectator("ison", &ison);
     reader_BDTG->BookMVA("BDTG FV1", model_FV1);
     reader_BDTG->BookMVA("BDTG FV2", model_FV2);
   }

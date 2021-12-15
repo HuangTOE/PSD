@@ -12,4 +12,6 @@ PKG(PSDTools
         RooFit
         RooFitCore
         Minuit2
+        Geometry
+#        PMTSim
 )

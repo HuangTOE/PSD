@@ -4,6 +4,8 @@
 #include "SniperKernel/AlgFactory.h"
 #include "RootWriter/RootWriter.h"
 #include "Event/RecHeader.h"
+#include "Geometry/PMTParamSvc.h"
+#include "../PSDTools/IPSDInputSvc.h"
 
 DECLARE_ALGORITHM(PSDAlg);
 
@@ -32,6 +34,16 @@ bool PSDAlg::initialize(){
     m_buf = navBuf.data();
 
     //==============Initialize the PSDTools method==============
+//    SniperDataPtr<IPMTParamSvc> pmt_svc(getParent(), "PMTParamSvc");
+//    if (pmt_svc.invalid())
+//    {
+//        LogError<<"The PMTParamSvc is not found!"<<std::endl;
+//        return false;
+//    }
+
+    IPSDInputSvc* psdInputSvc = dynamic_cast<IPSDInputSvc*>(getParent()->find("PSDInputSvc"));
+    psdInputSvc->Initialize(dynamic_cast<PMTParamSvc *>(getParent()->find("PMTParamSvc")));
+
     m_psdTool=tool<IPSDTool>(s_psdMethod);
     if (!m_psdTool){
         LogError<<"The PSDTools tool is not found!"<<std::endl;

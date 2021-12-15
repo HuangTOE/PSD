@@ -17,7 +17,6 @@ def get_parser():
     parser.add_argument("--input", nargs="+" ,help="input list of files name")
     parser.add_argument("--inputList", action="append", help="input file list name, this file list contains the names of input files")
     parser.add_argument("--inputSvc", default="PSDInputSvc", help="Which PSDTools input service will be use, default for PSDInputSvc.*")
-    parser.add_argument("--pmt_map", default="/cvmfs/juno.ihep.ac.cn/centos7_amd64_gcc830/Pre-Release/J21v1r0-Pre2/data/Simulation/ElecSim/PmtData_Lpmt.root",  help="Map from pmtID to PMT Location")
     parser.add_argument("--output", default="", help="The user output file")
     parser.add_argument("--user-output", default="", help="The user output file")
 
@@ -85,7 +84,6 @@ if __name__ == "__main__":
     psdalg.property("Method").set(args.method)
     psdalg.property("UsePredict").set(args.usePredict)
 
-    psdsvc.property("PMT_Map").set(args.pmt_map)
 
     # psdtool.property("Model").set("Model")
     if args.method == "PSD_TMVA":

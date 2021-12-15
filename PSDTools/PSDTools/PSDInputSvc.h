@@ -47,6 +47,5 @@ class PSDInputSvc : public SvcBase, public IPSDInputSvc
         TH1F* hist_to_align;
         TH1F* hist_to_align_Ham;
         TH1F* hist_to_align_MCP;
-        std::string pmt_map;
 };
 //#endif

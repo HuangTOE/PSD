@@ -18,7 +18,7 @@ from .JUNOUtils import mh
 
 
 ##############################################################################
-# JUNOModule
+# JUNOPSDModule
 ##############################################################################
 
 class JUNOPSDModule(JUNOModule):
@@ -38,7 +38,6 @@ class JUNOPSDModule(JUNOModule):
     def register_options_common(self, parser):
         #---------------input and output-----------------
         parser.add_argument("--inputSvc", default="PSDInputSvc", help="Which PSDTools input service will be use, default for PSDInputSvc.*")
-        parser.add_argument("--pmt_map", default="/cvmfs/juno.ihep.ac.cn/centos7_amd64_gcc830/Pre-Release/J21v1r0-Pre2/data/Simulation/ElecSim/PmtData_Lpmt.root",  help="Map from pmtID to PMT Location")
 
         #--------------------For PSDTools--------------------------
         parser.add_argument("--method-PSD", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA"], help="The PSDTools method")
@@ -73,7 +72,6 @@ class JUNOPSDModule(JUNOModule):
         self.psdalg.property("Method").set(args.method_PSD)
         self.psdalg.property("UsePredict").set(args.usePredict)
 
-        self.psdsvc.property("PMT_Map").set(args.pmt_map)
 
     def init_TMVA_model(self, topTask, args):
         self.psdtool.property("Model_FV1").set(args.model_FV1)
