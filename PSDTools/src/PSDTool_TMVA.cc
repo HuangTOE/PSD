@@ -1,4 +1,4 @@
-#include "../PSDTools//PSDTool_TMVA.h"
+#include "PSDTools/PSDTool_TMVA.h"
 
 #include "SniperKernel/ToolFactory.h"
 #include "SniperKernel/SniperPtr.h"

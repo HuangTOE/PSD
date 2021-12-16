@@ -1,4 +1,4 @@
-#include "../PSDTools/IPSDTool.h"
+#include "PSDTools/IPSDTool.h"
 
 IPSDTool::IPSDTool(){
     b_usePredict = true;

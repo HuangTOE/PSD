@@ -2,7 +2,7 @@
 // Created by luoxj@ihep.ac.cn on 2021/10/24.
 //
 
-#include "../PSDTools/IPSDInputSvc.h"
+#include "PSDTools/IPSDInputSvc.h"
 #include "SniperKernel/SniperLog.h"
 #include "SniperKernel/SniperDataPtr.h"
 #include <vector>

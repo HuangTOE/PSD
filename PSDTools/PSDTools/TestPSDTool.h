@@ -6,8 +6,8 @@
  * TestPSDTool is an example for PSDTools, developers can develop their own tool base on this file
  */
 
-#include "../PSDTools/IPSDTool.h"
-#include "../PSDTools/IPSDInputSvc.h"
+#include "IPSDTool.h"
+#include "IPSDInputSvc.h"
 #include "SniperKernel/ToolBase.h"
 #include "EvtNavigator/NavBuffer.h"
 #include "SniperKernel/SniperPtr.h"

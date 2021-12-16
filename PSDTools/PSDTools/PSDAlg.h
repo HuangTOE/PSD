@@ -6,7 +6,7 @@
  * PSDAlg is like the "main" function in the whole PSDTools, which pass EDM navigator to PSDInputSvc then invoke PSDTool.
  */
 
-#include "../PSDTools/IPSDTool.h"
+#include "IPSDTool.h"
 
 #include "SniperKernel/AlgBase.h"
 #include "EvtNavigator/NavBuffer.h"

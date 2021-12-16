@@ -6,8 +6,8 @@
  * Author: Jie Cheng, Xiaojie Luo
  * PSDTool_TMVA is to use TMVA to do the PSD work by using parameters fitting from emission time profile
  */
-#include "../PSDTools/IPSDTool.h"
-#include "../PSDTools/IPSDInputSvc.h"
+#include "IPSDTool.h"
+#include "IPSDInputSvc.h"
 #include "SniperKernel/ToolBase.h"
 #include "EvtNavigator/NavBuffer.h"
 

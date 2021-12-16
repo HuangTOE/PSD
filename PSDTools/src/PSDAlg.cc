@@ -1,11 +1,11 @@
-#include "../PSDTools/PSDAlg.h"
+#include "PSDTools/PSDAlg.h"
 
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/AlgFactory.h"
 #include "RootWriter/RootWriter.h"
 #include "Event/RecHeader.h"
 #include "Geometry/PMTParamSvc.h"
-#include "../PSDTools/IPSDInputSvc.h"
+#include "PSDTools/IPSDInputSvc.h"
 
 DECLARE_ALGORITHM(PSDAlg);
 
