@@ -1,5 +1,8 @@
+find_package(Boost COMPONENTS numpy)
 PKG(PSDTools
     DEPENDS
+        SimEventV2
+        Boost::numpy
         ElecEvent 
         CalibEvent 
         RecEvent 
@@ -13,5 +16,4 @@ PKG(PSDTools
         RooFitCore
         Minuit2
         Geometry
-#        PMTSim
 )

@@ -34,7 +34,7 @@ pmtparam_module = JUNOPMTParameterModule()
 pmtcalib_module = JUNOPMTCalibSvcModule()
 conddb_module = JUNOCondDBModule()
 
-PSD_module = JUNOPSDModule.JUNOPSDModule()
+PSD_module = JUNOPSDModule()
 
 juno_application.register(databuffer_module)
 juno_application.register(rootinput_module)

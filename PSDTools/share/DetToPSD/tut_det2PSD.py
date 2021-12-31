@@ -70,7 +70,7 @@ conddb_module = JUNOCondDBModule()
 elecsim_module = JUNOElecSimModule()
 waverec_module = JUNOWaveRecModule()
 eventrec_module = JUNOEventRecModule()
-PSD_module = JUNOPSDModule.JUNOPSDModule()
+PSD_module = JUNOPSDModule()
 
 juno_application.register(databuffer_module)
 # juno_application.register(rootinput_module) # this module will cause elecsim input error!

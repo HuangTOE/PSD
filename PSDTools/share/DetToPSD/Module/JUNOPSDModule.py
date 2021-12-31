@@ -40,7 +40,7 @@ class JUNOPSDModule(JUNOModule):
         parser.add_argument("--inputSvc", default="PSDInputSvc", help="Which PSDTools input service will be use, default for PSDInputSvc.*")
 
         #--------------------For PSDTools--------------------------
-        parser.add_argument("--method-PSD", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA"], help="The PSDTools method")
+        parser.add_argument("--method-PSD", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA","PSDTool_sklearn"], help="The PSDTools method")
         parser.add_argument("--Predict", dest="usePredict", action="store_true")
         parser.add_argument("--PrepareForTraining", dest="usePredict", action="store_false")
         parser.set_defaults(usePredict = True)
@@ -58,6 +58,8 @@ class JUNOPSDModule(JUNOModule):
 
         if args.method_PSD == "PSD_TMVA":
             self.init_TMVA_model(toptask, args)
+        elif args.method_PSD == "PSDTool_sklearn":
+            self.init_Sklearn_model(toptask,args )
 
     def init_common(self, topTask, args):
         topTask.setLogLevel(self.DATA_LOG_MAP[args.loglevel])
@@ -78,6 +80,19 @@ class JUNOPSDModule(JUNOModule):
         self.psdtool.property("Model_FV2").set(args.model_FV2)
         self.psdtool.property("R_divide").set(args.R_divide)
         self.psdtool.property("PSD_divide").set(args.PSD_divide)
+
+    def init_Sklearn_model(self, toptask, args):
+        # Create a python store
+        import SniperPython
+        toptask.createSvc("PyDataStoreSvc/DataStore")
+
+        # Create one algorithm in C++ to convert the EDM data to numpy
+        # Create another algorithm in Python to process data
+        import PSDTools
+        import PSDTools.PSDSklearn
+
+        self.alg_sklearn = PSDTools.PSDSklearn.PSDSklearn("PSDSklearn")
+        toptask.addAlg(self.alg_sklearn)
 
     def add_output_vec(self, output_vec, args):
         #=======================Output using framwork======================

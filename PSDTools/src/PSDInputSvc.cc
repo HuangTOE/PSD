@@ -184,9 +184,9 @@ bool PSDInputSvc::alignTime(std::string algnmethod)
     }
     t0 = GetTimetag(hist_to_align) - 1;
     t0_Ham = GetTimetag(hist_to_align_Ham) - 1;
-    cout << "My puzzle-GetTimetag():\t" << t0_Ham << endl;
-    cout << "My puzzle-GetMaximum():\t" << hist_to_align_Ham->GetBinCenter(hist_to_align_Ham->GetMaximumBin()) << endl;
-    cout << endl;
+//    cout << "My puzzle-GetTimetag():\t" << t0_Ham << endl;
+//    cout << "My puzzle-GetMaximum():\t" << hist_to_align_Ham->GetBinCenter(hist_to_align_Ham->GetMaximumBin()) << endl;
+//    cout << endl;
     t0_MCP = GetTimetag(hist_to_align_MCP) - 1;
 
     for (int i = 0; i < v_hitTime.size(); i++) {
