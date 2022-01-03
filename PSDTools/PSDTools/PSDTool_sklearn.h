@@ -42,6 +42,7 @@ private:
     IPSDInputSvc* m_psdInput;
 
     std::string m_path_model;
+    std::string m_output_file;
 
     TH1D* m_h_time_without_charge;
     TH1D* m_h_time_with_charge;

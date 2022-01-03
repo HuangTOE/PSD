@@ -25,6 +25,7 @@ DECLARE_TOOL(PSDTool_sklearn);
 
 PSDTool_sklearn::PSDTool_sklearn(const std::string &name): ToolBase(name){
     declProp("Path_Model", m_path_model );
+    declProp("Output_Sklearn", m_output_file);
 }
 
 PSDTool_sklearn::~PSDTool_sklearn(){
@@ -138,12 +139,14 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
             this_module.attr("h_time_without_charge") = arr_h_time_without_charge;
             this_module.attr("xyz_E") = arr_xyz_and_E;
             this_module.attr("path_model") = path_model;
+            this_module.attr("output") = m_output_file;
         } else {
             LogInfo << "Register the value to PyDataStore. " << std::endl;
             pystore->set("h_time_with_charge", arr_h_time_with_charge);
             pystore->set("h_time_without_charge", arr_h_time_without_charge);
             pystore->set("xyz_E", arr_xyz_and_E);
             pystore->set("path_model", path_model);
+            pystore->set("output", m_output_file);
         }
     }
 
