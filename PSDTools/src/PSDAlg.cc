@@ -7,6 +7,7 @@
 #include "Geometry/PMTParamSvc.h"
 #include "PSDTools/IPSDInputSvc.h"
 
+
 DECLARE_ALGORITHM(PSDAlg);
 
 PSDAlg::PSDAlg(const std::string &name):AlgBase(name){
@@ -32,6 +33,7 @@ bool PSDAlg::initialize(){
         return false;
     }
     m_buf = navBuf.data();
+
 
     //==============Initialize the PSDTools method==============
 //    SniperDataPtr<IPMTParamSvc> pmt_svc(getParent(), "PMTParamSvc");
@@ -89,6 +91,7 @@ bool PSDAlg::execute(){
 
     //===============get the current event=================
     JM::EvtNavigator *nav=m_buf->curEvt();
+
 
     //=====================PSDTools procedure=====================
     if (!m_psdTool->preProcess(nav)){

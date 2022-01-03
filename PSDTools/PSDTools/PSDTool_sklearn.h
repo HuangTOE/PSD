@@ -17,10 +17,13 @@
 #include "EvtNavigator/NavBuffer.h"
 #include "SniperKernel/SniperPtr.h"
 #include <boost/python/numpy.hpp>
-
+#include <vector>
 
 #include "TTree.h"
+#include "TH1D.h"
+#include "string.h"
 
+using namespace std;
 class PSDTool_sklearn: public ToolBase, public IPSDTool{
 public:
     explicit PSDTool_sklearn(const std::string &name);
@@ -33,9 +36,20 @@ public:
 
 private:
     TTree *m_userTree;
-    double d_psdVar;
     TTree *m_psdTree;
+    vector<double> m_bins;
 
     IPSDInputSvc* m_psdInput;
+
+    std::string m_path_model;
+
+    TH1D* m_h_time_without_charge;
+    TH1D* m_h_time_with_charge;
+
+    // Varibles for Training
+    vector<double> v_h_time_without_charge;
+    vector<double> v_h_time_with_charge;
+    vector<double> vertex_xyz;
+    double Erec;
 };
 #endif //GENERALPROJECT_PSDTOOL_SKLEARN_H

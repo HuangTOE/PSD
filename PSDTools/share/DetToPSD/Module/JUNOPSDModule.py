@@ -34,23 +34,28 @@ class JUNOPSDModule(JUNOModule):
     def register_options(self, parser):
         self.register_options_common(parser)
         self.register_options_TMVA(parser)
+        self.register_options_Sklearn(parser)
 
     def register_options_common(self, parser):
-        #---------------input and output-----------------
+        # ---------------input and output-----------------
         parser.add_argument("--inputSvc", default="PSDInputSvc", help="Which PSDTools input service will be use, default for PSDInputSvc.*")
 
-        #--------------------For PSDTools--------------------------
+        # --------------------For PSDTools--------------------------
         parser.add_argument("--method-PSD", default="TestPSDTool", choices=["TestPSDTool", "PSD_TMVA","PSDTool_sklearn"], help="The PSDTools method")
         parser.add_argument("--Predict", dest="usePredict", action="store_true")
         parser.add_argument("--PrepareForTraining", dest="usePredict", action="store_false")
         parser.set_defaults(usePredict = True)
 
     def register_options_TMVA(self, parser):
-        #-------------------For TMVA method-----------------------------
+        # -------------------For TMVA method-----------------------------
         parser.add_argument("--model_FV1", default="Induction__BDTG.weights_FV1.xml", help="ML model to do the prediction, default is for TMVA method")
         parser.add_argument("--model_FV2", default="Induction__BDTG.weights_FV2.xml", help="ML model to do the prediction, default is for TMVA method")
         parser.add_argument("--R_divide", type=float, default=16, help="radius boundary to divide FV1 and FV2")
         parser.add_argument("--PSD_divide", type=float, default=0., help="Set PSDTools boundary for bkg and sig, so that tag the event")
+
+    def register_options_Sklearn(self, parser):
+        # ----------------- For Sklearn method -------------------------
+        parser.add_argument("--Path_Model", default="model.pkl", help="ML model to do the prediction, default is for Sklearn method")
 
     def init(self, toptask, args):
         self.init_common(toptask, args)
@@ -89,10 +94,14 @@ class JUNOPSDModule(JUNOModule):
         # Create one algorithm in C++ to convert the EDM data to numpy
         # Create another algorithm in Python to process data
         import PSDTools
+        import SniperPython
         import PSDTools.PSDSklearn
 
-        self.alg_sklearn = PSDTools.PSDSklearn.PSDSklearn("PSDSklearn")
-        toptask.addAlg(self.alg_sklearn)
+        self.psdtool.property("Path_Model").set(args.Path_Model)
+
+        if args.usePredict:
+            self.alg_sklearn = PSDTools.PSDSklearn.PSDSklearn("PSDSklearn")
+            toptask.addAlg(self.alg_sklearn)
 
     def add_output_vec(self, output_vec, args):
         #=======================Output using framwork======================
