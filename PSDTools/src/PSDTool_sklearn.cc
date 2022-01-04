@@ -17,6 +17,10 @@
 #include "EvtNavigator/NavBuffer.h"
 #include "TROOT.h"
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
 namespace p = boost::python;
 namespace np = boost::python::numpy;
 
@@ -26,6 +30,7 @@ DECLARE_TOOL(PSDTool_sklearn);
 PSDTool_sklearn::PSDTool_sklearn(const std::string &name): ToolBase(name){
     declProp("Path_Model", m_path_model );
     declProp("Output_Sklearn", m_output_file);
+    declProp("Path_Bins", m_path_bins_file);
 }
 
 PSDTool_sklearn::~PSDTool_sklearn(){
@@ -41,11 +46,25 @@ bool PSDTool_sklearn::initialize(){
     m_ds = SniperDataPtr<PyDataStore>(m_par, "DataStore").data();
     m_ds->set("PSDVal", 0);
 
-    // Initialize bins and histograms for PSD
-    m_bins = {-19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6,
-                7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46,
-                48, 50, 52, 54, 56, 58, 60, 62, 66, 72, 80, 90, 102, 116, 132, 150, 170, 192, 216, 242, 270, 300, 332, 366,
-                402, 440, 480, 522, 566, 612, 660, 710, 762, 816};
+    // Initialize bins by loading txt file
+    if (m_path_bins_file=="None")
+    {
+        m_bins = {-19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6,
+                  7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46,
+                  48, 50, 52, 54, 56, 58, 60, 62, 66, 72, 80, 90, 102, 116, 132, 150, 170, 192, 216, 242, 270, 300, 332, 366,
+                  402, 440, 480, 522, 566, 612, 660, 710, 762, 816};
+    }
+    else
+    {
+        LogInfo << "Load Bins Setting from txt file" << endl;
+        SetBins();
+        cout<< "Check Loading Bins ---->" <<endl;
+        for (auto &&bin:m_bins)
+            cout<< bin << ",";
+        cout<< endl;
+    }
+
+    // Initialize histograms for PSD
     m_h_time_without_charge = new TH1D("h_time_without_charge","h_time_without_charge", m_bins.size()-1, &(*m_bins.begin()) );
     m_h_time_with_charge = new TH1D("h_time_with_charge","h_time_with_charge", m_bins.size()-1, &(*m_bins.begin()) );
 
@@ -175,4 +194,30 @@ double PSDTool_sklearn::CalPSDVal(){
     return m_psdEvent.psdVal;
 }
 
+bool isSpace(char x) {return x== ' ';}
+void PSDTool_sklearn::SetBins()
+{
+    auto ss = ostringstream{};
+    ifstream bins_file(m_path_bins_file);
+    if(!bins_file.is_open())
+    {
+        cerr<< "Could not open file ("<<m_path_bins_file<<") for bins setting!!"<<endl;
+        exit(EXIT_FAILURE);
+    }
+    ss << bins_file.rdbuf();
+    istringstream  sstream(ss.str());
+    string record;
+    char delimiter = ',';
+
+    while (std::getline(sstream, record))
+    {
+        istringstream line(record);
+        while(getline(line, record, delimiter))
+        {
+            record.erase(std::remove_if(record.begin(), record.end(), isSpace), record.end());
+            m_bins.push_back(stod(record));
+        }
+    }
+
+}
 

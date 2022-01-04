@@ -37,6 +37,7 @@ public:
     bool finalize() override;
     virtual bool preProcess(JM::EvtNavigator *);
     double CalPSDVal() override;
+    void SetBins();
 
 private:
     TTree *m_userTree;
@@ -47,6 +48,7 @@ private:
 
     std::string m_path_model;
     std::string m_output_file;
+    std::string m_path_bins_file;
 
     // histogram for training
     TH1D* m_h_time_without_charge;
