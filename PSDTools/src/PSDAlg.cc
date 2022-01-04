@@ -20,7 +20,6 @@ PSDAlg::PSDAlg(const std::string &name):AlgBase(name){
 
     declProp("Method", s_psdMethod = "");
     declProp("UsePredict", b_usePredict = true);
-    declProp("Model", b_model="");
 }
 
 PSDAlg::~PSDAlg()= default;
@@ -53,8 +52,6 @@ bool PSDAlg::initialize(){
     }
     if (b_usePredict) m_psdTool->enablePredict();
     else m_psdTool->disablePredict();
-
-//    m_psdTool->setModelToPredict(b_model);
 
     if (!m_psdTool->initialize()){
         LogError<<"Fail to initialize Tool:"<<s_psdMethod<<"!"<<std::endl;

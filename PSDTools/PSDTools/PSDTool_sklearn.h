@@ -16,6 +16,7 @@
 #include "SniperKernel/ToolBase.h"
 #include "EvtNavigator/NavBuffer.h"
 #include "SniperKernel/SniperPtr.h"
+#include "SniperKernel/SniperDataPtr.h"
 #include <boost/python/numpy.hpp>
 #include <vector>
 
@@ -24,6 +25,9 @@
 #include "string.h"
 
 using namespace std;
+
+class PyDataStore;
+
 class PSDTool_sklearn: public ToolBase, public IPSDTool{
 public:
     explicit PSDTool_sklearn(const std::string &name);
@@ -44,13 +48,18 @@ private:
     std::string m_path_model;
     std::string m_output_file;
 
+    // histogram for training
     TH1D* m_h_time_without_charge;
     TH1D* m_h_time_with_charge;
 
     // Varibles for Training
+    int evtID;
     vector<double> v_h_time_without_charge;
     vector<double> v_h_time_with_charge;
     vector<double> vertex_xyz;
     double Erec;
+
+    // Python DataStore
+    PyDataStore* m_ds;
 };
 #endif //GENERALPROJECT_PSDTOOL_SKLEARN_H

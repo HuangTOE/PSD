@@ -47,7 +47,7 @@ class PSDSklearn(PyAlgBase):
             print("Error:array h_time not found!!!!! ")
             return False
 
-        self.process_data_in_numpy()
+        self.process_data()
 
 
         return True
@@ -58,9 +58,6 @@ class PSDSklearn(PyAlgBase):
         self.f_PSD.Close()
         return True
 
-    ##########################################################################
-    # HELPERS
-    ##########################################################################
     def access_array(self, name):
         import PSDTools.PSDSklearn
         try:
@@ -69,25 +66,15 @@ class PSDSklearn(PyAlgBase):
             print("Can't get %s in the store."%name)
             print(self.datastore)
 
-    # if hasattr(PSDTools.PSDSklearn, name):
-        #     print("Get %s from module ExamplePyAlg"%name)
-        #     return getattr(PSDTools.PSDSklearn, name)
-        # elif "pmtid" in self.datastore:
-        #     print("Get %s from PyDataStore"%name)
-        #     return self.datastore[name]
-        # else:
-        #     print("Can't get %s in the store."%name)
-        #     print(self.datastore)
 
-    def process_data_in_numpy(self):
-        # print("h_time_with_charge:\t",self.h_time_with_charge)
-        # print("h_time_without_charge:\t",self.h_time_without_charge)
-        # print("xyz_E:\t", self.xyz_E)
-
+    def process_data(self):
+        # self.PSDVal_sig[0] = float(self.model.predict_proba([np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
+        #                                                             self.h_time_with_charge/np.max(self.h_time_with_charge),
+        #                                                                      self.xyz_E[:3]/17.5e3))])[0][1])
         self.PSDVal_sig[0] = float(self.model.predict_proba([np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
-                                                                    self.h_time_with_charge/np.max(self.h_time_with_charge),
-                                                                             self.xyz_E[:3]/17.5e3))])[0][1])
-        print("PSDVal:\t", self.PSDVal_sig)
+                                                                             self.h_time_with_charge/np.max(self.h_time_with_charge)))])[0][1])
+        print("PSDVal in python:\t", self.PSDVal_sig[0])
+        self.datastore["PSDVal"] = self.PSDVal_sig[0]
         self.tree_PSD.Fill()
 
     def load_model(self, name_model):

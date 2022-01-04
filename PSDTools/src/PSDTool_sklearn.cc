@@ -7,7 +7,7 @@
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/ToolFactory.h"
 #include "SniperKernel/SniperPtr.h"
-#include "SniperKernel/SniperDataPtr.h"
+
 
 #include "RootWriter/RootWriter.h"
 
@@ -33,7 +33,13 @@ PSDTool_sklearn::~PSDTool_sklearn(){
 
 bool PSDTool_sklearn::initialize(){
     LogInfo<<"Initializing PSDTool_sklearn..."<<std::endl;
+
+    evtID = 0;
+
+    // Initialization for python scripts
     np::initialize();
+    m_ds = SniperDataPtr<PyDataStore>(m_par, "DataStore").data();
+    m_ds->set("PSDVal", 0);
 
     // Initialize bins and histograms for PSD
     m_bins = {-19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6,
@@ -54,6 +60,7 @@ bool PSDTool_sklearn::initialize(){
     gROOT->ProcessLine("#include <vector>");
     m_userTree=rwsvc->bookTree("evt", "evt");
     rwsvc->attach("USER_OUTPUT", m_userTree);
+    m_userTree->Branch("evtID", &evtID, "evtID/I");
     m_userTree->Branch("h_time_without_charge", &v_h_time_without_charge );
     m_userTree->Branch("h_time_with_charge", &v_h_time_with_charge);
     m_userTree->Branch("XYZ", &vertex_xyz);
@@ -61,6 +68,7 @@ bool PSDTool_sklearn::initialize(){
 
     //Store the PSDTools result, which may be implemented in data model in the future
     m_psdTree=rwsvc->bookTree("PSDTools", "PSDTools");
+    m_userTree->Branch("evtID", &evtID, "evtID/I");
     m_psdTree->Branch("psdVal", &m_psdEvent.psdVal, "psdVal/D");
     m_psdTree->Branch("evtType", &m_psdEvent.evtType, "psdVal/I");
     rwsvc->attach("PSD_OUTPUT", m_psdTree);
@@ -77,6 +85,7 @@ bool PSDTool_sklearn::finalize(){
 
 bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
     LogDebug<<"pre processing an event..."<<std::endl;
+    evtID ++;
     if (!m_psdInput->extractHitInfo(nav,"alignPeak2")) return false;
     const vector<double> v_hittime = m_psdInput->getHitTime();
     const vector<double> v_charge = m_psdInput->getHitCharge();
@@ -106,7 +115,10 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
     }
 
     // Fill TTree for Training
-    if (!b_usePredict) m_userTree->Fill();
+    if (!b_usePredict) {
+        m_userTree->Fill();
+        evtID++;
+    }
     else
     {
         // Set python array
@@ -148,15 +160,18 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
             pystore->set("path_model", path_model);
             pystore->set("output", m_output_file);
         }
+
     }
 
     return true;
 }
 
 double PSDTool_sklearn::CalPSDVal(){
-    m_psdEvent.psdVal = 0.3;
+    m_ds->get("PSDVal",m_psdEvent.psdVal);
+    cout<< "PSDVal:\t"<< m_psdEvent.psdVal << endl;
     m_psdEvent.evtType = EVTTYPE::Electron;
     m_psdTree->Fill();
+    evtID ++;
     return m_psdEvent.psdVal;
 }
 
