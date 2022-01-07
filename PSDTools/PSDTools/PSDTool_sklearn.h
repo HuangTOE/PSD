@@ -19,6 +19,7 @@
 #include "SniperKernel/SniperDataPtr.h"
 #include <boost/python/numpy.hpp>
 #include <vector>
+#include "SniperKernel/Task.h"
 
 #include "TTree.h"
 #include "TH1D.h"
@@ -63,5 +64,11 @@ private:
 
     // Python DataStore
     PyDataStore* m_ds;
+
+    // sub_task to invoke PyAlg
+    string iotaskname;
+    Task* sub_task;
+
+    float PSD_divide;
 };
 #endif //GENERALPROJECT_PSDTOOL_SKLEARN_H

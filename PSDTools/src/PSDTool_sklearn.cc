@@ -7,6 +7,7 @@
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/ToolFactory.h"
 #include "SniperKernel/SniperPtr.h"
+#include "SniperKernel/Task.h"
 
 
 #include "RootWriter/RootWriter.h"
@@ -21,6 +22,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "SniperKernel/Incident.h"
+
 namespace p = boost::python;
 namespace np = boost::python::numpy;
 
@@ -31,6 +34,7 @@ PSDTool_sklearn::PSDTool_sklearn(const std::string &name): ToolBase(name){
     declProp("Path_Model", m_path_model );
     declProp("Output_Sklearn", m_output_file);
     declProp("Path_Bins", m_path_bins_file);
+    declProp("PSD_divide", PSD_divide);
 }
 
 PSDTool_sklearn::~PSDTool_sklearn(){
@@ -39,12 +43,15 @@ PSDTool_sklearn::~PSDTool_sklearn(){
 bool PSDTool_sklearn::initialize(){
     LogInfo<<"Initializing PSDTool_sklearn..."<<std::endl;
 
-    evtID = 0;
+    evtID = -1;
 
     // Initialization for python scripts
     np::initialize();
-    m_ds = SniperDataPtr<PyDataStore>(m_par, "DataStore").data();
-    m_ds->set("PSDVal", 0);
+
+    iotaskname = "TaskSklearn";
+    sub_task = dynamic_cast<Task*>(getRoot()->find(iotaskname));
+//    m_pystore = SniperDataPtr<PyDataStore> (sub_task, "DataStore").data();
+//    m_pystore = pystore;
 
     // Initialize bins by loading txt file
     if (m_path_bins_file=="None")
@@ -94,6 +101,8 @@ bool PSDTool_sklearn::initialize(){
 
 //    SniperPtr<IPSDInputSvc> m_psdInput(getParent(), "PSDInputSvc");
     m_psdInput = dynamic_cast<IPSDInputSvc*>(getParent()->find("PSDInputSvc"));
+
+
     return true;
 }
 
@@ -104,10 +113,13 @@ bool PSDTool_sklearn::finalize(){
 
 bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
     LogDebug<<"pre processing an event..."<<std::endl;
+
     evtID ++;
+
     if (!m_psdInput->extractHitInfo(nav,"alignPeak2")) return false;
     const vector<double> v_hittime = m_psdInput->getHitTime();
     const vector<double> v_charge = m_psdInput->getHitCharge();
+
 
     // Reset Variables
     m_h_time_with_charge->Reset();
@@ -136,7 +148,6 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
     // Fill TTree for Training
     if (!b_usePredict) {
         m_userTree->Fill();
-        evtID++;
     }
     else
     {
@@ -160,37 +171,47 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
             arr_h_time_with_charge[i]    = v_h_time_with_charge[i];
         }
 
-        // register variables for python
-        SniperDataPtr<PyDataStore> pystore(*getRoot(), "DataStore");
-        if (pystore.invalid()) {
-            LogError << "Failed to find the PyDataStore. Register the value to module " << std::endl;
+        // Initialize DataStore for PSDSklearn.py so that we can get PSD results from Python Alg. ( For some initialization order reasons, we cannot set PyDataStore in PSDTool_sklearn::initialize())
+        if (evtID==0)
+        {
+            SniperDataPtr<PyDataStore>pystore(sub_task, "DataStore");
 
-            p::object this_module = p::import("PSDSklearn");
-            this_module.attr("h_time_with_charge") = arr_h_time_with_charge;
-            this_module.attr("h_time_without_charge") = arr_h_time_without_charge;
-            this_module.attr("xyz_E") = arr_xyz_and_E;
-            this_module.attr("path_model") = path_model;
-            this_module.attr("output") = m_output_file;
-        } else {
-            LogInfo << "Register the value to PyDataStore. " << std::endl;
-            pystore->set("h_time_with_charge", arr_h_time_with_charge);
-            pystore->set("h_time_without_charge", arr_h_time_without_charge);
-            pystore->set("xyz_E", arr_xyz_and_E);
-            pystore->set("path_model", path_model);
-            pystore->set("output", m_output_file);
+            if (pystore.invalid())
+                LogError << "Failed to find the PyDataStore. Register the value to module " << std::endl;
+
+            m_ds = pystore.data();
+            m_ds->set("PSDVal", 0);
         }
 
+        // register variables for python
+        LogInfo << "Register the value to PyDataStore. " << std::endl;
+        m_ds->set("h_time_with_charge", arr_h_time_with_charge);
+        m_ds->set("h_time_without_charge", arr_h_time_without_charge);
+        m_ds->set("xyz_E", arr_xyz_and_E);
+        m_ds->set("path_model", path_model);
+        m_ds->set("output", m_output_file);
     }
 
     return true;
 }
 
 double PSDTool_sklearn::CalPSDVal(){
+    // Run PyAlg PSDSklearn.py by fire sub_task ( sincerely thanks for Tao Lin and Yuxiang Hu 's help! )
+    Incident::fire(*getParent(), iotaskname);
+
+    // Get PSDVal results from PSDSklearn.py
     m_ds->get("PSDVal",m_psdEvent.psdVal);
-    cout<< "PSDVal:\t"<< m_psdEvent.psdVal << endl;
-    m_psdEvent.evtType = EVTTYPE::Electron;
+    LogDebug<< "PSDVal:\t"<< m_psdEvent.psdVal << endl;
+
+    // Set default tag for prediction output
+    if (m_psdEvent.psdVal >= PSD_divide)
+        m_psdEvent.evtType = EVTTYPE::Electron;
+    else
+        m_psdEvent.evtType = EVTTYPE::Proton;
+
+    // Save PSD results
     m_psdTree->Fill();
-    evtID ++;
+
     return m_psdEvent.psdVal;
 }
 

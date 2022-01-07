@@ -89,12 +89,13 @@ bool PSDAlg::execute(){
     //===============get the current event=================
     JM::EvtNavigator *nav=m_buf->curEvt();
 
-
+    LogDebug << "Finished Get Navigator and start to preProcess Data"<<std::endl;
     //=====================PSDTools procedure=====================
     if (!m_psdTool->preProcess(nav)){
         LogError<<"Error when pre-processing the "<<i_ithEvt<<"th event!"<<std::endl;
         return false;
     }
+    LogDebug << "Finished preProcess() and start to CalPSDVal()" <<std::endl;
     if (b_usePredict) d_psdVal = m_psdTool->CalPSDVal();
 
     // ==============Get current rec event ==========================================

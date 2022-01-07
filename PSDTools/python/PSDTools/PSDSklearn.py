@@ -23,13 +23,16 @@ class PSDSklearn(PyAlgBase):
 
     def initialize(self):
         self.PSDVal_sig = array.array("d", [0])
-        self.datastore = self.get("DataStore").data()
+        self.datastore = None
         self.model = None
         self.f_PSD = None
 
         return True
 
     def execute(self):
+        if self.datastore == None:
+            self.datastore = self.get("DataStore").data()
+
         if self.model == None:
             self.load_model(self.datastore["path_model"])
 
@@ -37,6 +40,7 @@ class PSDSklearn(PyAlgBase):
             self.f_PSD = ROOT.TFile(self.datastore["output"],"recreate")
             self.tree_PSD = ROOT.TTree("PSDTools", "PSDTools")
             self.tree_PSD.Branch("PSDVal", self.PSDVal_sig, "PSDVal/D")
+
 
         # Get Time Profile for PSD
         self.h_time_with_charge = self.access_array("h_time_with_charge")

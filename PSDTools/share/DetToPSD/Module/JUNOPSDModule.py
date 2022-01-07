@@ -105,7 +105,9 @@ class JUNOPSDModule(JUNOModule):
 
         if args.usePredict:
             self.alg_sklearn = PSDTools.PSDSklearn.PSDSklearn("PSDSklearn")
-            toptask.addAlg(self.alg_sklearn)
+            iotask = toptask.createTask("Task/TaskSklearn")
+            iotask.createSvc("PyDataStoreSvc/DataStore")
+            iotask.addAlg(self.alg_sklearn)
 
     def add_output_vec(self, output_vec, args):
         #=======================Output using framwork======================
