@@ -56,7 +56,6 @@ class JUNOPSDModule(JUNOModule):
     def register_options_Sklearn(self, parser):
         # ----------------- For Sklearn method -------------------------
         parser.add_argument("--Path_Model", default="model.pkl", help="ML model to do the prediction, default is for Sklearn method")
-        parser.add_argument("--Output_Sklearn", default="tmp.root", help="This is tmp output for sklearn to save PSDVal")
         parser.add_argument("--Path_Bins", default="None", help="This file is the bins strategy for sklearn")
 
     def init(self, toptask, args):
@@ -100,7 +99,6 @@ class JUNOPSDModule(JUNOModule):
         import PSDTools.PSDSklearn
 
         self.psdtool.property("Path_Model").set(args.Path_Model)
-        self.psdtool.property("Output_Sklearn").set(args.Output_Sklearn)
         self.psdtool.property("Path_Bins").set(args.Path_Bins)
 
         if args.usePredict:

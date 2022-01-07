@@ -48,7 +48,6 @@ private:
     IPSDInputSvc* m_psdInput;
 
     std::string m_path_model;
-    std::string m_output_file;
     std::string m_path_bins_file;
 
     // histogram for training

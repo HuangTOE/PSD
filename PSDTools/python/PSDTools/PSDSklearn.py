@@ -25,7 +25,6 @@ class PSDSklearn(PyAlgBase):
         self.PSDVal_sig = array.array("d", [0])
         self.datastore = None
         self.model = None
-        self.f_PSD = None
 
         return True
 
@@ -35,12 +34,6 @@ class PSDSklearn(PyAlgBase):
 
         if self.model == None:
             self.load_model(self.datastore["path_model"])
-
-        if self.f_PSD == None:
-            self.f_PSD = ROOT.TFile(self.datastore["output"],"recreate")
-            self.tree_PSD = ROOT.TTree("PSDTools", "PSDTools")
-            self.tree_PSD.Branch("PSDVal", self.PSDVal_sig, "PSDVal/D")
-
 
         # Get Time Profile for PSD
         self.h_time_with_charge = self.access_array("h_time_with_charge")
@@ -52,14 +45,9 @@ class PSDSklearn(PyAlgBase):
             return False
 
         self.process_data()
-
-
         return True
 
     def finalize(self):
-        self.f_PSD.cd()
-        self.tree_PSD.Write()
-        self.f_PSD.Close()
         return True
 
     def access_array(self, name):
@@ -77,9 +65,8 @@ class PSDSklearn(PyAlgBase):
         #                                                                      self.xyz_E[:3]/17.5e3))])[0][1])
         self.PSDVal_sig[0] = float(self.model.predict_proba([np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
                                                                              self.h_time_with_charge/np.max(self.h_time_with_charge)))])[0][1])
-        print("PSDVal in python:\t", self.PSDVal_sig[0])
+        # print("PSDVal in python:\t", self.PSDVal_sig[0])
         self.datastore["PSDVal"] = self.PSDVal_sig[0]
-        self.tree_PSD.Fill()
 
     def load_model(self, name_model):
         print(f"Loading Sklearn Model {name_model} .........")

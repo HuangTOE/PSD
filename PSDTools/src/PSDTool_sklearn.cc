@@ -32,7 +32,6 @@ DECLARE_TOOL(PSDTool_sklearn);
 
 PSDTool_sklearn::PSDTool_sklearn(const std::string &name): ToolBase(name){
     declProp("Path_Model", m_path_model );
-    declProp("Output_Sklearn", m_output_file);
     declProp("Path_Bins", m_path_bins_file);
     declProp("PSD_divide", PSD_divide);
 }
@@ -48,10 +47,9 @@ bool PSDTool_sklearn::initialize(){
     // Initialization for python scripts
     np::initialize();
 
+    // Get Sub Task from Sniper
     iotaskname = "TaskSklearn";
     sub_task = dynamic_cast<Task*>(getRoot()->find(iotaskname));
-//    m_pystore = SniperDataPtr<PyDataStore> (sub_task, "DataStore").data();
-//    m_pystore = pystore;
 
     // Initialize bins by loading txt file
     if (m_path_bins_file=="None")
@@ -99,7 +97,6 @@ bool PSDTool_sklearn::initialize(){
     m_psdTree->Branch("evtType", &m_psdEvent.evtType, "psdVal/I");
     rwsvc->attach("PSD_OUTPUT", m_psdTree);
 
-//    SniperPtr<IPSDInputSvc> m_psdInput(getParent(), "PSDInputSvc");
     m_psdInput = dynamic_cast<IPSDInputSvc*>(getParent()->find("PSDInputSvc"));
 
 
@@ -189,7 +186,6 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
         m_ds->set("h_time_without_charge", arr_h_time_without_charge);
         m_ds->set("xyz_E", arr_xyz_and_E);
         m_ds->set("path_model", path_model);
-        m_ds->set("output", m_output_file);
     }
 
     return true;
@@ -201,7 +197,7 @@ double PSDTool_sklearn::CalPSDVal(){
 
     // Get PSDVal results from PSDSklearn.py
     m_ds->get("PSDVal",m_psdEvent.psdVal);
-    LogDebug<< "PSDVal:\t"<< m_psdEvent.psdVal << endl;
+    LogInfo<< "PSDVal-->"<< m_psdEvent.psdVal << endl;
 
     // Set default tag for prediction output
     if (m_psdEvent.psdVal >= PSD_divide)
