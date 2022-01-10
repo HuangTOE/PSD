@@ -39,7 +39,7 @@ bool SNMLTool::init(){
 
     if (b_usePredict){
         //Store the PSDTools result, which may be implemented in data model in the future
-        m_psdTree=rwsvc->bookTree("PSDTools", "PSDTools");
+        m_psdTree=rwsvc->bookTree(*m_par,"PSDTools", "PSDTools");
         m_psdTree->Branch("psdVal", &m_psdEvent.psdVal, "psdVal/D");
         m_psdTree->Branch("evtType", &m_psdEvent.evtType, "evtType/I");
         rwsvc->attach("PSD_OUTPUT", m_psdTree);

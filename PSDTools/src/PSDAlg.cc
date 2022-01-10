@@ -64,7 +64,7 @@ bool PSDAlg::initialize(){
         LogError << "cannot get the rootwriter service." << std::endl;
         return false;
     }
-    m_outTree=rwsvc->bookTree("PSDUser", "PSDUser");
+    m_outTree=rwsvc->bookTree(*m_par,"PSDUser", "PSDUser");
     m_outTree->Branch("evtID", &i_ithEvt, "evtID/I");
     m_outTree->Branch("recE", &d_recE, "recE/D");
     m_outTree->Branch("recX", &d_recX, "recX/D");
