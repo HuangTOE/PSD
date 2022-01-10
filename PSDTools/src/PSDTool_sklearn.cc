@@ -2,7 +2,7 @@
 // Created by luoxj@ihep.ac.cn on 2021/12/19.
 //
 
-#include "../PSDTools/PSDTool_sklearn.h"
+#include "PSDTools/PSDTool_sklearn.h"
 
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/ToolFactory.h"
@@ -89,12 +89,13 @@ bool PSDTool_sklearn::initialize(){
     m_userTree->Branch("h_time_with_charge", &v_h_time_with_charge);
     m_userTree->Branch("XYZ", &vertex_xyz);
     m_userTree->Branch("Erec", &Erec, "Erec/D");
+//    m_userTree->Branch("PSDInput", &v_PSDInput);
 
     //Store the PSDTools result, which may be implemented in data model in the future
     m_psdTree=rwsvc->bookTree("PSDTools", "PSDTools");
-    m_userTree->Branch("evtID", &evtID, "evtID/I");
+    m_userTree->Branch("evtID_PSD", &evtID, "evtID_PSD/I");
     m_psdTree->Branch("psdVal", &m_psdEvent.psdVal, "psdVal/D");
-    m_psdTree->Branch("evtType", &m_psdEvent.evtType, "psdVal/I");
+    m_psdTree->Branch("evtType", &m_psdEvent.evtType, "evtType/I");
     rwsvc->attach("PSD_OUTPUT", m_psdTree);
 
     m_psdInput = dynamic_cast<IPSDInputSvc*>(getParent()->find("PSDInputSvc"));
@@ -136,21 +137,25 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
 
     v_h_time_with_charge.resize(m_bins.size()-1);
     v_h_time_without_charge.resize(m_bins.size()-1);
+//    v_PSDInput.resize((m_bins.size()-1)*2+2);
     for (int i=0;i<m_bins.size()-1;i++)
     {
         v_h_time_without_charge[i] = m_h_time_without_charge->GetBinContent(i+1);
         v_h_time_with_charge[i]    = m_h_time_with_charge->GetBinContent(i+1);
+
+        // Set PSD Input
+//        v_PSDInput[i] = m_h_time_without_charge->GetBinContent(i+1);
+//        v_PSDInput[i+m_bins.size()-1] = m_h_time_with_charge->GetBinContent(i+1);
     }
 
     // Fill TTree for Training
-    if (!b_usePredict) {
-        m_userTree->Fill();
-    }
-    else
+    m_userTree->Fill();
+    if (b_usePredict)
     {
         // Set python array
         p::tuple shape = p::make_tuple(m_bins.size()-1);
         p::tuple shape_xyz_E = p::make_tuple(4);
+        p::tuple shape_PSDInput = p::make_tuple((m_bins.size()-1)*2 + 2 );
         p::str path_model = p::str(m_path_model);
 
         np::dtype dtype_double = np::dtype::get_builtin<double>();
@@ -158,6 +163,7 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
         np::ndarray arr_h_time_without_charge = np::zeros(shape, dtype_double);
         np::ndarray arr_h_time_with_charge = np::zeros(shape, dtype_double);
         np::ndarray arr_xyz_and_E = np::zeros(shape_xyz_E, dtype_double);
+        np::ndarray arr_PSDInput = np::zeros(shape_PSDInput, dtype_double);
 
         for(int i=0;i<vertex_xyz.size();i++) arr_xyz_and_E[i] = vertex_xyz[i];
         arr_xyz_and_E[3] = Erec;
@@ -186,6 +192,7 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
         m_ds->set("h_time_without_charge", arr_h_time_without_charge);
         m_ds->set("xyz_E", arr_xyz_and_E);
         m_ds->set("path_model", path_model);
+//        m_ds->set("PSDInput", v_PSDInput);
     }
 
     return true;

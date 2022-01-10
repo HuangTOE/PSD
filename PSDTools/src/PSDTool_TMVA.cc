@@ -223,10 +223,12 @@ DECLARE_TOOL(PSD_TMVA);
 
 PSD_TMVA::PSD_TMVA(const std::string& name) : ToolBase(name)
 {
-  declProp("Model_FV1", model_FV1);
-  declProp("Model_FV2", model_FV2);
-  declProp("R_divide", R_divide);
-  declProp("PSD_divide", PSD_divide);
+    // For two models
+//    declProp("Model_FV1", model_FV1);
+//    declProp("Model_FV2", model_FV2);
+    declProp("Model", model);
+//    declProp("R_divide", R_divide);
+    declProp("PSD_divide", PSD_divide);
 }
 
 PSD_TMVA::~PSD_TMVA()
@@ -317,20 +319,27 @@ bool PSD_TMVA::initialize()
     reader_BDTG->AddVariable("tau1", &m_constant_to_save.tau1);
     reader_BDTG->AddVariable("tau2", &m_constant_to_save.tau2);
     reader_BDTG->AddVariable("eta1", &m_constant_to_save.tau1ratio);
-    reader_BDTG->AddVariable("r3_tag", &m_vertex_r3_of_event);
-    reader_BDTG->AddVariable("R_peak_to_tail", &m_peak_to_tail_ratio);
-    reader_BDTG->AddVariable("R_tail_to_tail", &m_tail_to_tail_ratio);
-    reader_BDTG->AddVariable("R_peak_to_total_ham", &m_peak_to_total_ratio_ham);
-    reader_BDTG->AddVariable("R_tail_to_total_ham", &m_tail_to_total_ratio_ham);
+    reader_BDTG->AddVariable("ndark", &m_constant_to_save.ndark);
+    reader_BDTG->AddVariable("rpsdpeak_ham", &m_peak_to_total_ratio_ham);
+    reader_BDTG->AddVariable("rpsdtail_ham", &m_tail_to_total_ratio_ham);
+    reader_BDTG->AddVariable("r3", &m_vertex_r3_of_event);
+    ///////////////// More standard code /////////////////////////
+//    reader_BDTG->AddVariable("R_peak_to_tail", &m_peak_to_tail_ratio);
+//    reader_BDTG->AddVariable("R_tail_to_tail", &m_tail_to_tail_ratio);
+//    reader_BDTG->AddVariable("R_peak_to_total_ham", &m_peak_to_total_ratio_ham);
+//    reader_BDTG->AddVariable("R_tail_to_total_ham", &m_tail_to_total_ratio_ham);
+//    reader_BDTG->AddVariable("r3_tag", &m_vertex_r3_of_event);
+////////////////////////////////////////////////////////////////////
 
-    reader_BDTG->AddSpectator("Eqe_tag", &Equench);
-//    reader_BDTG->AddSpectator("nPE_tag", &nPE_tag);
-//    reader_BDTG->AddSpectator("vtag", &v_tag);
-//    reader_BDTG->AddSpectator("id_tag", &id_tag);
-//    reader_BDTG->AddSpectator("isoz", &isoz);
-//    reader_BDTG->AddSpectator("ison", &ison);
-    reader_BDTG->BookMVA("BDTG FV1", model_FV1);
-    reader_BDTG->BookMVA("BDTG FV2", model_FV2);
+    reader_BDTG->AddSpectator("Eqe", &Equench);
+    reader_BDTG->AddSpectator("id_tag", &id_tag);
+    reader_BDTG->AddSpectator("isoz", &isoz);
+    reader_BDTG->AddSpectator("ison", &ison);
+
+    reader_BDTG->BookMVA("BDTG", model);
+    // For two model
+//    reader_BDTG->BookMVA("BDTG FV1", model_FV1);
+//    reader_BDTG->BookMVA("BDTG FV2", model_FV2);
   }
 
   return true;
@@ -446,12 +455,17 @@ bool PSD_TMVA::preProcess(JM::EvtNavigator* nav)
 double PSD_TMVA::CalPSDVal()
 {
   cout << "-------Try to Predict----" << endl;
+  ////////////////////// For two models ///////////////////////////////////////
   //    cout<< "model FV1:\t"<<(double)(reader_BDTG->EvaluateMVA("BDTG FV1"))<<endl;
   //    cout<< "model FV2:\t"<< (double)(reader_BDTG->EvaluateMVA("BDTG FV2"))<<endl;
-  if (m_vertex_r3_of_event <= pow(R_divide, 3))
-    m_psdEvent.psdVal = (double)(reader_BDTG->EvaluateMVA("BDTG FV1"));
-  else
-    m_psdEvent.psdVal = (double)(reader_BDTG->EvaluateMVA("BDTG FV2"));
+//  if (m_vertex_r3_of_event <= pow(R_divide, 3))
+//    m_psdEvent.psdVal = (double)(reader_BDTG->EvaluateMVA("BDTG FV1"));
+//  else
+//    m_psdEvent.psdVal = (double)(reader_BDTG->EvaluateMVA("BDTG FV2"));
+  ////////////////////////////////////////////////////////////////////////////////
+
+  m_psdEvent.psdVal = (double)(reader_BDTG->EvaluateMVA("BDTG"));
+
   cout << "BDTG Output:\t" << m_psdEvent.psdVal << endl;
   cout << "--------------------------" << endl;
 

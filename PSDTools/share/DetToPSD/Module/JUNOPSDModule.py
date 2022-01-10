@@ -48,9 +48,12 @@ class JUNOPSDModule(JUNOModule):
 
     def register_options_TMVA(self, parser):
         # -------------------For TMVA method-----------------------------
-        parser.add_argument("--model_FV1", default="Induction__BDTG.weights_FV1.xml", help="ML model to do the prediction, default is for TMVA method")
-        parser.add_argument("--model_FV2", default="Induction__BDTG.weights_FV2.xml", help="ML model to do the prediction, default is for TMVA method")
-        parser.add_argument("--R_divide", type=float, default=16, help="radius boundary to divide FV1 and FV2")
+        # for two models
+        # parser.add_argument("--model_FV1", default="Induction__BDTG.weights_FV1.xml", help="ML model to do the prediction, default is for TMVA method")
+        # parser.add_argument("--model_FV2", default="Induction__BDTG.weights_FV2.xml", help="ML model to do the prediction, default is for TMVA method")
+        # parser.add_argument("--R_divide", type=float, default=16, help="radius boundary to divide  and FV2")
+
+        parser.add_argument("--Model", default="Induction_BDTG.weights.xml", help="ML model to do the prediction, default is for TMVA method")
         parser.add_argument("--PSD_divide", type=float, default=0., help="Set PSDTools boundary for bkg and sig, so that tag the event")
 
     def register_options_Sklearn(self, parser):
@@ -82,9 +85,12 @@ class JUNOPSDModule(JUNOModule):
 
 
     def init_TMVA_model(self, topTask, args):
-        self.psdtool.property("Model_FV1").set(args.model_FV1)
-        self.psdtool.property("Model_FV2").set(args.model_FV2)
-        self.psdtool.property("R_divide").set(args.R_divide)
+        # For two models
+        # self.psdtool.property("Model_FV1").set(args.model_FV1)
+        # self.psdtool.property("Model_FV2").set(args.model_FV2)
+        # self.psdtool.property("R_divide").set(args.R_divide)
+
+        self.psdtool.property("Model").set(args.Model)
         self.psdtool.property("PSD_divide").set(args.PSD_divide)
 
     def init_Sklearn_model(self, toptask, args):

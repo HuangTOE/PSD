@@ -75,8 +75,10 @@ class PSD_TMVA: public ToolBase, public IPSDTool{
         float m_E_rec;
         
         // Prediction Part
-        std::string model_FV1;
-        std::string model_FV2;
+        // For Two models
+//        std::string model_FV1;
+//        std::string model_FV2;
+        std::string model;
         float R_divide;
         float PSD_divide;
         TMVA::Reader *reader_BDTG;

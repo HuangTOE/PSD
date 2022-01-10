@@ -60,11 +60,14 @@ class PSDSklearn(PyAlgBase):
 
 
     def process_data(self):
-        # self.PSDVal_sig[0] = float(self.model.predict_proba([np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
-        #                                                             self.h_time_with_charge/np.max(self.h_time_with_charge),
-        #                                                                      self.xyz_E[:3]/17.5e3))])[0][1])
+        # print(np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
+        #                       self.h_time_with_charge/np.max(self.h_time_with_charge),
+        #                       [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3], [self.xyz_E[-1]/100])))
         self.PSDVal_sig[0] = float(self.model.predict_proba([np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
-                                                                             self.h_time_with_charge/np.max(self.h_time_with_charge)))])[0][1])
+                                                                    self.h_time_with_charge/np.max(self.h_time_with_charge),
+                                                                    [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3], [self.xyz_E[-1]/100]))])[0][1])
+        # self.PSDVal_sig[0] = float(self.model.predict_proba([np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
+        #                                                                      self.h_time_with_charge/np.max(self.h_time_with_charge)))])[0][1])
         # print("PSDVal in python:\t", self.PSDVal_sig[0])
         self.datastore["PSDVal"] = self.PSDVal_sig[0]
 

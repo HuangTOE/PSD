@@ -60,6 +60,7 @@ private:
     vector<double> v_h_time_with_charge;
     vector<double> vertex_xyz;
     double Erec;
+//    vector<double> v_PSDInput;
 
     // Python DataStore
     PyDataStore* m_ds;
