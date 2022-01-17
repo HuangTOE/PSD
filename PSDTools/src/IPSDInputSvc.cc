@@ -60,12 +60,14 @@ bool IPSDInputSvc::extractEvtInfo(JM::EvtNavigator * nav) {
 bool IPSDInputSvc::getEDMEvent(JM::EvtNavigator *nav) {
     JM::ElecHeader *eh = dynamic_cast<JM::ElecHeader *>(nav->getHeader("/Event/Elec"));
     // only use large pmts
-    if (!eh->hasEvent()) {
-        LogError << "Cannot load elecsim event!!!!Please check input calib file" << endl;
-        return false;
+    if (eh!=NULL)
+    {
+        if (!eh->hasEvent()) {
+            LogError << "Cannot load elecsim event!!!!Please check input calib file" << endl;
+            return false;
+        }
+        elecEvent = dynamic_cast<JM::ElecEvent *>(eh->event());
     }
-    elecEvent = dynamic_cast<JM::ElecEvent *>(eh->event());
-
     //read time and charge fromJM::CalibEvent *calibevent, JM::CDRecEvent *recevent CalibEvent
     JM::CalibHeader *calibheader=dynamic_cast<JM::CalibHeader*>(nav->getHeader("/Event/Calib"));
     if (!calibheader->hasEvent()) {
