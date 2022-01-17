@@ -35,13 +35,6 @@ bool PSDAlg::initialize(){
 
 
     //==============Initialize the PSDTools method==============
-//    SniperDataPtr<IPMTParamSvc> pmt_svc(getParent(), "PMTParamSvc");
-//    if (pmt_svc.invalid())
-//    {
-//        LogError<<"The PMTParamSvc is not found!"<<std::endl;
-//        return false;
-//    }
-
     IPSDInputSvc* psdInputSvc = dynamic_cast<IPSDInputSvc*>(getParent()->find("PSDInputSvc"));
     psdInputSvc->Initialize(dynamic_cast<PMTParamSvc *>(getParent()->find("PMTParamSvc")));
 

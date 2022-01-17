@@ -25,18 +25,28 @@ class IPSDInputSvc {
 public:
 
     IPSDInputSvc();
+    bool Initialize(PMTParamSvc*);
     virtual ~IPSDInputSvc();
 
     // Prepare Reader from EDM
     bool getEDMEvent(JM::EvtNavigator *);
 
+    //////////////////////////////////////////////////////////////////////////////////
     // functions for extracting hits' time and charge information
-    // virtual functions
-    virtual bool extractHitInfo(JM::EvtNavigator * , std::string method_to_align);
-    virtual bool extractHitsWaveform(JM::EvtNavigator *);
-    virtual bool extractEvtInfo(JM::EvtNavigator *);
-    bool Initialize(PMTParamSvc*);
+    // virtual functions for extracting information from EDM and do some preprocessing
+    // like subtracting time of fly
 
+    // Manipulation about T/Q from waveform construction to extract emission time
+    virtual bool extractHitInfo(JM::EvtNavigator * , std::string method_to_align);
+
+    // Manipulation about waveforms from electronic simulation  to extract time profile
+    virtual bool extractHitsWaveform(JM::EvtNavigator *);
+
+    // Extract event information from EDM such as reconstruct vertex and energy
+    virtual bool extractEvtInfo(JM::EvtNavigator *);
+    //////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////////
     // functions for getting information from the extracting functions above
     const std::vector<double>& getHitTime(){return v_hitTime;};
     const std::vector<double>& getHitCharge(){return v_hitCharge;};
@@ -45,6 +55,7 @@ public:
     std::vector<double> getEventXYZ();
     double getVertexR3() const {return d_R3_event;}
     double getErec() const {return m_E_rec;}
+    /////////////////////////////////////////////////////////////////////////////////
 
 protected:
     // event information in current event
