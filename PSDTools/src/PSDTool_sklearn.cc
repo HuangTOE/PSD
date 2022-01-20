@@ -2,7 +2,7 @@
 // Created by luoxj@ihep.ac.cn on 2021/12/19.
 //
 
-#include "PSDTools/PSDTool_sklearn.h"
+#include "../PSDTools/PSDTool_sklearn.h"
 
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/ToolFactory.h"

@@ -36,15 +36,17 @@ class PSDSklearn(PyAlgBase):
             self.load_model(self.datastore["path_model"])
 
         # Get Time Profile for PSD
-        self.h_time_with_charge = self.access_array("h_time_with_charge")
-        self.h_time_without_charge = self.access_array("h_time_without_charge")
+        self.h_time_with_charge = \
+            self.access_array("h_time_with_charge")
+        self.h_time_without_charge = \
+            self.access_array("h_time_without_charge")
         self.xyz_E = self.access_array("xyz_E")
 
         if (self.h_time_with_charge is None) or (self.h_time_without_charge is None):
             print("Error:array h_time not found!!!!! ")
             return False
 
-        self.process_data()
+        self.predict()
         return True
 
     def finalize(self):
@@ -59,13 +61,14 @@ class PSDSklearn(PyAlgBase):
             print(self.datastore)
 
 
-    def process_data(self):
+    def predict(self):
         # print(np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
         #                       self.h_time_with_charge/np.max(self.h_time_with_charge),
         #                       [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3], [self.xyz_E[-1]/100])))
-        self.PSDVal_sig[0] = float(self.model.predict_proba([np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
-                                                                    self.h_time_with_charge/np.max(self.h_time_with_charge),
-                                                                    [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3], [self.xyz_E[-1]/100]))])[0][1])
+        self.PSDVal_sig[0] = float(self.model.predict_proba(
+            [np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
+            self.h_time_with_charge/np.max(self.h_time_with_charge),
+            [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3], [self.xyz_E[-1]/100]))])[0][1])
         # self.PSDVal_sig[0] = float(self.model.predict_proba([np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
         #                                                                      self.h_time_with_charge/np.max(self.h_time_with_charge)))])[0][1])
         # print("PSDVal in python:\t", self.PSDVal_sig[0])

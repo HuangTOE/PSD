@@ -313,23 +313,24 @@ bool PSD_TMVA::initialize()
   if (b_usePredict) {
     TMVA::Tools::Instance();
     std::string ReaderCoef_BDTG = "!Color:!Silent";
-    reader_BDTG = new TMVA::Reader(ReaderCoef_BDTG.c_str());
+    reader_BDTG = new TMVA::Reader(
+                            ReaderCoef_BDTG.c_str());
     reader_BDTG->AddVariable("w1", &m_w1);
     reader_BDTG->AddVariable("w2", &m_w2);
-    reader_BDTG->AddVariable("tau1", &m_constant_to_save.tau1);
-    reader_BDTG->AddVariable("tau2", &m_constant_to_save.tau2);
-    reader_BDTG->AddVariable("eta1", &m_constant_to_save.tau1ratio);
-    reader_BDTG->AddVariable("ndark", &m_constant_to_save.ndark);
-    reader_BDTG->AddVariable("rpsdpeak_ham", &m_peak_to_total_ratio_ham);
-    reader_BDTG->AddVariable("rpsdtail_ham", &m_tail_to_total_ratio_ham);
-    reader_BDTG->AddVariable("r3", &m_vertex_r3_of_event);
-    ///////////////// More standard code /////////////////////////
-//    reader_BDTG->AddVariable("R_peak_to_tail", &m_peak_to_tail_ratio);
-//    reader_BDTG->AddVariable("R_tail_to_tail", &m_tail_to_tail_ratio);
-//    reader_BDTG->AddVariable("R_peak_to_total_ham", &m_peak_to_total_ratio_ham);
-//    reader_BDTG->AddVariable("R_tail_to_total_ham", &m_tail_to_total_ratio_ham);
-//    reader_BDTG->AddVariable("r3_tag", &m_vertex_r3_of_event);
-////////////////////////////////////////////////////////////////////
+    reader_BDTG->AddVariable("tau1",
+                             &m_constant_to_save.tau1);
+    reader_BDTG->AddVariable("tau2",
+                             &m_constant_to_save.tau2);
+    reader_BDTG->AddVariable("eta1",
+                             &m_constant_to_save.tau1ratio);
+    reader_BDTG->AddVariable("ndark",
+                             &m_constant_to_save.ndark);
+    reader_BDTG->AddVariable("rpsdpeak_ham",
+                             &m_peak_to_total_ratio_ham);
+    reader_BDTG->AddVariable("rpsdtail_ham",
+                             &m_tail_to_total_ratio_ham);
+    reader_BDTG->AddVariable("r3",
+                             &m_vertex_r3_of_event);
 
     reader_BDTG->AddSpectator("Eqe", &Equench);
     reader_BDTG->AddSpectator("id_tag", &id_tag);
@@ -337,6 +338,14 @@ bool PSD_TMVA::initialize()
     reader_BDTG->AddSpectator("ison", &ison);
 
     reader_BDTG->BookMVA("BDTG", model);
+
+      ///////////////// More standard code /////////////////////////
+//    reader_BDTG->AddVariable("R_peak_to_tail", &m_peak_to_tail_ratio);
+//    reader_BDTG->AddVariable("R_tail_to_tail", &m_tail_to_tail_ratio);
+//    reader_BDTG->AddVariable("R_peak_to_total_ham", &m_peak_to_total_ratio_ham);
+//    reader_BDTG->AddVariable("R_tail_to_total_ham", &m_tail_to_total_ratio_ham);
+//    reader_BDTG->AddVariable("r3_tag", &m_vertex_r3_of_event);
+////////////////////////////////////////////////////////////////////
     // For two model
 //    reader_BDTG->BookMVA("BDTG FV1", model_FV1);
 //    reader_BDTG->BookMVA("BDTG FV2", model_FV2);
@@ -395,8 +404,6 @@ bool PSD_TMVA::preProcess(JM::EvtNavigator* nav)
   int ss = 0;  // option for function GetW*(), which means only get integral area=0.1
   h_time_around_peak_ham->Scale(1. / h_time_around_peak_ham->Integral());
 
-  //    for (int i=0;i<h_time_around_peak_ham->GetNbinsX();i++)
-  //        v_h_time_w.push_back(h_time_around_peak_ham->GetBinContent(i));
   // Get parameters about peak ( w1 and w2 )
   m_w1 = GetW1(h_time_around_peak_ham, ss);
   m_w2 = GetW2(h_time_around_peak_ham, ss);
@@ -405,13 +412,8 @@ bool PSD_TMVA::preProcess(JM::EvtNavigator* nav)
   m_peak_to_tail_ratio = GetTail2total(h_time, 0, 1);
   m_tail_to_tail_ratio = GetTail2total(h_time, 0, 39);
 
-  m_peak_to_total_ratio_ham = 0.;
-  m_tail_to_total_ratio_ham = 0.;
   m_peak_to_total_ratio_ham = GetTail2total(h_time_ham, 0, 1);
   m_tail_to_total_ratio_ham = GetTail2total(h_time_ham, 0, 39);
-
-
-
 
   // Debug
 
@@ -464,7 +466,8 @@ double PSD_TMVA::CalPSDVal()
 //    m_psdEvent.psdVal = (double)(reader_BDTG->EvaluateMVA("BDTG FV2"));
   ////////////////////////////////////////////////////////////////////////////////
 
-  m_psdEvent.psdVal = (double)(reader_BDTG->EvaluateMVA("BDTG"));
+  m_psdEvent.psdVal =
+          (double)(reader_BDTG->EvaluateMVA("BDTG"));
 
   cout << "BDTG Output:\t" << m_psdEvent.psdVal << endl;
   cout << "--------------------------" << endl;
