@@ -31,7 +31,7 @@ using namespace std;
 DECLARE_TOOL(PSDTool_sklearn);
 
 PSDTool_sklearn::PSDTool_sklearn(const std::string &name): ToolBase(name){
-    declProp("Path_Model", m_path_model );
+    declProp("Model", m_path_model );
     declProp("Path_Bins", m_path_bins_file);
     declProp("PSD_divide", PSD_divide);
 }

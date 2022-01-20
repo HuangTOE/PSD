@@ -48,27 +48,27 @@ class JUNOPSDModule(JUNOModule):
                             action="store_true")
         parser.add_argument("--PrepareForTraining",
                             dest="usePredict", action="store_false")
+        parser.add_argument("--Model",
+                            default="model.pkl", help="ML model to do the prediction, default is for Sklearn method")
+        parser.add_argument("--PSD-cut",type=float, default=0.5,help="Set PSDTools boundary for bkg and sig,so that tag the event")
+
         parser.set_defaults(usePredict = True)
 
     def register_options_TMVA(self, parser):
         # -------------------For TMVA method-----------------------------
-        parser.add_argument("--Model",
-        default="Induction_BDTG.weights.xml",
-        help="ML model to do the prediction, "
-             "default is for TMVA method")
-        parser.add_argument("--PSD_divide",
-        type=float, default=0.,
-        help="Set PSDTools boundary for bkg and sig,"
-             " so that tag the event")
+        # parser.add_argument("--Model",
+        # default="Induction_BDTG.weights.xml",
+        # help="ML model to do the prediction, "
+        #      "default is for TMVA method")
         # for two models
         # parser.add_argument("--model_FV1", default="Induction__BDTG.weights_FV1.xml", help="ML model to do the prediction, default is for TMVA method")
         # parser.add_argument("--model_FV2", default="Induction__BDTG.weights_FV2.xml", help="ML model to do the prediction, default is for TMVA method")
         # parser.add_argument("--R_divide", type=float, default=16, help="radius boundary to divide  and FV2")
+        pass
 
 
     def register_options_Sklearn(self, parser):
         # ----------------- For Sklearn method -------------------------
-        parser.add_argument("--Path_Model", default="model.pkl", help="ML model to do the prediction, default is for Sklearn method")
         parser.add_argument("--Path_Bins", default="None", help="This file is the bins strategy for sklearn")
 
     def init(self, toptask, args):
@@ -101,7 +101,7 @@ class JUNOPSDModule(JUNOModule):
         # self.psdtool.property("R_divide").set(args.R_divide)
 
         self.psdtool.property("Model").set(args.Model)
-        self.psdtool.property("PSD_divide").set(args.PSD_divide)
+        self.psdtool.property("PSD_divide").set(args.PSD_cut)
 
     def init_Sklearn_model(self, toptask, args):
         # Create a python store
@@ -114,8 +114,9 @@ class JUNOPSDModule(JUNOModule):
         import SniperPython
         import PSDTools.PSDSklearn
 
-        self.psdtool.property("Path_Model").set(args.Path_Model)
+        self.psdtool.property("Model").set(args.Model)
         self.psdtool.property("Path_Bins").set(args.Path_Bins)
+        self.psdtool.property("PSD_divide").set(args.PSD_cut)
 
         if args.usePredict:
             self.alg_sklearn = PSDTools.PSDSklearn.PSDSklearn("PSDSklearn")

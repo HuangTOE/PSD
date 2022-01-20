@@ -52,11 +52,17 @@ bool TestPSDTool::preProcess( JM::EvtNavigator *nav){
     if (!m_psdInput->extractHitInfo(nav,"alignPeak")) return false;
 
     // Extract  Raw Waveform from ElecSim
-    if (!m_psdInput->extractHitsWaveform(nav)) return false;
-    vector<vector<unsigned int >> v2d_waveforms = m_psdInput->getHitsWaveform();
-    //for(int i=0;i<v2d_waveforms[1].size();i++) cout << " " <<v2d_waveforms[0][i]<< " ";
-    //cout<<endl;
-    
+    JM::ElecHeader *eh = dynamic_cast<JM::ElecHeader *>(nav->getHeader("/Event/Elec"));
+    // only use large pmts
+    if (eh!=NULL) {
+        if (!m_psdInput->extractHitsWaveform(nav)) return false;
+        vector<vector<unsigned int >> v2d_waveforms = m_psdInput->getHitsWaveform();
+        //for(int i=0;i<v2d_waveforms[1].size();i++) cout << " " <<v2d_waveforms[0][i]<< " ";
+        //cout<<endl;
+    }
+    else
+        LogWarn << "Cannot find elecsim input, so we skip getting waveform!" << endl;
+
     d_psdVar = 100;
     if (!b_usePredict) m_userTree->Fill();
     return true;

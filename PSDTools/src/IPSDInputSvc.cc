@@ -68,6 +68,9 @@ bool IPSDInputSvc::getEDMEvent(JM::EvtNavigator *nav) {
         }
         elecEvent = dynamic_cast<JM::ElecEvent *>(eh->event());
     }
+    else
+        LogWarn << "Cannot find elecsim input, so we skip getting waveform!" << endl;
+
     //read time and charge fromJM::CalibEvent *calibevent, JM::CDRecEvent *recevent CalibEvent
     JM::CalibHeader *calibheader=dynamic_cast<JM::CalibHeader*>(nav->getHeader("/Event/Calib"));
     if (!calibheader->hasEvent()) {
