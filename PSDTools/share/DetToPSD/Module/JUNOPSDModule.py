@@ -69,7 +69,12 @@ class JUNOPSDModule(JUNOModule):
 
     def register_options_Sklearn(self, parser):
         # ----------------- For Sklearn method -------------------------
-        parser.add_argument("--Path_Bins", default="None", help="This file is the bins strategy for sklearn")
+        parser.add_argument("--Path_Bins",
+                            default="None",
+                            help="This file is the bins strategy for sklearn")
+        parser.add_argument("--NotAppendErec", dest="appendE",
+                            action="store_false")
+        parser.set_defaults(appendE = True)
 
     def init(self, toptask, args):
         self.init_common(toptask, args)
@@ -117,6 +122,7 @@ class JUNOPSDModule(JUNOModule):
         self.psdtool.property("Model").set(args.Model)
         self.psdtool.property("Path_Bins").set(args.Path_Bins)
         self.psdtool.property("PSD_divide").set(args.PSD_cut)
+        self.psdtool.property("AppendErec").set(args.appendE)
 
         if args.usePredict:
             self.alg_sklearn = PSDTools.PSDSklearn.PSDSklearn("PSDSklearn")

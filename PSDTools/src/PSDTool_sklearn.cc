@@ -2,7 +2,7 @@
 // Created by luoxj@ihep.ac.cn on 2021/12/19.
 //
 
-#include "../PSDTools/PSDTool_sklearn.h"
+#include "PSDTools/PSDTool_sklearn.h"
 
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/ToolFactory.h"
@@ -34,6 +34,7 @@ PSDTool_sklearn::PSDTool_sklearn(const std::string &name): ToolBase(name){
     declProp("Model", m_path_model );
     declProp("Path_Bins", m_path_bins_file);
     declProp("PSD_divide", PSD_divide);
+    declProp("AppendErec",appendErec);
 }
 
 PSDTool_sklearn::~PSDTool_sklearn(){
@@ -157,6 +158,7 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
         p::tuple shape_xyz_E = p::make_tuple(4);
         p::tuple shape_PSDInput = p::make_tuple((m_bins.size()-1)*2 + 2 );
         p::str path_model = p::str(m_path_model);
+//        bool appendE = p::bool(appendErec);
 
         np::dtype dtype_double = np::dtype::get_builtin<double>();
 
@@ -192,6 +194,7 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
         m_ds->set("h_time_without_charge", arr_h_time_without_charge);
         m_ds->set("xyz_E", arr_xyz_and_E);
         m_ds->set("path_model", path_model);
+        m_ds->set("AppendErec", appendErec);
 //        m_ds->set("PSDInput", v_PSDInput);
     }
 

@@ -70,5 +70,6 @@ private:
     Task* sub_task;
 
     float PSD_divide;
+    bool appendErec;
 };
 #endif //GENERALPROJECT_PSDTOOL_SKLEARN_H

@@ -29,3 +29,9 @@ echo $id
 
 #(time python $TUTORIALROOT/share/tut_det2elec.py --evtmax 2  --seed 1 \
 #--disableAfterPulse  --input "eventinput:$path_atm/DS/det_sample_$id.root" --rate eventinput:1  )
+
+python $PSDTOOLSROOT/share/tut_calib_rec2PSD.py --evtmax -1 \
+--input-list  filelist.txt  --user-output output.root \
+--method-PSD PSD_TMVA --Predict \
+--Model $JUNOTOP/data/Reconstruction/PSDTools/model/DSNB_AtmNC_10-30MeV_BDTG.weights.xml
+
