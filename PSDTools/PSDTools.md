@@ -69,6 +69,10 @@ users can use this switch to do the PSD work
   -20, -17, -14, -11, -8, -5, -2, 1, 4, 7, 10, 13, 16, 19, 22, 28, 34, 40, 46, 52, 58, 64, 72, 80, 90, 102, 116, 132, 150, 170, 192, 216, 242, 270, 300, 332, 366, 402, 440, 480, 522, 566, 612, 660, 710, 762,816
   ```
 
+* `--NotAppendErec`
+    
+    Option for Sklearn training, when this switch is added, reconstruct energy will not be included in training process.(Append reconstruct energy is default,but DSNB/Atm sklearn model doesn't include it, so we add this switch)
+
 ### Command Examples: 
 
 To run the examples below, juno offline should be setup firstly.
@@ -110,6 +114,12 @@ To run the examples below, juno offline should be setup firstly.
    # If want to use tut_det2PSD.py, just refer to [example 3 - TMVA Method]. Only need to add elecsim, calib and rec options.
     ```
 
+    Another sklearn example for DSNB/Atm-NC discrimination(**note**:this model does not add reconstruct energy for training):
+
+    ```
+    python $PSDTOOLSROOT/share/tut_calib_rec2PSD.py --evtmax 10 --input-list  $INPUTFILELIST  --user-output ouput_sklearn.root --method PSDTool_sklearn --Predict --Model $JUNOTOP/data/Reconstruction/PSDTools/model/DSNB_AtmNC_12-30MeV_sklearn.pkl --NotAppendErec 
+    ```
+   
 ### Train Your Own Model
 1. Change --Predict into --PrepareForTraining 
     ```
