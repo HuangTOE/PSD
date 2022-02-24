@@ -127,7 +127,7 @@ To run the examples below, juno offline should be setup firstly.
    python $PSDTOOLSROOT/share/tut_det2PSD.py  --evtmax -1 --seed 1 \
     --disableAfterPulse --input eventinput:detsim.root --rate eventinput:1  \
    --gdml  --method energy-point --enableLTSPEs --enableTimeInfo --enableUseEkMap --enableQTimePdf --SaveMC 0 --VtxCorr 0 --elec yes \
-   --user-output output.root --method-PSD PSDTool_sklearn --PrepareForTraining
+   --user-output output.root --method-PSD PSDTool_desklearn --PrepareForTraining
     ```
 2. Moderately edit TrainSklearn_PSDTools.py so that it is able to take of signal and background PSD output files as input 
   [ Maybe you need to install some python libraries to run TrainSklearn_PSDTools.py such as uproot ] 
