@@ -11,6 +11,7 @@
 #include "SniperKernel/ToolBase.h"
 #include "EvtNavigator/NavBuffer.h"
 #include "SniperKernel/SniperPtr.h"
+#include <vector>
 
 #include "TTree.h"
 
@@ -28,6 +29,10 @@ class TestPSDTool: public ToolBase, public IPSDTool{
         TTree *m_userTree;
         double d_psdVar;
         TTree *m_psdTree;
+
+        std::vector<double> Time;
+        std::vector<double> Charge;
+        std::vector<int>    isHam;
 
         IPSDInputSvc* m_psdInput;
 };

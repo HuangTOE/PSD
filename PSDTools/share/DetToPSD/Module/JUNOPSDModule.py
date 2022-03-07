@@ -51,6 +51,9 @@ class JUNOPSDModule(JUNOModule):
         parser.add_argument("--Model",
                             default="model.pkl", help="ML model to do the prediction, default is for Sklearn method")
         parser.add_argument("--PSD-cut",type=float, default=0.5,help="Set PSDTools boundary for bkg and sig,so that tag the event")
+        parser.add_argument("--AlignMethod", default="alignPeak2",
+                            choices=["noShift","alignPeak","alignMean","alignPeak2", "alignPeak2_NotSeparatePMT"],
+                            help="Method to align time profile")
 
         parser.set_defaults(usePredict = True)
 
@@ -97,6 +100,7 @@ class JUNOPSDModule(JUNOModule):
         self.psdtool = self.psdalg.createTool(args.method_PSD)
         self.psdalg.property("Method").set(args.method_PSD)
         self.psdalg.property("UsePredict").set(args.usePredict)
+        self.psdtool.property("AlignMethod").set(args.AlignMethod)
 
 
     def init_TMVA_model(self, topTask, args):

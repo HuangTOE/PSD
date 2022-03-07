@@ -51,6 +51,7 @@ class IPSDTool{
         virtual double CalPSDVal() = 0;
 
     protected:
+        std::string method_align;
         bool b_usePredict;//whether to give prediction or not, default is true
 //        std::string b_model;
         PSDEVENT m_psdEvent;

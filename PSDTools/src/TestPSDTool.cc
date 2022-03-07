@@ -4,6 +4,7 @@
 #include "SniperKernel/ToolFactory.h"
 #include "SniperKernel/SniperPtr.h"
 #include "RootWriter/RootWriter.h"
+#include "TROOT.h"
 
 //#include "string.h"
 
@@ -11,6 +12,7 @@ using namespace std;
 DECLARE_TOOL(TestPSDTool);
 
 TestPSDTool::TestPSDTool(const std::string &name): ToolBase(name){
+    declProp("AlignMethod", method_align);
     d_psdVar = 0;
 }
 
@@ -27,8 +29,13 @@ bool TestPSDTool::initialize(){
     }
 
     //Store the pre-processed events
+    gROOT->ProcessLine("#include <vector>");
     m_userTree=rwsvc->bookTree(*m_par,"evt", "evt");
     m_userTree->Branch("PSDVar", &d_psdVar, "PSDVar/D");
+    m_userTree->Branch("Time", &Time);
+    m_userTree->Branch("Charge", &Charge);
+    m_userTree->Branch("isHam", &isHam);
+
     rwsvc->attach("USER_OUTPUT", m_userTree);
 
     //Store the PSDTools result, which may be implemented in data model in the future
@@ -49,7 +56,10 @@ bool TestPSDTool::finalize(){
 
 bool TestPSDTool::preProcess( JM::EvtNavigator *nav){
     LogDebug<<"pre processing an event..."<<std::endl;
-    if (!m_psdInput->extractHitInfo(nav,"alignPeak")) return false;
+    if (!m_psdInput->extractHitInfo(nav,method_align)) return false;
+    Time = m_psdInput->getHitTime();
+    Charge = m_psdInput->getHitCharge();
+    isHam = m_psdInput->getHitIsHama();
 
     // Extract  Raw Waveform from ElecSim
     JM::ElecHeader *eh = dynamic_cast<JM::ElecHeader *>(nav->getHeader("/Event/Elec"));

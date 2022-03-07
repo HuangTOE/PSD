@@ -35,6 +35,7 @@ PSDTool_sklearn::PSDTool_sklearn(const std::string &name): ToolBase(name){
     declProp("Path_Bins", m_path_bins_file);
     declProp("PSD_divide", PSD_divide);
     declProp("AppendErec",appendErec);
+    declProp("AlignMethod", method_align);
 }
 
 PSDTool_sklearn::~PSDTool_sklearn(){
@@ -115,7 +116,7 @@ bool PSDTool_sklearn::preProcess( JM::EvtNavigator *nav){
 
     evtID ++;
 
-    if (!m_psdInput->extractHitInfo(nav,"alignPeak2")) return false;
+    if (!m_psdInput->extractHitInfo(nav,method_align)) return false;
     const vector<double> v_hittime = m_psdInput->getHitTime();
     const vector<double> v_charge = m_psdInput->getHitCharge();
 

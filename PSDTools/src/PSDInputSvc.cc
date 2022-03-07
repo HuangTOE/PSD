@@ -184,9 +184,6 @@ bool PSDInputSvc::alignTime(std::string algnmethod)
     }
     t0 = GetTimetag(hist_to_align) - 1;
     t0_Ham = GetTimetag(hist_to_align_Ham) - 1;
-//    cout << "My puzzle-GetTimetag():\t" << t0_Ham << endl;
-//    cout << "My puzzle-GetMaximum():\t" << hist_to_align_Ham->GetBinCenter(hist_to_align_Ham->GetMaximumBin()) << endl;
-//    cout << endl;
     t0_MCP = GetTimetag(hist_to_align_MCP) - 1;
 
     for (int i = 0; i < v_hitTime.size(); i++) {
@@ -195,8 +192,21 @@ bool PSDInputSvc::alignTime(std::string algnmethod)
       else
         v_hitTime[i] = v_hitTime[i] - t0_MCP;
     }
-    //        int binno=hist_to_align_Ham->GetMaximumBin();
-    //        t0=hist_to_align_Ham->GetBinCenter(binno)-1;
+  } else if (!algnmethod.compare("alignPeak2_NotSeparatePMT"))
+  {
+      b_weightOpt = true;
+      t0 = 0;
+      hist_to_align->Reset();
+      int isize = v_hitTime.size();
+
+      for (int i = 0; i < isize; i++) {
+          double dweight = 1;
+          if (b_weightOpt) dweight = v_hitCharge.at(i);
+          hist_to_align->Fill(v_hitTime.at(i), dweight);
+      }
+      t0 = GetTimetag(hist_to_align) - 1;
+
+      for (double & i : v_hitTime) { i = i - t0; }
   }
 
   return true;

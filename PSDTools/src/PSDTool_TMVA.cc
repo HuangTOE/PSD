@@ -229,6 +229,7 @@ PSD_TMVA::PSD_TMVA(const std::string& name) : ToolBase(name)
     declProp("Model", model);
 //    declProp("R_divide", R_divide);
     declProp("PSD_divide", PSD_divide);
+    declProp("AlignMethod", method_align);
 }
 
 PSD_TMVA::~PSD_TMVA()
@@ -363,7 +364,7 @@ bool PSD_TMVA::finalize()
 bool PSD_TMVA::preProcess(JM::EvtNavigator* nav)
 {
   LogDebug << "pre processing an event..." << std::endl;
-  if (!m_psdInput->extractHitInfo(nav, "alignPeak2")) return false;
+  if (!m_psdInput->extractHitInfo(nav,method_align)) return false;
 
   // Reset histograms' bins content
   //   v_h_time_w.clear();
