@@ -84,7 +84,7 @@ bool PSDTool_sklearn::initialize(){
 
     //Store the pre-processed events
     gROOT->ProcessLine("#include <vector>");
-    m_userTree=rwsvc->bookTree(*m_par,"evt", "evt");
+    m_userTree=rwsvc->bookTree(*m_par,"evt", "Preprocess Output");
     rwsvc->attach("USER_OUTPUT", m_userTree);
     m_userTree->Branch("evtID", &evtID, "evtID/I");
     m_userTree->Branch("h_time_without_charge", &v_h_time_without_charge );
@@ -94,7 +94,7 @@ bool PSDTool_sklearn::initialize(){
 //    m_userTree->Branch("PSDInput", &v_PSDInput);
 
     //Store the PSDTools result, which may be implemented in data model in the future
-    m_psdTree=rwsvc->bookTree(*m_par,"PSDTools", "PSDTools");
+    m_psdTree=rwsvc->bookTree(*m_par,"PSD", "Prediction Output");
     m_userTree->Branch("evtID_PSD", &evtID, "evtID_PSD/I");
     m_psdTree->Branch("psdVal", &m_psdEvent.psdVal, "psdVal/D");
     m_psdTree->Branch("evtType", &m_psdEvent.evtType, "evtType/I");

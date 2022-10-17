@@ -12,9 +12,9 @@
 //#define IPSDINPUTSVC_H
 
 #include "EvtNavigator/NavBuffer.h"
-#include "Event/ElecHeader.h"
-#include "Event/CalibHeader.h"
-#include "Event/RecHeader.h"
+#include "Event/CdWaveformHeader.h"
+#include "Event/CdLpmtCalibHeader.h"
+#include "Event/CdRecHeader.h"
 #include <string>
 #include "TString.h"
 #include <vector>
@@ -51,6 +51,7 @@ public:
     const std::vector<double>& getHitTime(){return v_hitTime;};
     const std::vector<double>& getHitCharge(){return v_hitCharge;};
     const std::vector<int   >& getHitIsHama(){return v_hitIsHama;}
+    const std::vector<int   >& getHitPMTID(){return v_hitPMTID;}
     std::vector<std::vector<unsigned int >> getHitsWaveform(){return v2d_waveforms;};
     std::vector<double> getEventXYZ();
     double getVertexR3() const {return d_R3_event;}
@@ -72,13 +73,14 @@ protected:
     // same index refer to the same hit in different variables below )
     std::vector<double> v_hitTime; // hit time of many hits in current event
     std::vector<double> v_hitCharge;//hit charge of many hits in current event
+    std::vector<int> v_hitPMTID;
     std::vector<int> v_hitIsHama;
     std::vector<std::vector<unsigned int >> v2d_waveforms;
 
     // EDM in offline for current event to get related information
-    JM::CalibEvent *calibEvent{};
-    JM::CDRecEvent *recEvent{};
-    JM::ElecEvent * elecEvent{};
+    JM::CdLpmtCalibEvt *calibEvent{};
+    JM::CdRecEvt *recEvent{};
+    JM::CdWaveformEvt * elecEvent{};
 
 
 };

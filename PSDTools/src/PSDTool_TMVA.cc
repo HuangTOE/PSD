@@ -274,7 +274,7 @@ bool PSD_TMVA::initialize()
 
   // Store the pre-processed events
   gROOT->ProcessLine("#include <vector>");
-  m_userTree = rwsvc->bookTree(*m_par,"evt", "evt");
+  m_userTree = rwsvc->bookTree(*m_par,"evt", "Preprocess Outputs");
   m_userTree->Branch("evtID", &evtID, "evtID/I");
   m_userTree->Branch("tau1", &m_constant_to_save.tau1, "tau1/F");
   m_userTree->Branch("tau2", &m_constant_to_save.tau2, "tau2/F");
@@ -298,7 +298,7 @@ bool PSD_TMVA::initialize()
   rwsvc->attach("USER_OUTPUT", m_userTree);
 
   // Store the PSDTools result, which may be implemented in data model in the future
-  m_psdTree = rwsvc->bookTree(*m_par,"PSDTools", "PSDTools");
+  m_psdTree = rwsvc->bookTree(*m_par,"PSD", "Prediction Output");
   m_psdTree->Branch("evtID", &evtID, "evtID/I");
   m_psdTree->Branch("psdVal", &m_psdEvent.psdVal, "psdVal/D");
   m_psdTree->Branch("evtType", &m_psdEvent.evtType, "evtType/I");

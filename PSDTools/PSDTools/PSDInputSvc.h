@@ -14,10 +14,7 @@
 #include "TVector3.h"
 
 #include "SniperKernel/SvcBase.h"
-#include "Event/ElecHeader.h"
 #include "EvtNavigator/NavBuffer.h"
-#include "Event/CalibHeader.h"
-#include "Event/RecHeader.h"
 
 class PSDInputSvc : public SvcBase, public IPSDInputSvc
 {
@@ -42,6 +39,7 @@ class PSDInputSvc : public SvcBase, public IPSDInputSvc
 
         //-----------private functions---------
         double calTOF(int);
+        bool m_subtract_TOF;
 
         //-----------private members---------
         TH1F* hist_to_align;

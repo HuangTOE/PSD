@@ -83,7 +83,7 @@ To run the examples below, juno offline should be setup firstly.
     ```
 2. TMVA Method [ Only PSD, take elecsim,calib and rec output files as input ]:
    ```
-   python $PSDTOOLSROOT/share/tut_calib_rec2PSD.py --evtmax -1 --input-list  filelist.txt  --user-output output.root --method PSD_TMVA --Predict --Model $JUNOTOP/data/Reconstruction/PSDTools/model/DSNB_AtmNC_10-30MeV_BDTG.weights.xml
+   python $PSDTOOLSROOT/share/tut_calib_rec2PSD.py --evtmax -1 --input-list  filelist.txt  --user-output output.root --method-PSD PSD_TMVA --Predict --Model $JUNOTOP/data/Reconstruction/PSDTools/model/DSNB_AtmNC_10-30MeV_BDTG.weights.xml
    ```
 
     **filelist.txt:**
@@ -127,12 +127,11 @@ To run the examples below, juno offline should be setup firstly.
    python $PSDTOOLSROOT/share/tut_det2PSD.py  --evtmax -1 --seed 1 \
     --disableAfterPulse --input eventinput:detsim.root --rate eventinput:1  \
    --gdml  --method energy-point --enableLTSPEs --enableTimeInfo --enableUseEkMap --enableQTimePdf --SaveMC 0 --VtxCorr 0 --elec yes \
-   --user-output output.root --method-PSD PSDTool_desklearn --PrepareForTraining
+   --user-output output.root --method-PSD PSDTool_sklearn --PrepareForTraining
     ```
 2. Moderately edit TrainSklearn_PSDTools.py so that it is able to take of signal and background PSD output files as input 
-  [ Maybe you need to install some python libraries to run TrainSklearn_PSDTools.py such as uproot ] 
     ```
-   cd $PSDTOOLSROOT/share/ && python TrainSklearn_PSDTools.py
+     source /cvmfs/juno.ihep.ac.cn/sw/anaconda/Anaconda3-2020.11-Linux-x86_64/bin/activate root624 && python $PSDTOOLSROOT/share/TrainSklearn_PSDTools.py
    ```
 3. Now that have `model_LowE.pkl` from TrainSklearn_PSDTools.py, put the model into PSDTools and turn on --Predict
     ```

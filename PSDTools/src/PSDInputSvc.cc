@@ -1,7 +1,5 @@
 #include "PSDTools/PSDInputSvc.h"
 
-#include "DataRegistritionSvc/DataRegistritionSvc.h"
-#include "Event/ElecHeader.h"
 #include "Identifier/Identifier.h"
 #include "Identifier/CdID.h"
 #include "SniperKernel/SvcFactory.h"
@@ -10,8 +8,9 @@
 #include "BufferMemMgr/IDataMemMgr.h"
 #include "SniperKernel/SniperPtr.h"
 #include "RootWriter/RootWriter.h"
-#include "DataRegistritionSvc/DataRegistritionSvc.h"
-#include "Event/CalibHeader.h"
+
+#include "Event/CdWaveformHeader.h"
+#include "Event/CdLpmtCalibHeader.h"
 
 #include <map>
 #include <iomanip>
@@ -43,10 +42,11 @@ double GetTimetag(const TH1F* h1tem)
 
 PSDInputSvc::PSDInputSvc(const std::string& name) : SvcBase(name)
 {
-  b_weightOpt = false;
-  hist_to_align = new TH1F("h_to_align", "", 2000, -200, 1800);
-  hist_to_align_Ham = new TH1F("h_to_align_Ham", "", 2000, -200, 1800);
-  hist_to_align_MCP = new TH1F("h_to_align_MCP", "", 2000, -200, 1800);
+    declProp("SubtractTOF", m_subtract_TOF);
+    b_weightOpt = false;
+    hist_to_align = new TH1F("h_to_align", "", 2000, -200, 1800);
+    hist_to_align_Ham = new TH1F("h_to_align_Ham", "", 2000, -200, 1800);
+    hist_to_align_MCP = new TH1F("h_to_align_MCP", "", 2000, -200, 1800);
 }
 
 PSDInputSvc::~PSDInputSvc()
@@ -74,8 +74,10 @@ bool PSDInputSvc::extractHitInfo(JM::EvtNavigator* nav, const std::string method
   v_hitCharge.reserve(10000);
   v_hitIsHama.clear();
   v_hitIsHama.reserve(10000);
+  v_hitPMTID.clear();
+  v_hitPMTID.reserve(10000);
 
-  const std::list<JM::CalibPMTChannel*>& l_pmtcol = calibEvent->calibPMTCol();
+  const auto& l_pmtcol = calibEvent->calibPMTCol();
   for (auto it : l_pmtcol) {
     unsigned int pmtid = it->pmtId();
     Identifier id = Identifier(pmtid);
@@ -84,13 +86,14 @@ bool PSDInputSvc::extractHitInfo(JM::EvtNavigator* nav, const std::string method
     }
 
     int hitno = it->size();
-    const std::vector<double>& hittime = it->time();
-    const std::vector<double>& charge = it->charge();
+    const auto& hittime = it->time();
+    const auto& charge = it->charge();
     for (int i = 0; i < hitno; i++) {
       // v_pmtID.push_back(CdID::module(id));
       v_hitTime.push_back(hittime.at(i) - calTOF(CdID::module(id)));
       v_hitCharge.push_back(charge.at(i));
       v_hitIsHama.push_back(m_pmt_svc->isHamamatsu(CdID::module(id)));
+      v_hitPMTID.push_back( CdID::module(id) );
     }
   }
   if (!alignTime(method_to_align)) return false;
@@ -107,14 +110,10 @@ bool PSDInputSvc::extractHitsWaveform(JM::EvtNavigator* nav)
   if (!getEDMEvent(nav)) return false;  // get elecEvent from navigator
   if (!extractEvtInfo(nav)) return false;
 
-  const JM::ElecFeeCrate& efc = elecEvent->elecFeeCrate();
-  auto* m_crate = const_cast<JM::ElecFeeCrate*>(&efc);
+  const auto& feeChannels = elecEvent->channelData();
 
-  map<int, JM::ElecFeeChannel> feeChannels = m_crate->channelData();
-
-  map<int, JM::ElecFeeChannel>::iterator it;
-  for (it = feeChannels.begin(); it != feeChannels.end(); ++it) {
-    JM::ElecFeeChannel& channel = (it->second);
+  for (auto it = feeChannels.begin(); it != feeChannels.end(); ++it) {
+    const auto& channel = *(it->second);
     if (channel.adc().empty()) {
       continue;
     }
@@ -122,7 +121,7 @@ bool PSDInputSvc::extractHitsWaveform(JM::EvtNavigator* nav)
     int pmtID = it->first;  // remeber to check the conversion from electronics id to pmt id
     if (pmtID >= m_pmt_svc->get_NTotal_CD_LPMT()) continue;
 
-    vector<unsigned int>& waveform = channel.adc();
+    const auto& waveform = channel.adc();
     v2d_waveforms.push_back(waveform);
   }
   return true;

@@ -66,7 +66,6 @@ conddb_module = JUNOCondDBModule()
 # juno_application.register(rootoutput_module)
 #########################################################################
 
-
 elecsim_module = JUNOElecSimModule()
 waverec_module = JUNOWaveRecModule()
 eventrec_module = JUNOEventRecModule()

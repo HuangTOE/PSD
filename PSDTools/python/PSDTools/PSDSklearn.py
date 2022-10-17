@@ -69,16 +69,19 @@ class PSDSklearn(PyAlgBase):
         # print(np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
         #                       self.h_time_with_charge/np.max(self.h_time_with_charge),
         #                       [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3], [self.xyz_E[-1]/100])))
-        if self.appendE:
-            self.PSDVal_sig[0] = float(self.model.predict_proba(
-                [np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
-                                 self.h_time_with_charge/np.max(self.h_time_with_charge),
-                                 [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3], [self.xyz_E[-1]/100]))])[0][1])
+        if np.isnan( np.sum( self.xyz_E ) ):
+            self.PSDVal_sig[0] =  np.nan
         else:
-            self.PSDVal_sig[0] = float(self.model.predict_proba(
-            [np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
-            self.h_time_with_charge/np.max(self.h_time_with_charge),
-                             [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3]))])[0][1])
+            if self.appendE:
+                self.PSDVal_sig[0] = float(self.model.predict_proba(
+                    [np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
+                                     self.h_time_with_charge/np.max(self.h_time_with_charge),
+                                     [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3], [self.xyz_E[-1]/100]))])[0][1])
+            else:
+                self.PSDVal_sig[0] = float(self.model.predict_proba(
+                [np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
+                self.h_time_with_charge/np.max(self.h_time_with_charge),
+                                 [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3]))])[0][1])
             # [np.sum( (self.xyz_E[:3]/1000)**2)**(3/2)/17.5**3], [self.xyz_E[-1]/100]))])[0][1])
         # self.PSDVal_sig[0] = float(self.model.predict_proba([np.concatenate((self.h_time_without_charge/np.max(self.h_time_without_charge),
         #                                                                      self.h_time_with_charge/np.max(self.h_time_with_charge)))])[0][1])

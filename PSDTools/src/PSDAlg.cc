@@ -3,7 +3,8 @@
 #include "SniperKernel/ToolBase.h"
 #include "SniperKernel/AlgFactory.h"
 #include "RootWriter/RootWriter.h"
-#include "Event/RecHeader.h"
+#include "EvtNavigator/EvtNavHelper.h"
+#include "Event/CdRecHeader.h"
 #include "Geometry/PMTParamSvc.h"
 #include "PSDTools/IPSDInputSvc.h"
 
@@ -80,7 +81,7 @@ bool PSDAlg::execute(){
     LogInfo<<i_ithEvt<<"th event!"<<std::endl;
 
     //===============get the current event=================
-    JM::EvtNavigator *nav=m_buf->curEvt();
+    auto nav=m_buf->curEvt();
 
     LogDebug << "Finished Get Navigator and start to preProcess Data"<<std::endl;
     //=====================PSDTools procedure=====================
@@ -92,8 +93,8 @@ bool PSDAlg::execute(){
     if (b_usePredict) d_psdVal = m_psdTool->CalPSDVal();
 
     // ==============Get current rec event ==========================================
-    JM::RecHeader *recheader=dynamic_cast<JM::RecHeader*>(nav->getHeader("/Event/Rec"));
-    JM::CDRecEvent *thisRecEvent=recheader->cdEvent();
+    auto recheader=JM::getHeaderObject<JM::CdRecHeader>(nav);
+    auto thisRecEvent=recheader->event();
 
     //===============get the reconstruction information=================
     d_recE=thisRecEvent->energy();

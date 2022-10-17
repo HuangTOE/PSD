@@ -1,15 +1,14 @@
 find_package(Boost COMPONENTS numpy)
 PKG(PSDTools
     DEPENDS
-        SimEventV2
+        SimEvent
         Boost::numpy
         ElecEvent 
         CalibEvent 
         RecEvent 
         EvtNavigator 
         BufferMemMgr
-        DataRegistritionSvc
-        Identifier 
+        Identifier
         RootIOSvc      
         TMVA
         RooFit

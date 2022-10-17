@@ -5,6 +5,7 @@
 #include "SniperKernel/SniperPtr.h"
 #include "RootWriter/RootWriter.h"
 #include "TROOT.h"
+#include "EvtNavigator/EvtNavHelper.h"
 
 //#include "string.h"
 
@@ -30,16 +31,17 @@ bool TestPSDTool::initialize(){
 
     //Store the pre-processed events
     gROOT->ProcessLine("#include <vector>");
-    m_userTree=rwsvc->bookTree(*m_par,"evt", "evt");
+    m_userTree=rwsvc->bookTree(*m_par,"evt", "Preprocess Output");
     m_userTree->Branch("PSDVar", &d_psdVar, "PSDVar/D");
     m_userTree->Branch("Time", &Time);
     m_userTree->Branch("Charge", &Charge);
     m_userTree->Branch("isHam", &isHam);
+    m_userTree->Branch("PMTID", &PMTID);
 
     rwsvc->attach("USER_OUTPUT", m_userTree);
 
     //Store the PSDTools result, which may be implemented in data model in the future
-    m_psdTree=rwsvc->bookTree(*m_par,"PSDTools", "PSDTools");
+    m_psdTree=rwsvc->bookTree(*m_par,"PSD", "Prediction Output");
     m_psdTree->Branch("psdVal", &m_psdEvent.psdVal, "psdVal/D");
     m_psdTree->Branch("evtType", &m_psdEvent.evtType, "psdVal/I");
     rwsvc->attach("PSD_OUTPUT", m_psdTree);
@@ -60,9 +62,10 @@ bool TestPSDTool::preProcess( JM::EvtNavigator *nav){
     Time = m_psdInput->getHitTime();
     Charge = m_psdInput->getHitCharge();
     isHam = m_psdInput->getHitIsHama();
+    PMTID = m_psdInput->getHitPMTID();
 
     // Extract  Raw Waveform from ElecSim
-    JM::ElecHeader *eh = dynamic_cast<JM::ElecHeader *>(nav->getHeader("/Event/Elec"));
+    auto eh = JM::getHeaderObject<JM::CdWaveformHeader>(nav);
     // only use large pmts
     if (eh!=NULL) {
         if (!m_psdInput->extractHitsWaveform(nav)) return false;

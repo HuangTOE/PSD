@@ -6,13 +6,10 @@
 #include "SniperKernel/SniperLog.h"
 #include "SniperKernel/SniperDataPtr.h"
 #include <vector>
-#include "Event/ElecHeader.h"
-#include "Event/CalibHeader.h"
-#include "Event/RecHeader.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "Geometry/PMTParamSvc.h"
-
+#include "EvtNavigator/EvtNavHelper.h"
 
 using namespace std;
 
@@ -58,7 +55,7 @@ bool IPSDInputSvc::extractEvtInfo(JM::EvtNavigator * nav) {
 
 
 bool IPSDInputSvc::getEDMEvent(JM::EvtNavigator *nav) {
-    JM::ElecHeader *eh = dynamic_cast<JM::ElecHeader *>(nav->getHeader("/Event/Elec"));
+    auto eh = JM::getHeaderObject<JM::CdWaveformHeader>(nav);
     // only use large pmts
     if (eh!=NULL)
     {
@@ -66,24 +63,24 @@ bool IPSDInputSvc::getEDMEvent(JM::EvtNavigator *nav) {
             LogError << "Cannot load elecsim event!!!!Please check input calib file" << endl;
             return false;
         }
-        elecEvent = dynamic_cast<JM::ElecEvent *>(eh->event());
+        elecEvent = dynamic_cast<JM::CdWaveformEvt *>(eh->event());
     }
     else
         LogWarn << "Cannot find elecsim input, so we skip getting waveform!" << endl;
 
     //read time and charge fromJM::CalibEvent *calibevent, JM::CDRecEvent *recevent CalibEvent
-    JM::CalibHeader *calibheader=dynamic_cast<JM::CalibHeader*>(nav->getHeader("/Event/Calib"));
+    auto calibheader=JM::getHeaderObject<JM::CdLpmtCalibHeader>(nav);
     if (!calibheader->hasEvent()) {
         LogError << "Cannot load calib event!!!!Please check input calib file" << endl;
         return false;
     }
     calibEvent=calibheader->event();
-    JM::RecHeader *recheader=dynamic_cast<JM::RecHeader*>(nav->getHeader("/Event/Rec"));
-    if (!recheader->hasCDEvent()) {
+    auto recheader=JM::getHeaderObject<JM::CdRecHeader>(nav);
+    if (!recheader->hasEvent()) {
         LogError << "Cannot load rec event!!!!Please check input rec file" << endl;
         return false;
     }
-    recEvent=recheader->cdEvent();
+    recEvent=recheader->event();
     return true;
 }
 

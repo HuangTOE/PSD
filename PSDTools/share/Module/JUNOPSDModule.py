@@ -54,7 +54,9 @@ class JUNOPSDModule(JUNOModule):
         parser.add_argument("--AlignMethod", default="alignPeak2",
                             choices=["noShift","alignPeak","alignMean","alignPeak2", "alignPeak2_NotSeparatePMT"],
                             help="Method to align time profile")
+        parser.add_argument("--NotSubtractTOF", action="store_false", help="Not subtract time of flight", dest="SubtractTOF" )
 
+        parser.set_defaults(SubtractTOF = True)
         parser.set_defaults(usePredict = True)
 
     def register_options_TMVA(self, parser):
@@ -101,6 +103,7 @@ class JUNOPSDModule(JUNOModule):
         self.psdalg.property("Method").set(args.method_PSD)
         self.psdalg.property("UsePredict").set(args.usePredict)
         self.psdtool.property("AlignMethod").set(args.AlignMethod)
+        self.psdsvc.property("SubtractTOF").set(args.SubtractTOF)
 
 
     def init_TMVA_model(self, topTask, args):

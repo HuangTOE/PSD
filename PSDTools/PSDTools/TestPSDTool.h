@@ -33,6 +33,7 @@ class TestPSDTool: public ToolBase, public IPSDTool{
         std::vector<double> Time;
         std::vector<double> Charge;
         std::vector<int>    isHam;
+        std::vector<int>    PMTID;
 
         IPSDInputSvc* m_psdInput;
 };
